@@ -401,19 +401,31 @@ if __name__ == '__main__':
     player_configs = [
         {
             "name": "DeepSeek",
-            "model": "deepseek-r1"
+            "model": "deepseek-r1:8b"
+        },
+        #{
+        #    "name": "ChatGPT",
+        #    "model": "o3-mini"
+        #},
+        #{
+        #    "name": "Claude",
+        #    "model": "claude-3.7-sonnet"
+        #},
+        #{
+        #    "name": "Gemini",
+        #    "model": "gemini-2.0-flash-thinking"
+        #}
+        {
+            "name": "Llama3",
+            "model": "llama3:7b"
         },
         {
-            "name": "ChatGPT",
-            "model": "o3-mini"
+            "name": "Qwen3",
+            "model": "llama3:7b"#"qwen3:8b"
         },
         {
-            "name": "Claude",
-            "model": "claude-3.7-sonnet"
-        },
-        {
-            "name": "Gemini",
-            "model": "gemini-2.0-flash-thinking"
+            "name": "Mistral",
+            "model": "llama3:7b"#"mistral:7b"
         }
     ]
 

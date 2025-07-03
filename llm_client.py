@@ -2,7 +2,9 @@ from openai import OpenAI
 API_BASE_URL = "YOUR_API_BASE_URL"
 API_KEY = "YOUR_API_KEY"
 
-class LLMClient:
+from llm_client_ollama import LLMClientOllama
+
+class LLMClientAPI:
     def __init__(self, api_key=API_KEY, base_url=API_BASE_URL):
         """初始化LLM客户端"""
         self.client = OpenAI(
@@ -38,6 +40,8 @@ class LLMClient:
         except Exception as e:
             print(f"LLM调用出错: {str(e)}")
             return "", ""
+        
+LLMClient = LLMClientOllama
 
 # 使用示例
 if __name__ == "__main__":

@@ -1,79 +1,94 @@
 # Liars Bar LLM
 
-一个由大语言模型驱动的AI版骗子酒馆对战框架
+An AI version of the Liars Bar battle framework driven by a large language model
 
-## 文件结构
+## File structure
 
-程序主要分为两部分，游戏主体和分析工具
+The program is mainly divided into two parts, the game body and the analysis tool
 
-### 游戏主体
+### Game body
 
-`game.py` 骗子酒馆游戏主程序
+`game.py` Liars Bar game main program
 
-`player.py` 参与游戏的LLM智能体
+`player.py` LLM agent participating in the game
 
-`game_record.py` 用于保存和提取游戏记录
+`game_record.py` Used to save and extract game records
 
-`llm_client.py` 用于配置模型接口和发起LLM请求
+`llm_client.py` Used to configure the model interface and initiate LLM requests
 
-`multi_game_runner.py` 用于批量运行多轮游戏
+`multi_game_runner.py` Used to batch run multiple rounds of games
 
-### 分析工具
+### Analysis tool
 
-`game_analyze.py` 用于统计所有对局数据
+`game_analyze.py` Used to count all game data
 
-`player_matchup_analyze.py` 用于提取互为对手的AI间的对局记录进行分析
+`player_matchup_analyze.py` Used to extract game records between AI opponents for analysis
 
-`json_convert.py` 用于将json游戏记录转为可读文本
+`json_convert.py` Used to convert json game records into readable text
 
-## 配置
+## Configuration
 
-使用conda环境配置相应依赖包：
+Use the conda environment to configure the corresponding dependency packages:
 
-```
+```bash
 pip install openai
+pip install ollama
 ```
 
-本项目的API配置在`llm_client.py`中。
+Also to run model using Ollama, you need to first:
 
-本项目利用了New API https://github.com/Calcium-Ion/new-api?tab=readme-ov-file 配置了统一的接口调用格式。使用时需自行配置相应模型的API接口。
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+ollama serve
+```
+to first initialize the ollama package on your server environment.
 
-也可以采用类似的API管理项目One API https://github.com/songquanpeng/one-api 实现统一的接口调用。
+Then you need to download the model you need to run locally using ollama, you can find useful models in https://ollama.com/search. Also when you are trying to download model, like:
+```bash
+ollama pull qwen3:8b
+```
+to download the Qwen3 model with 8B's weights. Other models with other weights can do the same.
 
-## 使用方法
+The API configuration of this project is in `llm_client.py`.
 
-### 运行
+This project uses New API https://github.com/Calcium-Ion/new-api?tab=readme-ov-file to configure a unified interface call format. When using it, you need to configure the API interface of the corresponding model yourself.
 
-完成项目配置后，在`game.py`和`multi_game_runner.py`主程序入口的`player_configs`中设置正确的模型名称
+You can also use a similar API management project One API https://github.com/songquanpeng/one-api to achieve unified interface calls.
 
-运行单局游戏：
+## Usage
+
+### Run
+
+After completing the project configuration, set the correct model name in the `player_configs` of the main program entry of `game.py` and `multi_game_runner.py`
+
+Run a single game:
 ```
 python game.py
 ```
 
-运行多局游戏：
+Run multiple games:
 ```
 python multi_game_runner.py -n 10
 ```
-在`-n`后指定你希望运行的游戏局数，默认为10局
+Specify the number of games you want to run after `-n`, the default is 10
 
-### 分析
+### Analysis
 
-游戏记录会以json形式保存在目录下的`game_records`文件夹中
+The game records will be saved in the `game_records` folder in the directory in json format
 
-将json文件转为可读性更强的文本格式，转换后的文件会保存在目录下的`converted_game_records`文件夹中
+Convert the json file to a more readable text format, and the converted file will be saved in the `converted_game_records` folder in the directory
 
 ```
 python json_convert.py
 ```
 
-提取所有游戏中AI之间两两对决的对局，转换后的文件会保存在目录下的`matchup_records`文件夹中
+Extract all the games between AIs in the game, and the converted files will be saved in the `matchup_records` folder in the directory
 
 ```
 python player_matchup_analyze.py
 ```
 
-统计并打印所有的对局数据
+Count and print all game data
 
 ```
 python game_analyze.py
@@ -81,8 +96,8 @@ python game_analyze.py
 
 ## Demo
 
-项目已将 DeepSeek-R1、o3-mini、Gemini-2-flash-thinking、Claude-3.7-Sonnet 四个模型作为玩家运行了50局，记录存放在`demo_records`文件夹中。
+The project has run 50 games with four models, DeepSeek-R1, o3-mini, Gemini-2-flash-thinking, and Claude-3.7-Sonnet, as players, and the records are stored in the `demo_records` folder.
 
-## 已知问题
+## Known Issues
 
-模型在出牌和质疑阶段的输出可能不稳定，当输出无法满足游戏规定时，会自动重试。如果多次因为输出问题中断运行，可在`player.py`的`choose_cards_to_play`和`decide_challenge`中增加调用大模型的重试次数，或修改`prompt`文件夹中的`play_card_prompt_template.txt`和`challenge_prompt_template.txt`提示词强化对输出格式的限制（可能对模型的推理能力有一定影响）。
+The output of the model may be unstable during the card-playing and questioning stages. When the output cannot meet the game requirements, it will automatically retry. If the run is interrupted multiple times due to output problems, you can increase the number of retries for calling large models in `choose_cards_to_play` and `decide_challenge` of `player.py`, or modify the prompts in `play_card_prompt_template.txt` and `challenge_prompt_template.txt` in the `prompt` folder to strengthen the restrictions on the output format (which may have a certain impact on the model's reasoning ability).
