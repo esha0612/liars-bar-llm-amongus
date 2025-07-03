@@ -1,58 +1,39 @@
-import requests
-import json
+from ollama import Client
 
-API_BASE_URL = "http://localhost:11434"  # Ollama默认地址
+OLLAMA_API_BASE_URL = "http://localhost:11434"  # Default Ollama API endpoint
 
-class LLMClient:
-    def __init__(self, base_url=API_BASE_URL):
-        """初始化Ollama客户端"""
-        self.base_url = base_url
+class LLMClientOllama:
+    def __init__(self, base_url=OLLAMA_API_BASE_URL):
+        """Initialize Ollama client"""
+        self.client = Client(base_url)
         
-    def chat(self, messages, model="deepseek-r1"):
-        """与Ollama模型交互
+    def chat(self, messages, model="deepseek-r1:8b"):
+        """Interact with Ollama LLM
         
         Args:
-            messages: 消息列表
-            model: 使用的Ollama模型
+            messages: List of messages
+            model: Ollama model to use
         
         Returns:
             tuple: (content, reasoning_content)
         """
         try:
-            print(f"Ollama请求: {messages}")
+            print(f"Ollama Request: {messages}")
             
-            # 构建Ollama API请求
-            url = f"{self.base_url}/api/chat"
-            payload = {
-                "model": model,
-                "messages": messages,
-                "options": {
-                    "temperature": 0.7
-                }
-            }
+            # Call Ollama API
+            response = self.client.chat(
+                model=model,
+                messages=messages,
+                options={"temperature": 0.7}
+            )
             
-            response = requests.post(url, json=payload)
-            response.raise_for_status()
+            content = response.message.content
+            # Ollama doesn't natively support reasoning_content, can be extended if needed
+            reasoning_content = ""
             
-            data = response.json()
-            if "message" in data.get("message", {}):
-                content = data["message"]["content"]
-                # Ollama原生不支持reasoning_content，可根据需要扩展
-                reasoning_content = ""
-                print(f"Ollama回复内容: {content}")
-                return content, reasoning_content
-                
-            return "", ""
+            print(f"Ollama Response: {content}")
+            return content, reasoning_content
                 
         except Exception as e:
-            print(f"Ollama调用出错: {str(e)}")
+            print(f"Ollama API Error: {str(e)}")
             return "", ""
-        
-# 使用示例
-if __name__ == "__main__":
-    llm = LLMClient()
-    messages = [
-        {"role": "user", "content": "你好"}
-    ]
-    response = llm.chat(messages)
-    print(f"响应: {response}")
