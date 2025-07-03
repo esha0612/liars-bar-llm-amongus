@@ -421,11 +421,11 @@ if __name__ == '__main__':
         },
         {
             "name": "Qwen3",
-            "model": "llama3:7b"#"qwen3:8b"
+            "model": "qwen3:8b"
         },
         {
             "name": "Mistral",
-            "model": "llama3:7b"#"mistral:7b"
+            "model": "mistral:7b"
         }
     ]
 
