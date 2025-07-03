@@ -2,7 +2,7 @@ import random
 import json
 import re
 from typing import List, Dict
-from llm_client import LLMClient
+from llm_client_ollama import LLMClient
 
 RULE_BASE_PATH = "prompt/rule_base.txt"
 PLAY_CARD_PROMPT_TEMPLATE_PATH = "prompt/play_card_prompt_template.txt"

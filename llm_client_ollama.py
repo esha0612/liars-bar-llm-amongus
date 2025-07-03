@@ -3,12 +3,13 @@ import json
 
 API_BASE_URL = "http://localhost:11434"  # Ollama默认地址
 
+
 class LLMClient:
     def __init__(self, base_url=API_BASE_URL):
         """初始化Ollama客户端"""
         self.base_url = base_url
         
-    def chat(self, messages, model="deepseek-r1"):
+    def chat(self, messages, model="deepseek-coder:1.3b"):
         """与Ollama模型交互
         
         Args:
@@ -22,7 +23,7 @@ class LLMClient:
             print(f"Ollama请求: {messages}")
             
             # 构建Ollama API请求
-            url = f"{self.base_url}/api/chat"
+            url = f"{self.base_url}/api/generate"
             payload = {
                 "model": model,
                 "messages": messages,

@@ -44,10 +44,12 @@ if __name__ == '__main__':
     
     # 配置玩家信息, 其中model为你通过API调用的模型名称
     player_configs = [
-        {"name": "DeepSeek", "model": "deepseek-r1"},
-        {"name": "ChatGPT", "model": "o3-mini"},
-        {"name": "Claude", "model": "claude-3.7-sonnet"},
-        {"name": "Gemini", "model": "gemini-2.0-flash-thinking"}
+        {"name": "DeepSeek1", "model": "deepseek-coder:1.3b"},
+        {"name": "DeepSeek2", "model": "deepseek-coder:1.3b"}
+
+        # {"name": "ChatGPT", "model": "o3-mini"},
+        # {"name": "Claude", "model": "claude-3.7-sonnet"},
+        # {"name": "Gemini", "model": "gemini-2.0-flash-thinking"}
     ]
     
     # 创建并运行多局游戏
