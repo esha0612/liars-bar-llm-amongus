@@ -6,24 +6,24 @@ from llm_client_ollama import LLMClientOllama
 
 class LLMClientAPI:
     def __init__(self, api_key=API_KEY, base_url=API_BASE_URL):
-        """初始化LLM客户端"""
+        """Initialize LLM client"""
         self.client = OpenAI(
             api_key=api_key,
             base_url=base_url
         )
         
     def chat(self, messages, model="deepseek-r1"):
-        """与LLM交互
+        """Interact with LLM
         
         Args:
-            messages: 消息列表
-            model: 使用的LLM模型
+            messages: List of messages
+            model: LLM model to use
         
         Returns:
             tuple: (content, reasoning_content)
         """
         try:
-            print(f"LLM请求: {messages}")
+            print(f"LLM request: {messages}")
             response = self.client.chat.completions.create(
                 model=model,
                 messages=messages,
@@ -32,22 +32,22 @@ class LLMClientAPI:
                 message = response.choices[0].message
                 content = message.content if message.content else ""
                 reasoning_content = getattr(message, "reasoning_content", "")
-                print(f"LLM推理内容: {content}")
+                print(f"LLM reasoning content: {content}")
                 return content, reasoning_content
             
             return "", ""
                 
         except Exception as e:
-            print(f"LLM调用出错: {str(e)}")
+            print(f"LLM call error: {str(e)}")
             return "", ""
         
 LLMClient = LLMClientOllama
 
-# 使用示例
+# Example usage
 if __name__ == "__main__":
     llm = LLMClient()
     messages = [
-        {"role": "user", "content": "你好"}
+        {"role": "user", "content": "Hello"}
     ]
     response = llm.chat(messages)
-    print(f"响应: {response}")
+    print(f"Response: {response}")
