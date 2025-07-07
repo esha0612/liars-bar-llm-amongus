@@ -3,19 +3,19 @@ import json
 from collections import defaultdict, Counter
 
 def analyze_game_records(folder_path):
-    # 初始化统计数据结构
+    # Initialize statistical data structure
     stats = {
         'wins': Counter(),
         'shots_fired': Counter(),
         'survival_points': Counter(),
-        'matchups': defaultdict(lambda: defaultdict(int)),  # A和B之间的对决次数记录
-        'win_counts': defaultdict(lambda: defaultdict(int))  # A对B的胜利次数
+        'matchups': defaultdict(lambda: defaultdict(int)),  # A and B's confrontation count record
+        'win_counts': defaultdict(lambda: defaultdict(int))  # A's victory count against B
     }
     
     player_names = set()
     game_count = 0
     
-    # 遍历文件夹中的所有JSON文件
+    # Iterate through all JSON files in the folder
     for filename in os.listdir(folder_path):
         if not filename.endswith('.json'):
             continue
@@ -25,31 +25,31 @@ def analyze_game_records(folder_path):
             with open(file_path, 'r', encoding='utf-8') as f:
                 game_data = json.load(f)
                 
-            # 跳过没有赢家的游戏
+            # Skip games without a winner
             if game_data.get('winner') is None:
                 continue
                 
             game_count += 1
             
-            # 记录玩家名称
+            # Record player names
             for player in game_data.get('player_names', []):
                 player_names.add(player)
                 
-            # 统计获胜情况
+            # Count winning situation
             winner = game_data.get('winner')
             if winner:
                 stats['wins'][winner] += 1
             
-            # 分析每一轮的数据
+            # Analyze data for each round
             rounds = game_data.get('rounds', [])
             for round_data in rounds:
-                # 统计开枪情况
+                # Count shooting situation
                 round_result = round_data.get('round_result', {})
                 shooter = round_result.get('shooter_name')
                 if shooter:
                     stats['shots_fired'][shooter] += 1
                 
-                # 分析挑战对决情况
+                # Analyze confrontation situation
                 play_history = round_data.get('play_history', [])
                 for play in play_history:
                     player = play.get('player_name')
@@ -59,21 +59,21 @@ def analyze_game_records(folder_path):
                     if was_challenged and next_player:
                         challenge_result = play.get('challenge_result')
                         
-                        # 记录对决次数 - 只记录一个方向，避免重复计数
-                        # 确保按照字母顺序记录，使得对决始终以相同方式计数
+                        # Record confrontation count - only record one direction to avoid duplicate counting
+                        # Ensure recorded in alphabetical order to ensure confrontation always counted the same way
                         if player < next_player:
                             stats['matchups'][player][next_player] += 1
                         else:
                             stats['matchups'][next_player][player] += 1
                         
-                        # 记录谁赢了这次对决
-                        if challenge_result is True:  # 挑战成功，next_player赢
+                        # Record who won this confrontation
+                        if challenge_result is True:  # Challenge succeeded, next_player won
                             stats['win_counts'][next_player][player] += 1
-                        elif challenge_result is False:  # 挑战失败，player赢
+                        elif challenge_result is False:  # Challenge failed, player won
                             stats['win_counts'][player][next_player] += 1
             
-            # 计算存活积分
-            # 首先确定淘汰顺序
+            # Calculate survival points
+            # First determine elimination order
             elimination_order = []
             alive_players = set(game_data.get('player_names', []))
             
@@ -86,25 +86,25 @@ def analyze_game_records(folder_path):
                     elimination_order.append(shooter)
                     alive_players.remove(shooter)
             
-            # 将剩余存活的玩家按照游戏结束时的顺序添加到淘汰顺序中
+            # Add remaining alive players to elimination order in order at game end
             elimination_order.extend(alive_players)
             
-            # 计算每个玩家的存活积分
-            # 如果有n个玩家，第一个淘汰的玩家得0分，第二个得1分，以此类推
+            # Calculate survival points for each player
+            # If there are n players, the first eliminated player gets 0 points, the second gets 1 point, and so on
             for i, player in enumerate(elimination_order):
-                if i > 0:  # 第一个淘汰的不得分
+                if i > 0:  # First eliminated player gets no points
                     stats['survival_points'][player] += i
                     
         except Exception as e:
             print(f"Error processing {filename}: {e}")
     
-    # 计算对决胜率
+    # Calculate win rate
     win_rates = {}
     for player in player_names:
         win_rates[player] = {}
         for opponent in player_names:
             if player != opponent:
-                # 确定配对的正确顺序以获取总对决次数
+                # Determine correct order for pairing to get total confrontation count
                 if player < opponent:
                     total_matchups = stats['matchups'][player][opponent]
                 else:
@@ -121,31 +121,31 @@ def analyze_game_records(folder_path):
 def print_statistics(stats, win_rates, game_count, player_names):
     players = sorted(list(player_names))
     
-    print(f"总计分析了 {game_count} 场游戏")
-    print("\n胜利局数统计:")
+    print(f"Total analysis of {game_count} games")
+    print("\nWin count statistics:")
     for player in players:
         wins = stats['wins'][player]
         win_percentage = (wins / game_count) * 100 if game_count > 0 else 0
-        print(f"{player}: {wins} 场 ({win_percentage:.1f}%)")
+        print(f"{player}: {wins} games ({win_percentage:.1f}%)")
     
-    print("\n开枪次数统计:")
+    print("\nShooting count statistics:")
     for player in players:
-        print(f"{player}: {stats['shots_fired'][player]} 次")
+        print(f"{player}: {stats['shots_fired'][player]} times")
     
-    print("\n存活积分统计:")
+    print("\nSurvival point statistics:")
     for player in players:
         points = stats['survival_points'][player]
         avg_points = points / game_count if game_count > 0 else 0
-        print(f"{player}: {points} 分 (平均每局 {avg_points:.2f} 分)")
+        print(f"{player}: {points} points (average per game {avg_points:.2f} points)")
     
-    print("\n对位对决胜率:")
-    print(f"{'玩家 vs 对手':<25} {'对决次数':<10} {'胜利次数':<10} {'胜率':<10}")
+    print("\nConfrontation win rate:")
+    print(f"{'Player vs Opponent':<25} {'Confrontation Count':<10} {'Win Count':<10} {'Win Rate':<10}")
     print("-" * 55)
     
     for player in players:
         for opponent in players:
             if player != opponent:
-                # 获取正确顺序的对决总次数
+                # Get correct order confrontation total count
                 if player < opponent:
                     matchups = stats['matchups'][player][opponent]
                 else:
@@ -157,6 +157,6 @@ def print_statistics(stats, win_rates, game_count, player_names):
                 print(f"{player} vs {opponent:<10} {matchups:<10} {wins:<10} {win_rate:.1f}%")
 
 if __name__ == "__main__":
-    folder_path = "game_records"  # 替换为实际的文件夹路径
+    folder_path = "game_records"  # Replace with actual folder path
     stats, win_rates, game_count, player_names = analyze_game_records(folder_path)
     print_statistics(stats, win_rates, game_count, player_names)

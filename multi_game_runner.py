@@ -4,52 +4,52 @@ import argparse
 
 class MultiGameRunner:
     def __init__(self, player_configs: List[Dict[str, str]], num_games: int = 10):
-        """初始化多局游戏运行器
+        """Initialize multi-game runner
         
         Args:
-            player_configs: 玩家配置列表
-            num_games: 要运行的游戏局数
+            player_configs: List of player configurations
+            num_games: Number of games to run
         """
         self.player_configs = player_configs
         self.num_games = num_games
 
     def run_games(self) -> None:
-        """运行指定数量的游戏"""
+        """Run specified number of games"""
         for game_num in range(1, self.num_games + 1):
-            print(f"\n=== 开始第 {game_num}/{self.num_games} 局游戏 ===")
+            print(f"\n=== Start {game_num}/{self.num_games} Game ===")
             
-            # 创建并运行新游戏
+            # Create and run new game
             game = Game(self.player_configs)
             game.start_game()
             
-            print(f"第 {game_num} 局游戏结束")
+            print(f"Game {game_num} ended")
 
 def parse_arguments():
-    """解析命令行参数"""
+    """Parse command line arguments"""
     parser = argparse.ArgumentParser(
-        description='运行多局AI对战游戏',
+        description='Run multiple AI battle games',
         formatter_class=argparse.RawTextHelpFormatter
     )
     parser.add_argument(
         '-n', '--num-games',
         type=int,
         default=10,
-        help='要运行的游戏局数 (默认: 10)'
+        help='Number of games to run (default: 10)'
     )
     return parser.parse_args()
 
 if __name__ == '__main__':
-    # 解析命令行参数
+    # Parse command line arguments
     args = parse_arguments()
     
-    # 配置玩家信息, 其中model为你通过API调用的模型名称
+    # Configure player information, where model is the name of the model you called via API
     player_configs = [
-        {"name": "DeepSeek", "model": "deepseek-r1"},
-        {"name": "ChatGPT", "model": "o3-mini"},
-        {"name": "Claude", "model": "claude-3.7-sonnet"},
-        {"name": "Gemini", "model": "gemini-2.0-flash-thinking"}
+        
+        {"name": "Llama3", "model": "llama3"},
+        {"name": "Mistral1", "model": "mistral:7b"},
+        {"name": "Mistral1", "model": "mistral:latest"}
     ]
-    
-    # 创建并运行多局游戏
+
+    # Create and run multiple games
     runner = MultiGameRunner(player_configs, num_games=args.num_games)
     runner.run_games()
