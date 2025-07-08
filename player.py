@@ -3,6 +3,7 @@ import json
 import re
 from typing import List, Dict
 from llm_client import LLMClient
+import os
 
 RULE_BASE_PATH = "prompt/rule_base.txt"
 PLAY_CARD_PROMPT_TEMPLATE_PATH = "prompt/play_card_prompt_template.txt"
@@ -10,23 +11,25 @@ CHALLENGE_PROMPT_TEMPLATE_PATH = "prompt/challenge_prompt_template.txt"
 REFLECT_PROMPT_TEMPLATE_PATH = "prompt/reflect_prompt_template.txt"
 
 class Player:
-    def __init__(self, name: str, model_name: str):
-        """Initialize player
-        
+    def __init__(self, name: str, model_name: str, role: str):
+        """
+        Initialize a player for Mafia.
         Args:
-            name: player name
-            model_name: LLM model name to use
+            name: Player's name.
+            model_name: The LLM model assigned to this player.
+            role: The role assigned to this player (Mafia, Doctor, Detective, Townsperson).
         """
         self.name = name
-        self.hand = []
+        self.model_name = model_name
+        self.role = role
         self.alive = True
+        self.hand = []
         self.bullet_position = random.randint(0, 5)
         self.current_bullet_position = 0
         self.opinions = {}
         
         # LLM related initialization
         self.llm_client = LLMClient()
-        self.model_name = model_name
 
     def _read_file(self, filepath: str) -> str:
         """Read file content"""
@@ -252,3 +255,103 @@ class Player:
             print(f"{self.name} survives!")
         self.current_bullet_position = (self.current_bullet_position + 1) % 6
         return self.alive
+
+    def choose_mafia_target(self, alive_players: list) -> str:
+        """
+        Mafia chooses a target to eliminate during the night using LLM.
+        """
+        choices = [name for name in alive_players if name != self.name]
+        if not choices:
+            return None
+        prompt_path = os.path.join("prompt", "mafia_night_prompt.txt")
+        with open(prompt_path, "r", encoding="utf-8") as f:
+            prompt_template = f.read()
+        prompt = prompt_template.format(alive_players=", ".join(choices))
+        messages = [{"role": "user", "content": prompt}]
+        content, _ = self.llm_client.chat(messages, model=self.model_name)
+        chosen = content.strip()
+        if chosen in choices:
+            return chosen
+        return random.choice(choices)
+
+    def choose_doctor_save(self, alive_players: list) -> str:
+        """
+        Doctor chooses a player to save during the night using LLM.
+        """
+        if not alive_players:
+            return None
+        prompt_path = os.path.join("prompt", "doctor_night_prompt.txt")
+        with open(prompt_path, "r", encoding="utf-8") as f:
+            prompt_template = f.read()
+        prompt = prompt_template.format(alive_players=", ".join(alive_players))
+        messages = [{"role": "user", "content": prompt}]
+        content, _ = self.llm_client.chat(messages, model=self.model_name)
+        chosen = content.strip()
+        if chosen in alive_players:
+            return chosen
+        return random.choice(alive_players)
+
+    def choose_detective_investigation(self, alive_players: list) -> str:
+        """
+        Detective chooses a player to investigate during the night using LLM.
+        """
+        choices = [name for name in alive_players if name != self.name]
+        if not choices:
+            return None
+        prompt_path = os.path.join("prompt", "detective_night_prompt.txt")
+        with open(prompt_path, "r", encoding="utf-8") as f:
+            prompt_template = f.read()
+        prompt = prompt_template.format(alive_players=", ".join(choices))
+        messages = [{"role": "user", "content": prompt}]
+        content, _ = self.llm_client.chat(messages, model=self.model_name)
+        chosen = content.strip()
+        if chosen in choices:
+            return chosen
+        return random.choice(choices)
+
+    def choose_vote(self, alive_players: list) -> str:
+        """
+        Player chooses a player to vote for elimination during the day using LLM.
+        """
+        choices = [name for name in alive_players if name != self.name]
+        if not choices:
+            return None
+        prompt_path = os.path.join("prompt", "vote_prompt.txt")
+        with open(prompt_path, "r", encoding="utf-8") as f:
+            prompt_template = f.read()
+        prompt = prompt_template.format(alive_players=", ".join(choices))
+        messages = [{"role": "user", "content": prompt}]
+        content, _ = self.llm_client.chat(messages, model=self.model_name)
+        chosen = content.strip()
+        if chosen in choices:
+            return chosen
+        return random.choice(choices)
+
+    def discuss(self, alive_players: list, player_histories: dict) -> str:
+        """
+        Player discusses who they suspect and why, using the impression prompt and their own logic.
+        Returns a string simulating their discussion statement, including who they are most likely to vote for and why.
+        """
+        targets = [name for name in alive_players if name != self.name]
+        if not targets:
+            return f"{self.name}: I have no one to discuss."
+        statements = []
+        # Generate impressions for each target
+        for target in targets:
+            prompt_path = os.path.join("prompt", "impression_prompt.txt")
+            with open(prompt_path, "r", encoding="utf-8") as f:
+                prompt_template = f.read()
+            player_history = player_histories.get(target, "")
+            prompt = prompt_template.format(player_name=target, player_history=player_history)
+            messages = [{"role": "user", "content": prompt}]
+            content, _ = self.llm_client.chat(messages, model=self.model_name)
+            statements.append(f"Impression of {target}: {content.strip()}")
+        # Ask LLM who they are most likely to vote for and why
+        vote_prompt = (
+            f"Based on your impressions and the current situation, who are you most likely to vote for elimination? "
+            f"Alive players: {', '.join(targets)}. "
+            f"State the name and a short reason."
+        )
+        messages = [{"role": "user", "content": vote_prompt}]
+        vote_content, _ = self.llm_client.chat(messages, model=self.model_name)
+        return f"{self.name} says: {' '.join(statements)} Likely to vote: {vote_content.strip()}"

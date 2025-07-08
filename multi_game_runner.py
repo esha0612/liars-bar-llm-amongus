@@ -47,7 +47,7 @@ if __name__ == '__main__':
         
         {"name": "Llama3", "model": "llama3"},
         {"name": "Mistral1", "model": "mistral:7b"},
-        {"name": "Mistral1", "model": "mistral:latest"}
+        {"name": "Mistral2", "model": "mistral:latest"}
     ]
 
     # Create and run multiple games
