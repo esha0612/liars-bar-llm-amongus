@@ -2,7 +2,7 @@ import os
 import json
 
 def convert_game_record_to_chinese_text(json_file_path):
-    """Convert game record to readable text style"""
+    """Convert Mafia game record to readable text style"""
     with open(json_file_path, 'r', encoding='utf-8') as f:
         game_data = json.load(f)
 
@@ -22,65 +22,46 @@ def convert_game_record_to_chinese_text(json_file_path):
         text += "────────────────────────────\n"
         text += f"Round {round_record['round_id']}\n"
         text += "────────────────────────────\n"
-        text += f"Round Players: {', '.join(round_record['round_players'])}\n"
-        text += f"Round starts with {round_record['starting_player']}.\n\n"
+        text += f"Alive Players: {', '.join(round_record['alive_players'])}\n\n"
 
-        active_players = round_record["round_players"]
-        for player_name, opinions in round_record["player_opinions"].items():
-            if player_name in active_players:
-                text += f"{player_name} Opinions about other players:\n"
-                for other_player, opinion in opinions.items():
-                    if other_player in active_players:
-                        text += f"  - {other_player}: {opinion}\n"
-                text += "\n"
-        
-        text += "Dealing cards...\n\n"
-        text += f"Round Target Card: {round_record['target_card']}\n"
+        # Night Phase
+        text += "Night Phase:\n"
+        night = round_record.get("night_events", {})
+        if night:
+            text += f"  - Mafia chose to kill: {night.get('mafia_target', 'Unknown')}\n"
+            text += f"  - Doctor chose to save: {night.get('doctor_save', 'Unknown')}\n"
+            if night.get("detective_investigation"):
+                target = night["detective_investigation"]
+                result = "Yes" if night.get("investigation_result") else "No"
+                text += f"  - Detective investigated {target}. Mafia? {result}\n"
+        else:
+            text += "  - No night actions recorded.\n"
+        text += "\n"
 
-        if "player_initial_states" in round_record:
-            text += "Initial States of Players:\n"
-            for player_state in round_record["player_initial_states"]:
-                player_name = player_state["player_name"]
-                bullet_pos = player_state["bullet_position"]
-                gun_pos = player_state["current_gun_position"]
-                initial_hand = ", ".join(player_state["initial_hand"])
-                
-                text += f"{player_name}:\n"
-                text += f"  - Bullet Position: {bullet_pos}\n"
-                text += f"  - Current Gun Position: {gun_pos}\n"
-                text += f"  - Initial Hand: {initial_hand}\n\n"
+        # Day Phase
+        text += "Day Phase:\n"
+        discussion = round_record.get("discussion", [])
+        for line in discussion:
+            text += f"  - {line}\n"
+        text += "\n"
 
-        text += "----------------------------------\n"
-        for action in round_record["play_history"]:
-            text += f"Turn for {action['player_name']} to play\n"
-            text += f"{action['player_name']} {action['behavior']}\n"
-            text += f"Played Cards: {'、'.join(action['played_cards'])}, Remaining Cards: {'、'.join(action['remaining_cards'])} (Target Card: {round_record['target_card']})\n"
-            text += f"Play Reason: {action['play_reason']}\n\n"
+        votes = round_record.get("votes", [])
+        text += "Voting Results:\n"
+        if votes:
+            for vote in votes:
+                text += f"  - {vote['voter']} voted for {vote['voted']}\n"
+        else:
+            text += "  - No votes recorded.\n"
+        text += "\n"
 
-            if action['was_challenged']:
-                text += f"{action['next_player']} chooses to challenge\n"
-                text += f"Challenge Reason: {action['challenge_reason']}\n"
-            else:
-                text += f"{action['next_player']} chooses not to challenge\n"
-                text += f"Not Challenge Reason: {action['challenge_reason']}\n"
+        eliminated = round_record.get("eliminated_player")
+        if eliminated:
+            role = round_record.get("elimination_role", "Unknown")
+            text += f"Eliminated: {eliminated} (Role: {role})\n"
+        else:
+            text += "No one was eliminated this round.\n"
 
-            if action['was_challenged']:
-                if action['challenge_result']:
-                    text += f"Challenge successful, {action['player_name']} exposed.\n"
-                else:
-                    text += f"Challenge failed, {action['next_player']} punished.\n"
-            text += "\n----------------------------------\n"
-
-        if round_record['round_result']:
-            result = round_record['round_result']
-            text += f"Shooting Result:\n"
-
-            if result["bullet_hit"]:
-                text += f"Bullet hit, {result['shooter_name']} died.\n"
-            else:
-                text += f"Bullet missed, {result['shooter_name']} survived.\n"
-
-            text += "\n"
+        text += "\n----------------------------------\n"
 
     text += "\n════════════════════════════\n"
     text += "          Game End\n"
