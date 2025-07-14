@@ -40,6 +40,9 @@ class MafiaGame:
         """
         Main game loop: alternate between night and day until win condition is met.
         """
+        # Initialize game record
+        self.game_record.start_game(self.players)
+        
         while not self.check_win_condition():
             if self.phase == "night":
                 self.night_phase()
@@ -54,6 +57,9 @@ class MafiaGame:
         self.night_count += 1
         alive_players = [p for p in self.players if p.alive]
         alive_names = [p.name for p in alive_players]
+        
+        # Start recording night phase
+        self.game_record.start_night_phase(self.night_count, alive_names)
 
         # Mafia chooses a target (only one Mafia in this setup)
         mafia = next((p for p in alive_players if p.role == "Mafia"), None)
@@ -63,6 +69,13 @@ class MafiaGame:
             if mafia_choices:
                 mafia_target = mafia.choose_mafia_target(mafia_choices)
                 print(f"Mafia has chosen a target.")
+                # Record mafia action
+                self.game_record.record_night_action(
+                    player_name=mafia.name,
+                    role=mafia.role,
+                    action_type="mafia_kill",
+                    target_name=mafia_target
+                )
 
         # Doctor chooses someone to save
         doctor = next((p for p in alive_players if p.role == "Doctor"), None)
@@ -70,18 +83,35 @@ class MafiaGame:
         if doctor:
             doctor_save = doctor.choose_doctor_save(alive_names)
             print(f"Doctor has chosen someone to save.")
+            # Record doctor action
+            self.game_record.record_night_action(
+                player_name=doctor.name,
+                role=doctor.role,
+                action_type="doctor_save",
+                target_name=doctor_save
+            )
 
         # Detective investigates a player
         detective = next((p for p in alive_players if p.role == "Detective"), None)
         detective_investigation = None
         investigation_result = None
+        investigation_results = {}
         if detective:
             detective_choices = [n for n in alive_names if n != detective.name]
             if detective_choices:
                 detective_investigation = detective.choose_detective_investigation(detective_choices)
                 investigated_player = next(p for p in alive_players if p.name == detective_investigation)
                 investigation_result = (investigated_player.role == "Mafia")
+                investigation_results[detective_investigation] = investigation_result
                 print(f"Detective has investigated a player.")
+                # Record detective action
+                self.game_record.record_night_action(
+                    player_name=detective.name,
+                    role=detective.role,
+                    action_type="detective_investigate",
+                    target_name=detective_investigation,
+                    action_result=investigation_result
+                )
 
         # Resolve night actions
         killed_player = None
@@ -96,6 +126,12 @@ class MafiaGame:
         if detective and detective_investigation:
             print(f"Detective investigated {detective_investigation}. Mafia? {investigation_result}")
 
+        # Record night results
+        self.game_record.record_night_result(
+            killed_player=killed_player.name if killed_player else None,
+            investigation_results=investigation_results
+        )
+
         self.alive_players = [p for p in self.players if p.alive]
 
     def discussion_phase(self):
@@ -107,6 +143,8 @@ class MafiaGame:
         for player in alive_players:
             statement = player.discuss(alive_names, player_histories)
             print(statement)
+            # Record discussion statement
+            self.game_record.record_discussion(player.name, statement)
         print("-" * 50)
 
     def day_phase(self):
@@ -114,6 +152,9 @@ class MafiaGame:
         self.day_count += 1
         alive_players = [p for p in self.players if p.alive]
         alive_names = [p.name for p in alive_players]
+        
+        # Start recording day phase
+        self.game_record.start_day_phase(self.day_count, alive_names)
 
         # Discussion phase before voting
         self.discussion_phase()
@@ -127,17 +168,30 @@ class MafiaGame:
                 votes.setdefault(voted, 0)
                 votes[voted] += 1
                 print(f"{voter.name} votes to eliminate {voted}.")
+                # Record vote
+                self.game_record.record_vote(voter.name, voted)
 
         # Find the player(s) with the most votes
+        eliminated_player = None
         if votes:
             max_votes = max(votes.values())
             candidates = [name for name, count in votes.items() if count == max_votes]
-            eliminated_name = random.choice(candidates) if len(candidates) > 1 else candidates[0]
-            eliminated_player = next(p for p in alive_players if p.name == eliminated_name)
-            eliminated_player.alive = False
-            print(f"Day Result: {eliminated_name} was eliminated! Their role was: {eliminated_player.role}")
+            
+            # If there's a tie (multiple players with the same max votes), no one is eliminated
+            if len(candidates) > 1:
+                print(f"Day Result: Tie vote! {', '.join(candidates)} all received {max_votes} votes. No one is eliminated.")
+            else:
+                eliminated_name = candidates[0]
+                eliminated_player = next(p for p in alive_players if p.name == eliminated_name)
+                eliminated_player.alive = False
+                print(f"Day Result: {eliminated_name} was eliminated! Their role was: {eliminated_player.role}")
         else:
             print("Day Result: No one was eliminated!")
+
+        # Record day results
+        self.game_record.record_day_result(
+            eliminated_player=eliminated_player.name if eliminated_player else None
+        )
 
         self.alive_players = [p for p in self.players if p.alive]
 
@@ -161,6 +215,9 @@ class MafiaGame:
             print("Townspeople win! All Mafia have been eliminated.")
         else:
             print("Game ended with no winner (unexpected).")
+        
+        # Record final game result
+        self.game_record.finish_game(self.winner)
 
 if __name__ == '__main__':
     # Configure player information, where model is the name of the model you call through API
