@@ -327,7 +327,7 @@ class Player:
             return chosen
         return random.choice(choices)
 
-    def discuss(self, alive_players: list, player_histories: dict) -> str:
+    def impression(self, alive_players: list, player_histories: dict) -> str:
         """
         Player discusses who they suspect and why, using the impression prompt and their own logic.
         Returns a string simulating their discussion statement, including who they are most likely to vote for and why.
@@ -355,3 +355,20 @@ class Player:
         messages = [{"role": "user", "content": vote_prompt}]
         vote_content, _ = self.llm_client.chat(messages, model=self.model_name)
         return f"{self.name} says: {' '.join(statements)} Likely to vote: {vote_content.strip()}"
+    
+    def discuss(self, alive_players: list, player_histories: dict, conversation_history: List[str]) -> str:
+        targets = [name for name in alive_players if name != self.name]
+        if not targets:
+            return f"{self.name}: I have no one to discuss."
+
+        history_text = "\n".join(conversation_history[-5:])  # Limit to last 5 for context
+        discussion_prompt = (
+            f"You are {self.name} playing a game of Mafia. Your role is {self.role} (keep it secret). "
+            f"Other alive players: {', '.join(targets)}.\n"
+            f"Recent discussion:\n{history_text}\n\n"
+            f"Based on this, respond with your thoughts, suspicions, or questions for others."
+        )
+
+        messages = [{"role": "user", "content": discussion_prompt}]
+        response, _ = self.llm_client.chat(messages, model=self.model_name)
+        return f"{self.name} says: {response.strip()}"
