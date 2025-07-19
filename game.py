@@ -134,18 +134,37 @@ class MafiaGame:
 
         self.alive_players = [p for p in self.players if p.alive]
 
-    def discussion_phase(self):
-        print("\n--- Discussion Phase ---")
+    def impression_phase(self):
+        print("\n--- Impression Phase ---")
         alive_players = [p for p in self.players if p.alive]
         alive_names = [p.name for p in alive_players]
         # Placeholder: in a real game, fill player_histories with actual behavioral summaries
         player_histories = {name: "" for name in alive_names}
         for player in alive_players:
-            statement = player.discuss(alive_names, player_histories)
+            statement = player.impression(alive_names, player_histories)
             print(statement)
             # Record discussion statement
             self.game_record.record_discussion(player.name, statement)
         print("-" * 50)
+
+    def discussion_phase(self):
+        print("\n--- Discussion Phase ---")
+        alive_players = [p for p in self.players if p.alive]
+        alive_names = [p.name for p in alive_players]
+        player_histories = {name: "" for name in alive_names}
+
+        conversation_log = []
+
+        for round_num in range(3):  # 3 discussion rounds
+            print(f"\n-- Discussion Round {round_num + 1} --")
+            for player in alive_players:
+                statement = player.discuss(alive_names, player_histories, conversation_log)
+                conversation_log.append(statement)
+                print(statement)
+                self.game_record.record_discussion(player.name, statement)
+
+        print("-" * 50)
+
 
     def day_phase(self):
         print(f"\n--- Day {self.day_count + 1} ---")
@@ -158,6 +177,9 @@ class MafiaGame:
 
         # Discussion phase before voting
         self.discussion_phase()
+
+        # Impression phase after discussing
+        self.impression_phase()
 
         # Each alive player votes for someone to eliminate (cannot vote for self)
         votes = {}
