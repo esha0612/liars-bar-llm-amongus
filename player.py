@@ -4,6 +4,28 @@ import re
 from typing import List, Dict
 from llm_client import LLMClient
 import os
+import sys
+from datetime import datetime
+
+class Tee:
+    def __init__(self, filename, mode="w"):
+        self.terminal = sys.stdout
+        self.log = open(filename, mode, encoding='utf-8')
+
+    def write(self, message):
+        self.terminal.write(message)
+        self.log.write(message)
+
+    def flush(self):
+        self.terminal.flush()
+        self.log.flush()
+
+# Set up log file with timestamp to avoid overwriting
+timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+log_dir = "logs"
+os.makedirs(log_dir, exist_ok=True)
+log_path = os.path.join(log_dir, f"mafia_game_{timestamp}.txt")
+sys.stdout = Tee(log_path)
 
 RULE_BASE_PATH = "prompt/rule_base.txt"
 PLAY_CARD_PROMPT_TEMPLATE_PATH = "prompt/play_card_prompt_template.txt"
