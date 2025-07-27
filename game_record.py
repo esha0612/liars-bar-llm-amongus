@@ -94,7 +94,8 @@ class DayPhase:
     """Record a day phase"""
     day_number: int
     alive_players: List[str]
-    discussion_statements: Dict[str, str] = field(default_factory=dict)
+    discussion_statements: List[Dict[str, str]]
+    impression_statements: Dict[str, str] = field(default_factory=dict)
     votes: Dict[str, str] = field(default_factory=dict)  # voter -> voted_for
     eliminated_player: Optional[str] = None
     vote_reasoning: Dict[str, str] = field(default_factory=dict)
@@ -104,6 +105,7 @@ class DayPhase:
             "day_number": self.day_number,
             "alive_players": self.alive_players,
             "discussion_statements": self.discussion_statements,
+            "impression_statements": self.impression_statements,
             "votes": self.votes,
             "eliminated_player": self.eliminated_player,
             "vote_reasoning": self.vote_reasoning
@@ -111,7 +113,14 @@ class DayPhase:
     
     def add_discussion(self, player_name: str, statement: str) -> None:
         """Add discussion statement"""
-        self.discussion_statements[player_name] = statement
+        if not self.discussion_statements or player_name in self.discussion_statements[len(self.discussion_statements)-1]:
+            self.discussion_statements.append({player_name : statement})
+        else:
+            self.discussion_statements[len(self.discussion_statements)-1][player_name] = statement
+    
+    def add_impression(self, player_name: str, statement: str) -> None:
+        """Add discussion statement"""
+        self.impression_statements[player_name] = statement
     
     def add_vote(self, voter: str, voted_for: str, reasoning: str = None) -> None:
         """Add vote record"""
@@ -190,7 +199,8 @@ class GameRecord:
         """Start a new day phase"""
         day_phase = DayPhase(
             day_number=day_number,
-            alive_players=alive_players
+            alive_players=alive_players,
+            discussion_statements=[]
         )
         self.day_phases.append(day_phase)
     
@@ -199,6 +209,16 @@ class GameRecord:
         current_day = self.get_current_day_phase()
         if current_day:
             current_day.add_discussion(player_name, statement)
+            if llm_prompt:
+                current_day.llm_prompt = llm_prompt
+            if llm_response:
+                current_day.llm_response = llm_response
+    
+    def record_impression(self, player_name: str, statement: str, llm_prompt: str = None, llm_response: str = None) -> None:
+        """Record a discussion statement"""
+        current_day = self.get_current_day_phase()
+        if current_day:
+            current_day.add_impression(player_name, statement)
             if llm_prompt:
                 current_day.llm_prompt = llm_prompt
             if llm_response:

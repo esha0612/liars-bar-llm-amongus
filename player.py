@@ -376,7 +376,7 @@ class Player:
         )
         messages = [{"role": "user", "content": vote_prompt}]
         vote_content, _ = self.llm_client.chat(messages, model=self.model_name)
-        return f"{self.name} says: {' '.join(statements)} Likely to vote: {vote_content.strip()}"
+        return f"{' '.join(statements)} Likely to vote: {vote_content.strip()}"
     
     def discuss(self, alive_players: list, player_histories: dict, conversation_history: List[str]) -> str:
         targets = [name for name in alive_players if name != self.name]
