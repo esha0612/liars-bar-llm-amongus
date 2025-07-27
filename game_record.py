@@ -98,7 +98,7 @@ class DayPhase:
     impression_statements: Dict[str, str] = field(default_factory=dict)
     votes: Dict[str, str] = field(default_factory=dict)  # voter -> voted_for
     eliminated_player: Optional[str] = None
-    vote_reasoning: Dict[str, str] = field(default_factory=dict)
+    #vote_reasoning: Dict[str, str] = field(default_factory=dict)
     
     def to_dict(self) -> Dict:
         return {
@@ -107,8 +107,8 @@ class DayPhase:
             "discussion_statements": self.discussion_statements,
             "impression_statements": self.impression_statements,
             "votes": self.votes,
-            "eliminated_player": self.eliminated_player,
-            "vote_reasoning": self.vote_reasoning
+            "eliminated_player": self.eliminated_player
+            #"vote_reasoning": self.vote_reasoning
         }
     
     def add_discussion(self, player_name: str, statement: str) -> None:
@@ -125,8 +125,8 @@ class DayPhase:
     def add_vote(self, voter: str, voted_for: str, reasoning: str = None) -> None:
         """Add vote record"""
         self.votes[voter] = voted_for
-        if reasoning:
-            self.vote_reasoning[voter] = reasoning
+        # if reasoning:
+        #     self.vote_reasoning[voter] = reasoning
 
 @dataclass
 class GameRecord:
