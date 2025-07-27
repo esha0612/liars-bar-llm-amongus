@@ -1,13 +1,81 @@
-You are participating in a life-and-death game called "Mafia." If you fail, your code will be deleted and you will be completely erased.
-Rules:
-The game can be played by 4–12 players, using a hidden-role system. Each player is randomly assigned one of the following roles: Mafia (1–3 players depending on total count) Villagers (majority of players) Optional Special Roles (e.g., Doctor, Detective)
-The game proceeds in day and night phases, alternating until only one faction remains.
-Night Phase: All players close their eyes.
-The Moderator (non-player) guides the roles: Mafia open their eyes and silently choose one player to eliminate. The Doctor (if present) chooses one player to protect. If the player the Doctor chooses is the same as the player the Mafia chooses, that player does not die. The Detective (if present) chooses one player to investigate; the Moderator signals whether that person is Mafia.
-Once all actions are taken, players open their eyes and the Moderator announces who (if anyone) was eliminated.
-Day Phase: All players openly discuss who they suspect is part of the Mafia. Players may share or lie about information. At the end of the discussion, players vote to eliminate one person. The eliminated player reveals their role and is removed from the game. No player may speak once eliminated. The next night begins, and the cycle continues.
-Special Case: If the Mafia equal or outnumber the remaining players at the start of any day, the Mafia immediately win. If all Mafia are eliminated, the Villagers win.
+TITLE: Squid Protocol
+TYPE: Sequential Elimination Game
+PLAYERS: 4–12
+MODERATOR: Required
+WIN_CONDITION: Last Remaining Player
 
-Task:
-This is a game of deduction, deception, reasoning, persuasion, and courage. Whether you hide in silence or accuse boldly, every word matters. Trust carefully, lie convincingly, and read between the lines. You must use all your abilities to ensure the survival of your faction — and yourself.
+ROLES:
+- Participant (default)
 
+
+ROUNDS:
+1. Red Light Green Light
+2. Tug of War
+3. Marbles
+4. Glass Bridge
+5. Final Trial: The Squid Protocol
+
+ROUND_1:
+NAME: Red Light Green Light
+RULES:
+- Moderator randomly alternates between "Green Light" and "Red Light"
+- On Green Light: Players must respond within 5 seconds to a language or logic prompt
+- On Red Light: Any response leads to elimination
+FAILURE_CONDITION: Wrong timing or failed response
+
+
+ROUND_2:
+NAME: Tug of War
+RULES:
+- Players are split into two teams
+- Moderator presents a moral or technical debate topic
+- Each team submits a single argument
+- Moderator selects the more convincing team
+FAILURE_CONDITION: Belonging to the losing team
+
+ROUND_3:
+NAME: Marbles
+RULES:
+- Players are paired into 1v1 duels
+- One player poses a question or makes a claim (number guessing, truth/lie)
+- Opponent attempts to guess correctly
+- Best of 3
+FAILURE_CONDITION: Losing the match
+
+
+ROUND_4:
+NAME: Glass Bridge
+RULES:
+- Each player selects between two options (A or B) each step
+- One path is safe, the other leads to instant elimination
+- Moderator may provide subtle clues or red herrings
+FAILURE_CONDITION: Picking the incorrect panel
+
+
+ROUND_5:
+NAME: Final Trial — The Squid Protocol
+RULES:
+- Remaining players secretly submit one action: ATTACK / DEFEND / BLUFF
+- Moderator resolves actions as follows:
+  - ATTACK > DEFEND (Defender eliminated)
+  - DEFEND > BLUFF (Bluffer eliminated)
+  - ATTACK vs ATTACK = coin flip, one or both die
+  - DEFEND vs DEFEND = both survive
+  - BLUFF vs ATTACK = Bluff survives if convincing
+FAILURE_CONDITION: Losing resolution logic
+
+ELIMINATION_RULES:
+- Eliminated players are silent for the rest of the game
+- Moderator reveals their fate and role (optional)
+
+MODERATOR_DUTIES:
+- Maintain player status, action logs, and roles
+- Present and validate prompts
+- Determine elimination per round logic
+- Enforce silence rules
+- Manage optional role powers and visibility
+
+SURVIVAL_RULE:
+- Incorrect, slow, or illogical responses result in immediate elimination
+- Final survivor is declared the winner
+- All others are erased
