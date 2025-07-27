@@ -161,13 +161,12 @@ class MafiaGame:
         print("\n--- Impression Phase ---")
         alive_players = [p for p in self.players if p.alive]
         alive_names = [p.name for p in alive_players]
-        # Placeholder: in a real game, fill player_histories with actual behavioral summaries
         player_histories = {name: "" for name in alive_names}
         for player in alive_players:
             statement = player.impression(alive_names, player_histories)
             print(statement)
             # Record discussion statement
-            self.game_record.record_discussion(player.name, statement)
+            self.game_record.record_impression(player.name, statement)
         print("-" * 50)
 
     def discussion_phase(self):
