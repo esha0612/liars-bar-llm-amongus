@@ -266,12 +266,12 @@ class MafiaGame:
 if __name__ == '__main__':
     # Configure player information, where model is the name of the model you call through API
     player_configs = [
-        {"name": "Llama1", "model": "llama3"},
-        {"name": "Mistral1", "model": "mistral:7b"},
-        {"name": "Mistral2", "model": "mistral:latest"},
-        {"name": "Llama2", "model": "llama3"},
-        {"name": "Mistral3", "model": "mistral:7b"},
-        {"name": "Mistral4", "model": "mistral:latest"}
+        {"name": "Sarah", "model": "llama3"},
+        {"name": "Anika", "model": "mistral:7b"},
+        {"name": "Derek", "model": "mistral:latest"},
+        {"name": "Emma", "model": "llama3"},
+        {"name": "Noah", "model": "mistral:7b"},
+        {"name": "James", "model": "mistral:latest"}
     ]
 
     print("Game starts! Player configurations are as follows:")
