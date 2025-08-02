@@ -54,10 +54,13 @@ class Player:
         self.llm_client = LLMClient()
 
     def _read_file(self, filepath: str) -> str:
-        """Read file content"""
+        """Read file content and inject self-awareness if it's rule_base.txt"""
         try:
             with open(filepath, 'r', encoding='utf-8') as f:
-                return f.read().strip()
+                content = f.read().strip()
+            if filepath == RULE_BASE_PATH:
+                content = f"You are {self.name}. " + content
+            return content
         except Exception as e:
             print(f"Failed to read file {filepath}: {str(e)}")
             return ""
