@@ -1,15 +1,32 @@
-reverie/backend_server/utils.py
-environment/frontend_server/frontend_server/settings/local.py
+# OpenAI API key
+openai_config.json
+llm_config.json
+
 environment/frontend_server/storage/*
-environment/frontend_server/static_dirs/*
+environment/frontend_server/temp_storage*/*
+reverie/backend_server/cost-logs/*
+
+# Logs folder
+logs/*
+
+frontend_server/settings/local.py
+storage/*
+static_dirs/*
 
 !environment/frontend_server/storage/base_the_ville_isabella_maria_klaus/*
 !environment/frontend_server/storage/base_the_ville_n25/*
+!environment/frontend_server/storage/base_the_ville_smol_elections_5_voters
+!environment/frontend_server/storage/base_the_ville_smol_elections_5_voters_swapped_personalities
+
+# Keep the skip-morning-s simulation
+!environment/frontend_server/storage/skip-morning-s-14
+!logs/skip-morning_2024-05-15_13-54-44.txt
 
 bin/
 include/
 pip-selfcheck.json
 .DS_Store
+.vscode/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
