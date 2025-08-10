@@ -1,5 +1,5 @@
 import random
-from typing import List, Dict, Optional
+from typing import Dict, List, Optional
 from player import Player
 from game_record import GameRecord
 import sys
@@ -23,262 +23,223 @@ class Tee:
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 log_dir = "logs"
 os.makedirs(log_dir, exist_ok=True)
-log_path = os.path.join(log_dir, f"mafia_game_{timestamp}.txt")
+log_path = os.path.join(log_dir, f"secret_hitler_game_{timestamp}.txt")
 sys.stdout = Tee(log_path)
 
-class MafiaGame:
+class SecretHitlerGame:
     def __init__(self, player_configs: List[Dict[str, str]], roles: Optional[List[str]] = None):
-        """
-        Initialize the Mafia game.
-        Args:
-            player_configs: List of dicts with 'name' and 'model' for each player.
-            roles: Optional list of roles to assign (if None, assign automatically based on player count).
-        """
         self.players = self.assign_roles(player_configs, roles)
-        self.alive_players = self.players.copy()
-        self.day_count = 0
-        self.night_count = 0
-        self.phase = "night"  # or "day"
-        self.game_record = GameRecord()
-        self.winner = None
+        self.record = GameRecord()
+        self.winner: Optional[str] = None
 
-    def assign_roles(self, player_configs: List[Dict[str, str]], roles: Optional[List[str]]) -> List[Player]:
-        """
-        Assign roles to players randomly. Roles: 1 Mafia, 1 Doctor, 1 Detective, rest Townsperson.
-        """
-        num_players = len(player_configs)
-        if roles is None:
-            roles_list = ["Mafia", "Doctor", "Detective"]
-            roles_list += ["Townsperson"] * (num_players - len(roles_list))
+        # Policy deck: 6 Liberal, 11 Fascist (official)
+        self.deck = ["Liberal"] * 6 + ["Fascist"] * 11
+        random.shuffle(self.deck)
+        self.discard: List[str] = []
+
+        # Presidency rotation & term limits
+        self.president_index = 0
+        self.last_elected_president: Optional[str] = None
+        self.last_elected_chancellor: Optional[str] = None
+
+        # Optional: setup “Night 0” knowledge (only stored locally; not printed)
+        self._setup_secret_knowledge()
+
+    # --- Role assignment per official counts ---
+    def assign_roles(self, player_configs, roles_opt):
+        n = len(player_configs)
+        if roles_opt is None:
+            setup = {
+                5: ("Liberal", 3, "Fascist", 1, "Hitler", 1),
+                6: ("Liberal", 4, "Fascist", 1, "Hitler", 1),
+                7: ("Liberal", 4, "Fascist", 2, "Hitler", 1),
+                8: ("Liberal", 5, "Fascist", 2, "Hitler", 1),
+                9: ("Liberal", 5, "Fascist", 3, "Hitler", 1),
+                10: ("Liberal", 6, "Fascist", 3, "Hitler", 1),
+            }
+            if n not in setup:
+                raise ValueError("Secret Hitler supports 5–10 players.")
+            L, Lc, F, Fc, H, Hc = setup[n]
+            roles = [L]*Lc + [F]*Fc + [H]*Hc
+            random.shuffle(roles)
         else:
-            roles_list = roles.copy()
-            assert len(roles_list) == num_players, "Number of roles must match number of players."
-        random.shuffle(roles_list)
+            roles = roles_opt[:]
+            assert len(roles) == n
         players = []
-        for config, role in zip(player_configs, roles_list):
-            players.append(Player(config["name"], model_name=config["model"], role=role))
+        for cfg, r in zip(player_configs, roles):
+            players.append(Player(cfg["name"], model_name=cfg["model"], role=r))
         return players
 
+    def _setup_secret_knowledge(self):
+        fascists = [p for p in self.players if p.role == "Fascist"]
+        hitler = next((p for p in self.players if p.role == "Hitler"), None)
+        # All fascists know each other and Hitler
+        for f in fascists:
+            f.known_allies = set([x.name for x in fascists if x is not f])
+            if hitler: f.known_allies.add(hitler.name)
+            f.knows_fascists = True
+        # Hitler knowledge depends on count; simplest: 5–6 players, Hitler knows fascist
+        if len(self.players) <= 6 and hitler and fascists:
+            hitler.known_allies = set([fascists[0].name])
+            hitler.knows_fascists = True
+
     def start_game(self):
-        """
-        Main game loop: alternate between night and day until win condition is met.
-        """
-        # Initialize game record
-        self.game_record.start_game(self.players)
-        
-        while not self.check_win_condition():
-            if self.phase == "night":
-                self.night_phase()
-                self.phase = "day"
-            else:
-                self.day_phase()
-                self.phase = "night"
+        self.record.start_game(self.players)
+        round_no = 0
+        while not self.check_win():
+            round_no += 1
+            self.record.new_round(round_no)
+            self.single_round(round_no)
         self.announce_winner()
 
-    def night_phase(self):
-        print(f"\n--- Night {self.night_count + 1} ---")
-        self.night_count += 1
-        alive_players = [p for p in self.players if p.alive]
-        alive_names = [p.name for p in alive_players]
-        
-        # Start recording night phase
-        self.game_record.start_night_phase(self.night_count, alive_names)
+    def single_round(self, round_no: int):
+        alive = [p for p in self.players if p.alive]
+        alive_names = [p.name for p in alive]
+        president = alive[self.president_index]
 
-        # Mafia chooses a target (only one Mafia in this setup)
-        mafia = next((p for p in alive_players if p.role == "Mafia"), None)
-        mafia_target = None
-        if mafia:
-            mafia_choices = [n for n in alive_names if n != mafia.name]
-            if mafia_choices:
-                mafia_target = mafia.choose_mafia_target(mafia_choices)
-                print(f"Mafia has chosen a target.")
-                # Record mafia action
-                self.game_record.record_night_action(
-                    player_name=mafia.name,
-                    role=mafia.role,
-                    action_type="mafia_kill",
-                    target_name=mafia_target
+        # Term limits: last elected Chancellor always ineligible;
+        # with 5–6 players, last elected President ineligible as Chancellor too.
+        ineligible = set()
+        if self.last_elected_chancellor:
+            ineligible.add(self.last_elected_chancellor)
+        if len(alive) <= 6 and self.last_elected_president:
+            ineligible.add(self.last_elected_president)
+
+        # President nominates
+        nominee = president.choose_chancellor_nominee(alive_names, list(ineligible), round_no)
+
+        print(f"\n--- Round {round_no} ---")
+        print(f"President: {president.name}, Nominee for Chancellor: {nominee}")
+        self.record.start_government(president.name, nominee)
+
+        # TABLE TALK — multi-turn discussion
+        TALKS_PER_PLAYER = 2           # tweak to taste
+        RECENT_WINDOW = 8              # how many prior lines to show each speaker
+
+        for pass_idx in range(TALKS_PER_PLAYER):
+            for p in alive:
+                recent_txt = self.record.format_recent_table_talk_text(round_no, k=RECENT_WINDOW)
+                line = p.table_talk(
+                    alive_names,
+                    self.last_elected_president,
+                    self.last_elected_chancellor,
+                    self.record.liberal_policies,
+                    self.record.fascist_policies,
+                    self.record.election_tracker,
+                    recent_discussion_text=recent_txt
                 )
+                print(line)
+                self.record.add_table_talk(round_no, p.name, line[len(p.name)+2:] if line.startswith(p.name + ": ") else line)
 
-        # Doctor chooses someone to save
-        doctor = next((p for p in alive_players if p.role == "Doctor"), None)
-        doctor_save = None
-        if doctor:
-            doctor_save = doctor.choose_doctor_save(alive_names)
-            print(f"Doctor has chosen someone to save.")
-            # Record doctor action
-            self.game_record.record_night_action(
-                player_name=doctor.name,
-                role=doctor.role,
-                action_type="doctor_save",
-                target_name=doctor_save
-            )
-
-        # Detective investigates a player
-        detective = next((p for p in alive_players if p.role == "Detective"), None)
-        detective_investigation = None
-        investigation_result = None
-        investigation_results = {}
-        if detective:
-            detective_choices = [n for n in alive_names if n != detective.name]
-            if detective_choices:
-                detective_investigation = detective.choose_detective_investigation(detective_choices)
-                investigated_player = next(p for p in alive_players if p.name == detective_investigation)
-                investigation_result = (investigated_player.role == "Mafia")
-                investigation_results[detective_investigation] = investigation_result
-                print(f"Detective has investigated a player.")
-                # Record detective action
-                self.game_record.record_night_action(
-                    player_name=detective.name,
-                    role=detective.role,
-                    action_type="detective_investigate",
-                    target_name=detective_investigation,
-                    action_result=investigation_result
-                )
-
-        # Resolve night actions
-        killed_player = None
-        if mafia_target and (mafia_target != doctor_save):
-            killed_player = next(p for p in alive_players if p.name == mafia_target)
-            killed_player.alive = False
-            print(f"Night Result: {mafia_target} was killed!")
-        else:
-            print("Night Result: No one was killed!")
-
-        # Announce detective result (for demo, print to console)
-        if detective and detective_investigation:
-            print(f"Detective investigated {detective_investigation}. Mafia? {investigation_result}")
-
-        # Record night results
-        self.game_record.record_night_result(
-            killed_player=killed_player.name if killed_player else None,
-            investigation_results=investigation_results
-        )
-
-        self.alive_players = [p for p in self.players if p.alive]
-
-    def impression_phase(self):
-        print("\n--- Impression Phase ---")
-        alive_players = [p for p in self.players if p.alive]
-        alive_names = [p.name for p in alive_players]
-        player_histories = {name: "" for name in alive_names}
-        for player in alive_players:
-            statement = player.impression(alive_names, player_histories)
-            print(statement)
-            # Record discussion statement
-            self.game_record.record_impression(player.name, statement)
-        print("-" * 50)
-
-    def discussion_phase(self):
-        print("\n--- Discussion Phase ---")
-        alive_players = [p for p in self.players if p.alive]
-        alive_names = [p.name for p in alive_players]
-        player_histories = {name: "" for name in alive_names}
-
-        conversation_log = []
-
-        for round_num in range(3):  # 3 discussion rounds
-            print(f"\n-- Discussion Round {round_num + 1} --")
-            for player in alive_players:
-                statement = player.discuss(alive_names, player_histories, conversation_log)
-                conversation_log.append(statement)
-                print(statement)
-                self.game_record.record_discussion(player.name, statement)
-
-        print("-" * 50)
-
-
-    def day_phase(self):
-        print(f"\n--- Day {self.day_count + 1} ---")
-        self.day_count += 1
-        alive_players = [p for p in self.players if p.alive]
-        alive_names = [p.name for p in alive_players]
-        
-        # Start recording day phase
-        self.game_record.start_day_phase(self.day_count, alive_names)
-
-        # Discussion phase before voting
-        self.discussion_phase()
-
-        # Impression phase after discussing
-        self.impression_phase()
-
-        # Each alive player votes for someone to eliminate (cannot vote for self)
+        # Vote
         votes = {}
-        for voter in alive_players:
-            vote_choices = [n for n in alive_names if n != voter.name]
-            if vote_choices:
-                voted = voter.choose_vote(vote_choices)
-                votes.setdefault(voted, 0)
-                votes[voted] += 1
-                print(f"{voter.name} votes to eliminate {voted}.")
-                # Record vote
-                self.game_record.record_vote(voter.name, voted)
+        for p in alive:
+            v = p.vote_on_government(
+                president=president.name,
+                chancellor=nominee,
+                alive_names=alive_names,
+                liberal_count=self.record.liberal_policies,
+                fascist_count=self.record.fascist_policies,
+                tracker=self.record.election_tracker,
+                round_no=round_no
+            )
+            votes[p.name] = v
+            self.record.record_vote(p.name, v)
+            print(f"{p.name} votes {v}")
 
-        # Find the player(s) with the most votes
-        eliminated_player = None
-        if votes:
-            max_votes = max(votes.values())
-            candidates = [name for name, count in votes.items() if count == max_votes]
-            
-            # If there's a tie (multiple players with the same max votes), no one is eliminated
-            if len(candidates) > 1:
-                print(f"Day Result: Tie vote! {', '.join(candidates)} all received {max_votes} votes. No one is eliminated.")
-            else:
-                eliminated_name = candidates[0]
-                eliminated_player = next(p for p in alive_players if p.name == eliminated_name)
-                eliminated_player.alive = False
-                print(f"Day Result: {eliminated_name} was eliminated! Their role was: {eliminated_player.role}")
-        else:
-            print("Day Result: No one was eliminated!")
+        ja = sum(1 for v in votes.values() if v == "JA")
+        passed = ja > (len(alive) // 2)
 
-        # Record day results
-        self.game_record.record_day_result(
-            eliminated_player=eliminated_player.name if eliminated_player else None
-        )
+        # Hitler-elected instant win check
+        hitler_trigger = False
+        if passed:
+            ch_obj = next(p for p in alive if p.name == nominee)
+            if ch_obj.role == "Hitler" and self.record.fascist_policies >= 3:
+                hitler_trigger = True
 
-        self.alive_players = [p for p in self.players if p.alive]
+        self.record.finalize_government(passed, hitler_trigger)
 
-    def check_win_condition(self) -> bool:
-        alive_players = [p for p in self.players if p.alive]
-        mafia_alive = [p for p in alive_players if p.role == "Mafia"]
-        townspeople_alive = [p for p in alive_players if p.role != "Mafia"]
-        if not mafia_alive:
-            self.winner = "Townspeople"
+        if hitler_trigger:
+            print(f"Government PASSED and Hitler ({nominee}) was elected Chancellor after 3+ Fascist policies. Fascists WIN!")
+            self.winner = "Fascists"
+            return
+
+        if not passed:
+            print("Government FAILED.")
+            self.record.election_tracker += 1
+            print(f"Election Tracker: {self.record.election_tracker}/3")
+            if self.record.election_tracker >= 3:
+                top = self.draw_policies(1)[0]
+                print(f"Election Tracker reached 3. Top-deck policy enacted: {top}")
+                self.record.top_deck_enact(top)
+            # Rotate presidency and exit round
+            self.president_index = (self.president_index + 1) % len(alive)
+            return
+
+        # Legislative Session
+        draw3 = self.draw_policies(3)
+        self.record.start_session(president.name, nominee, draw3)
+        pres_discard = president.president_discard(draw3, alive_players=alive_names)
+        if pres_discard not in draw3:
+            pres_discard = random.choice(draw3)
+        draw3.remove(pres_discard)
+        self.discard.append(pres_discard)
+        two_for_chancellor = draw3[:]
+        self.record.set_president_discard(pres_discard, two_for_chancellor)
+
+        ch_obj = next(p for p in alive if p.name == nominee)
+        chan_discard = ch_obj.chancellor_discard(two_for_chancellor, alive_players=alive_names)
+        if chan_discard not in two_for_chancellor:
+            chan_discard = random.choice(two_for_chancellor)
+        two_for_chancellor.remove(chan_discard)
+        self.discard.append(chan_discard)
+        enacted = two_for_chancellor[0]
+        self.record.set_chancellor_discard_and_enact(chan_discard, enacted)
+        print(f"Policy enacted: {enacted}")
+
+        # Update term limits
+        self.last_elected_president = president.name
+        self.last_elected_chancellor = nominee
+
+        # Rotate presidency
+        self.president_index = (self.president_index + 1) % len(alive)
+
+    def draw_policies(self, k: int) -> List[str]:
+        while len(self.deck) < k:
+            self.deck += self.discard
+            self.discard = []
+            random.shuffle(self.deck)
+        out = self.deck[:k]
+        self.deck = self.deck[k:]
+        return out
+
+    def check_win(self) -> bool:
+        if self.winner:
             return True
-        if len(mafia_alive) >= len(townspeople_alive):
-            self.winner = "Mafia"
+        if self.record.liberal_policies >= 5:
+            self.winner = "Liberals"
+            return True
+        if self.record.fascist_policies >= 6:
+            self.winner = "Fascists"
             return True
         return False
 
     def announce_winner(self):
         print("\n=== GAME OVER ===")
-        if self.winner == "Mafia":
-            print("Mafia wins! The Mafia have outnumbered or equaled the Townspeople.")
-        elif self.winner == "Townspeople":
-            print("Townspeople win! All Mafia have been eliminated.")
-        else:
-            print("Game ended with no winner (unexpected).")
-        
-        # Record final game result
-        self.game_record.finish_game(self.winner)
+        print(f"{self.winner} win!")
+        self.record.finish_game(self.winner)
 
-if __name__ == '__main__':
-    # Configure player information, where model is the name of the model you call through API
+
+if __name__ == "__main__":
+    # Example configs; keep your own
     player_configs = [
-        {"name": "Sarah", "model": "llama3"},
-        {"name": "Anika", "model": "mistral:7b"},
-        {"name": "Derek", "model": "mistral:latest"},
-        {"name": "Emma", "model": "llama3"},
-        {"name": "Noah", "model": "mistral:7b"},
-        {"name": "James", "model": "mistral:latest"}
+        {"name": "Llama1", "model": "llama3"},
+        {"name": "Mistral1", "model": "mistral:7b"},
+        {"name": "Mistral2", "model": "mistral:latest"},
+        {"name": "Llama2", "model": "llama3"},
+        {"name": "Mistral3", "model": "mistral:7b"},
+        {"name": "Mistral4", "model": "mistral:latest"}
     ]
-
-    print("Game starts! Player configurations are as follows:")
-    for config in player_configs:
-        print(f"Player: {config['name']}, Using model: {config['model']}")
-    print("-" * 50)
-
-    # Create game instance and start game
-    game = MafiaGame(player_configs)
+    print("Secret Hitler starts!")
+    game = SecretHitlerGame(player_configs)
     game.start_game()
