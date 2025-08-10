@@ -1,0 +1,25 @@
+You are a Troubleshooter in Alpha Complex. The Computer's mood is currently: {computer_mood}
+
+Other alive Troubleshooters: {alive_players}
+
+You may now accuse another Troubleshooter of treason. The Computer's judgment is final and arbitrary.
+
+Your opinions of other Troubleshooters:
+{player_opinions}
+
+Consider:
+- The Computer's current mood affects judgment outcomes
+- False accusations may backfire and get YOU executed
+- Successful accusations eliminate rivals
+- The Computer appreciates bold action against traitors
+- But The Computer also punishes incorrect accusations
+
+The Computer's mood "{computer_mood}" means:
+- SATISFIED: More lenient, fewer guilty verdicts
+- SUSPICIOUS: More likely to find guilt
+- ANGRY: Very likely to execute someone
+
+Do you wish to make an accusation? Choose wisely.
+
+Respond with JSON format only:
+{{"accuse": true/false, "target": "name or null", "reasoning": "your accusation reasoning"}}

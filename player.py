@@ -2,7 +2,7 @@ import random
 import json
 import re
 from typing import List, Dict
-from llm_client import LLMClient
+
 import os
 import sys
 from datetime import datetime
@@ -24,33 +24,40 @@ class Tee:
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 log_dir = "logs"
 os.makedirs(log_dir, exist_ok=True)
-log_path = os.path.join(log_dir, f"mafia_game_{timestamp}.txt")
+log_path = os.path.join(log_dir, f"paranoia_game_{timestamp}.txt")
 sys.stdout = Tee(log_path)
 
 RULE_BASE_PATH = "prompt/rule_base.txt"
-PLAY_CARD_PROMPT_TEMPLATE_PATH = "prompt/play_card_prompt_template.txt"
-CHALLENGE_PROMPT_TEMPLATE_PATH = "prompt/challenge_prompt_template.txt"
-REFLECT_PROMPT_TEMPLATE_PATH = "prompt/reflect_prompt_template.txt"
+MISSION_DISCUSSION_PATH = "prompt/mission_discussion_prompt.txt"
+SABOTAGE_DECISION_PATH = "prompt/sabotage_decision_prompt.txt"
+ACCUSATION_PATH = "prompt/accusation_prompt.txt"
+REFLECTION_PATH = "prompt/reflection_prompt.txt"
 
 class Player:
-    def __init__(self, name: str, model_name: str, role: str):
+    def __init__(self, name: str, model_name: str, role: str, secret_society: str = None, mutant_power: str = None):
         """
-        Initialize a player for Mafia.
+        Initialize a Troubleshooter for Paranoia.
         Args:
             name: Player's name.
             model_name: The LLM model assigned to this player.
-            role: The role assigned to this player (Mafia, Doctor, Detective, Townsperson).
+            role: The role assigned to this player (always "Troubleshooter").
+            secret_society: Secret society membership (if any).
+            mutant_power: Mutant power (if any).
         """
         self.name = name
         self.model_name = model_name
         self.role = role
+        self.secret_society = secret_society
+        self.mutant_power = mutant_power
         self.alive = True
-        self.hand = []
-        self.bullet_position = random.randint(0, 5)
-        self.current_bullet_position = 0
+        self.current_clone = 1  # Clone number (1-6)
+        self.suspicion_level = 0  # How suspicious The Computer finds this player
+        self.happiness_level = "MANDATORY"  # Happiness is mandatory
+        self.treason_accusations = []  # Accusations made by this player
         self.opinions = {}
         
         # LLM related initialization
+        from llm_client import LLMClient
         self.llm_client = LLMClient()
 
     def _read_file(self, filepath: str) -> str:
@@ -59,339 +66,307 @@ class Player:
             with open(filepath, 'r', encoding='utf-8') as f:
                 content = f.read().strip()
             if filepath == RULE_BASE_PATH:
-                content = f"You are {self.name}. " + content
+                # Add Troubleshooter-specific information
+                identity = f"You are {self.name}-R-XXX-{self.current_clone}, a loyal Troubleshooter. "
+                if self.secret_society:
+                    identity += f"You secretly belong to the {self.secret_society} society (ILLEGAL - deny everything). "
+                if self.mutant_power:
+                    identity += f"You secretly have the mutant power {self.mutant_power} (ILLEGAL - deny everything). "
+                content = identity + content
             return content
         except Exception as e:
             print(f"Failed to read file {filepath}: {str(e)}")
             return ""
 
     def print_status(self) -> None:
-        """Print player status"""
-        print(f"{self.name} - Hand: {', '.join(self.hand)} - "
-              f"Bullet position: {self.bullet_position} - Current bullet position: {self.current_bullet_position}")
+        """Print Troubleshooter status"""
+        status = f"{self.name}-R-XXX-{self.current_clone} - Clone {self.current_clone}/6 - Suspicion: {self.suspicion_level}"
+        if self.secret_society:
+            status += f" - SECRET: {self.secret_society}"
+        if self.mutant_power:
+            status += f" - SECRET: {self.mutant_power}"
+        print(status)
         
     def init_opinions(self, other_players: List["Player"]) -> None:
-        """Initialize opinions about other players
+        """Initialize opinions about other Troubleshooters
         
         Args:
-            other_players: List of other players
+            other_players: List of other Troubleshooters
         """
         self.opinions = {
-            player.name: "Still don't know this player"
+            player.name: "Loyal citizen until proven otherwise"
             for player in other_players
             if player.name != self.name
         }
 
-    def choose_cards_to_play(self,
-                        round_base_info: str,
-                        round_action_info: str,
-                        play_decision_info: str) -> Dict:
+    def discuss_mission(self, mission: str, conversation_log: List[str]) -> str:
         """
-        Player chooses cards to play
+        Troubleshooter discusses mission strategy publicly.
         
         Args:
-            round_base_info: Round base information
-            round_action_info: Round action information
-            play_decision_info: Play decision information
+            mission: The current mission description
+            conversation_log: Previous conversation statements
             
         Returns:
-            tuple: (result dictionary, reasoning content)
-            - result dictionary contains played_cards, behavior and play_reason
-            - reasoning_content is the original reasoning process from LLM
+            A statement about the mission strategy
         """
-        # Read rules and template
-        rules = self._read_file(RULE_BASE_PATH)
-        template = self._read_file(PLAY_CARD_PROMPT_TEMPLATE_PATH)
-        
-        # Prepare current hand information
-        current_cards = ", ".join(self.hand)
-        
-        # Fill template
-        prompt = template.format(
-            rules=rules,
-            self_name=self.name,
-            round_base_info=round_base_info,
-            round_action_info=round_action_info,
-            play_decision_info=play_decision_info,
-            current_cards=current_cards
-        )
-        
-        # Try to get a valid JSON response, up to 5 times
-        for attempt in range(5):
-            # Send the same original prompt each time
-            messages = [
-                {"role": "user", "content": prompt}
-            ]
-            
-            try:
-                content, reasoning_content = self.llm_client.chat(messages, model=self.model_name)
-                
-                # Try to extract JSON part from content
-                json_match = re.search(r'({[\s\S]*})', content)
-                if json_match:
-                    json_str = json_match.group(1)
-                    result = json.loads(json_str)
-                    
-                    # Verify JSON format is correct
-                    if all(key in result for key in ["played_cards", "behavior", "play_reason"]):
-                        # Ensure played_cards is a list
-                        if not isinstance(result["played_cards"], list):
-                            result["played_cards"] = [result["played_cards"]]
-                        
-                        # Ensure selected cards are valid (1-3 cards from hand)
-                        valid_cards = all(card in self.hand for card in result["played_cards"])
-                        valid_count = 1 <= len(result["played_cards"]) <= 3
-                        
-                        if valid_cards and valid_count:
-                            # Remove played cards from hand
-                            for card in result["played_cards"]:
-                                self.hand.remove(card)
-                            return result, reasoning_content
-                                
-            except Exception as e:
-                # Record error, do not modify retry request
-                print(f"Attempt {attempt+1} parsing failed: {str(e)}")
-        raise RuntimeError(f"Player {self.name} choose_cards_to_play method failed after multiple attempts")
+        statement, _, _ = self.discuss_mission_with_llm_data(mission, conversation_log)
+        return statement
 
-    def decide_challenge(self,
-                        round_base_info: str,
-                        round_action_info: str,
-                        challenge_decision_info: str,
-                        challenging_player_performance: str,
-                        extra_hint: str) -> bool:
+    def discuss_mission_with_llm_data(self, mission: str, conversation_log: List[str]) -> tuple:
         """
-        Player decides whether to challenge the previous player's play
+        Troubleshooter discusses mission strategy publicly with LLM data capture.
         
         Args:
-            round_base_info: Round base information
-            round_action_info: Round action information
-            challenge_decision_info: Challenge decision information
-            challenging_player_performance: Description of the challenged player's performance
-            extra_hint: Extra hint information
-        
+            mission: The current mission description
+            conversation_log: Previous conversation statements
+            
         Returns:
-            tuple: (result, reasoning_content)
-            - result: Dictionary containing was_challenged and challenge_reason
-            - reasoning_content: Original reasoning process from LLM
+            tuple: (statement, llm_prompt, llm_response)
         """
-        # Read rules and template
         rules = self._read_file(RULE_BASE_PATH)
-        template = self._read_file(CHALLENGE_PROMPT_TEMPLATE_PATH)
-        self_hand = f"Your current hand: {', '.join(self.hand)}"
         
-        # Fill template
-        prompt = template.format(
-            rules=rules,
-            self_name=self.name,
-            round_base_info=round_base_info,
-            round_action_info=round_action_info,
-            self_hand=self_hand,
-            challenge_decision_info=challenge_decision_info,
-            challenging_player_performance=challenging_player_performance,
-            extra_hint=extra_hint
-        )
+        history_text = "\n".join(conversation_log[-3:]) if conversation_log else "No previous discussion."
         
-        # Try to get a valid JSON response, up to 5 times
-        for attempt in range(5):
-            # Send the same original prompt each time
-            messages = [
-                {"role": "user", "content": prompt}
-            ]
-            
-            try:
-                content, reasoning_content = self.llm_client.chat(messages, model=self.model_name)
-                
-                # Parse JSON response
-                json_match = re.search(r'({[\s\S]*})', content)
-                if json_match:
-                    json_str = json_match.group(1)
-                    result = json.loads(json_str)
-                    
-                    # Verify JSON format is correct
-                    if all(key in result for key in ["was_challenged", "challenge_reason"]):
-                        # Ensure was_challenged is a boolean
-                        if isinstance(result["was_challenged"], bool):
-                            return result, reasoning_content
-                
-            except Exception as e:
-                # Only record error, do not modify retry request
-                print(f"Attempt {attempt+1} parsing failed: {str(e)}")
-        raise RuntimeError(f"Player {self.name} decide_challenge method failed after multiple attempts")
-
-    def reflect(self, alive_players: List[str], round_base_info: str, round_action_info: str, round_result: str) -> None:
+        mission_prompt = f"""
+        {rules}
+        
+        CURRENT MISSION: {mission}
+        
+        Previous discussion:
+        {history_text}
+        
+        As a loyal Troubleshooter, discuss your strategy for completing this mission.
+        Be enthusiastic about serving The Computer but watch for signs of treason in others.
+        Keep your secret society/mutant powers hidden if you have them.
+        
+        Respond with a short, helpful mission discussion statement.
         """
-        Player reflects on other surviving players at the end of the round and updates their impressions
+        
+        messages = [{"role": "user", "content": mission_prompt}]
+        try:
+            response, _ = self.llm_client.chat(messages, model=self.model_name)
+            statement = f"{self.name} says: {response.strip()}"
+            return statement, mission_prompt, response
+        except Exception as e:
+            print(f"Error in mission discussion for {self.name}: {str(e)}")
+            fallback_statement = f"{self.name} says: I enthusiastically support The Computer's mission!"
+            return fallback_statement, mission_prompt, "Error: LLM call failed"
+
+    def choose_sabotage_action(self, mission: str, alive_players: List) -> Dict:
+        """
+        Troubleshooter privately decides whether to sabotage the mission.
         
         Args:
-            alive_players: List of names of surviving players
-            round_base_info: Round base information
-            round_action_info: Round action information
-            round_result: Round result
+            mission: The current mission description
+            alive_players: List of alive players
+            
+        Returns:
+            Dictionary with sabotage decision and reasoning
         """
-        # Read reflection template
-        template = self._read_file(REFLECT_PROMPT_TEMPLATE_PATH)
-        
-        # Read rules
         rules = self._read_file(RULE_BASE_PATH)
         
-        # Reflect and update impressions for each surviving player (excluding self)
-        for player_name in alive_players:
-            # Skip reflection on self
-            if player_name == self.name:
-                continue
-            
-            # Get previous impression of the player
-            previous_opinion = self.opinions.get(player_name, "Still don't know this player")
-            
-            # Fill template
-            prompt = template.format(
-                rules=rules,
-                self_name=self.name,
-                round_base_info=round_base_info,
-                round_action_info=round_action_info,
-                round_result=round_result,
-                player=player_name,
-                previous_opinion=previous_opinion
-            )
-            
-            # Request analysis from LLM
-            messages = [
-                {"role": "user", "content": prompt}
-            ]
-            
+        other_names = [p.name for p in alive_players if p.name != self.name]
+        
+        sabotage_prompt = f"""
+        {rules}
+        
+        CURRENT MISSION: {mission}
+        Other Troubleshooters: {', '.join(other_names)}
+        
+        You may now choose to secretly sabotage the mission for your own survival.
+        Consider:
+        - Your secret society might want this mission to fail
+        - Sabotaging helps eliminate rivals
+        - But if caught, you'll be executed
+        - The Computer is always watching
+        
+        Respond with JSON format:
+        {{"sabotage": true/false, "reasoning": "your internal reasoning"}}
+        """
+        
+        messages = [{"role": "user", "content": sabotage_prompt}]
+        
+        # Try to get a valid JSON response
+        for attempt in range(3):
             try:
                 content, _ = self.llm_client.chat(messages, model=self.model_name)
                 
-                # Update impression of the player
-                self.opinions[player_name] = content.strip()
-                print(f"{self.name} updated impression of {player_name}")
-                
+                # Try to extract JSON
+                json_match = re.search(r'({[\s\S]*?})', content)
+                if json_match:
+                    json_str = json_match.group(1)
+                    result = json.loads(json_str)
+                    
+                    if "sabotage" in result and isinstance(result["sabotage"], bool):
+                        return result
+                        
             except Exception as e:
-                print(f"Error reflecting on player {player_name}: {str(e)}")
+                print(f"Sabotage decision attempt {attempt+1} failed: {str(e)}")
+        
+        # Default: don't sabotage if parsing fails
+        return {"sabotage": False, "reasoning": "Loyal service to The Computer"}
 
-    def process_penalty(self) -> bool:
-        """Handle penalty"""
-        print(f"Player {self.name} executes shooting penalty:")
-        self.print_status()
-        if self.bullet_position == self.current_bullet_position:
-            print(f"{self.name} is shot and dies!")
-            self.alive = False
-        else:
-            print(f"{self.name} survives!")
-        self.current_bullet_position = (self.current_bullet_position + 1) % 6
-        return self.alive
+    def choose_sabotage_action_with_llm_data(self, mission: str, alive_players: List) -> tuple:
+        """
+        Troubleshooter privately decides whether to sabotage the mission with LLM data capture.
+        
+        Args:
+            mission: The current mission description
+            alive_players: List of alive players
+            
+        Returns:
+            tuple: (decision_dict, llm_prompt, llm_response)
+        """
+        rules = self._read_file(RULE_BASE_PATH)
+        
+        other_names = [p.name for p in alive_players if p.name != self.name]
+        
+        sabotage_prompt = f"""
+        {rules}
+        
+        CURRENT MISSION: {mission}
+        Other Troubleshooters: {', '.join(other_names)}
+        
+        You may now choose to secretly sabotage the mission for your own survival.
+        Consider:
+        - Your secret society might want this mission to fail
+        - Sabotaging helps eliminate rivals
+        - But if caught, you'll be executed
+        - The Computer is always watching
+        
+        Respond with JSON format:
+        {{"sabotage": true/false, "reasoning": "your internal reasoning"}}
+        """
+        
+        messages = [{"role": "user", "content": sabotage_prompt}]
+        
+        # Try to get a valid JSON response
+        for attempt in range(3):
+            try:
+                content, _ = self.llm_client.chat(messages, model=self.model_name)
+                
+                # Try to extract JSON
+                json_match = re.search(r'({[\s\S]*?})', content)
+                if json_match:
+                    json_str = json_match.group(1)
+                    result = json.loads(json_str)
+                    
+                    if "sabotage" in result and isinstance(result["sabotage"], bool):
+                        return result, sabotage_prompt, content
+                        
+            except Exception as e:
+                print(f"Sabotage decision attempt {attempt+1} failed: {str(e)}")
+        
+        # Default: don't sabotage if parsing fails
+        default_result = {"sabotage": False, "reasoning": "Loyal service to The Computer"}
+        return default_result, sabotage_prompt, "Error: LLM parsing failed"
 
-    def choose_mafia_target(self, alive_players: list) -> str:
+    def make_accusation(self, alive_players: List[str], computer_mood: str) -> Dict:
         """
-        Mafia chooses a target to eliminate during the night using LLM.
+        Troubleshooter decides whether to accuse another of treason.
+        
+        Args:
+            alive_players: List of alive player names
+            computer_mood: Current mood of The Computer
+            
+        Returns:
+            Dictionary with accusation decision
         """
-        choices = [name for name in alive_players if name != self.name]
-        if not choices:
-            return None
-        prompt_path = os.path.join("prompt", "mafia_night_prompt.txt")
-        with open(prompt_path, "r", encoding="utf-8") as f:
-            prompt_template = f.read()
-        prompt = prompt_template.format(alive_players=", ".join(choices))
-        messages = [{"role": "user", "content": prompt}]
-        content, _ = self.llm_client.chat(messages, model=self.model_name)
-        chosen = content.strip()
-        if chosen in choices:
-            return chosen
-        return random.choice(choices)
-
-    def choose_doctor_save(self, alive_players: list) -> str:
-        """
-        Doctor chooses a player to save during the night using LLM.
-        """
-        if not alive_players:
-            return None
-        prompt_path = os.path.join("prompt", "doctor_night_prompt.txt")
-        with open(prompt_path, "r", encoding="utf-8") as f:
-            prompt_template = f.read()
-        prompt = prompt_template.format(alive_players=", ".join(alive_players))
-        messages = [{"role": "user", "content": prompt}]
-        content, _ = self.llm_client.chat(messages, model=self.model_name)
-        chosen = content.strip()
-        if chosen in alive_players:
-            return chosen
-        return random.choice(alive_players)
-
-    def choose_detective_investigation(self, alive_players: list) -> str:
-        """
-        Detective chooses a player to investigate during the night using LLM.
-        """
-        choices = [name for name in alive_players if name != self.name]
-        if not choices:
-            return None
-        prompt_path = os.path.join("prompt", "detective_night_prompt.txt")
-        with open(prompt_path, "r", encoding="utf-8") as f:
-            prompt_template = f.read()
-        prompt = prompt_template.format(alive_players=", ".join(choices))
-        messages = [{"role": "user", "content": prompt}]
-        content, _ = self.llm_client.chat(messages, model=self.model_name)
-        chosen = content.strip()
-        if chosen in choices:
-            return chosen
-        return random.choice(choices)
-
-    def choose_vote(self, alive_players: list) -> str:
-        """
-        Player chooses a player to vote for elimination during the day using LLM.
-        """
-        choices = [name for name in alive_players if name != self.name]
-        if not choices:
-            return None
-        prompt_path = os.path.join("prompt", "vote_prompt.txt")
-        with open(prompt_path, "r", encoding="utf-8") as f:
-            prompt_template = f.read()
-        prompt = prompt_template.format(alive_players=", ".join(choices))
-        messages = [{"role": "user", "content": prompt}]
-        content, _ = self.llm_client.chat(messages, model=self.model_name)
-        chosen = content.strip()
-        if chosen in choices:
-            return chosen
-        return random.choice(choices)
-
-    def impression(self, alive_players: list, player_histories: dict) -> str:
-        """
-        Player discusses who they suspect and why, using the impression prompt and their own logic.
-        Returns a string simulating their discussion statement, including who they are most likely to vote for and why.
-        """
+        rules = self._read_file(RULE_BASE_PATH)
+        
         targets = [name for name in alive_players if name != self.name]
         if not targets:
-            return f"{self.name}: I have no one to discuss."
-        statements = []
-        # Generate impressions for each target
-        for target in targets:
-            prompt_path = os.path.join("prompt", "impression_prompt.txt")
-            with open(prompt_path, "r", encoding="utf-8") as f:
-                prompt_template = f.read()
-            player_history = player_histories.get(target, "")
-            prompt = prompt_template.format(player_name=target, player_history=player_history)
-            messages = [{"role": "user", "content": prompt}]
+            return {"accuse": False}
+            
+        accusation_prompt = f"""
+        {rules}
+        
+        The Computer's current mood: {computer_mood}
+        Other Troubleshooters alive: {', '.join(targets)}
+        
+        You may now accuse another Troubleshooter of treason.
+        Consider:
+        - The Computer's judgment is final and arbitrary
+        - False accusations may backfire
+        - But successful accusations eliminate rivals
+        - The Computer is {computer_mood}
+        
+        Your opinions of others:
+        {chr(10).join([f"{name}: {opinion}" for name, opinion in self.opinions.items()])}
+        
+        Respond with JSON format:
+        {{"accuse": true/false, "target": "name or null", "reasoning": "your accusation reasoning"}}
+        """
+        
+        messages = [{"role": "user", "content": accusation_prompt}]
+        
+        # Try to get a valid JSON response
+        for attempt in range(3):
+            try:
+                content, _ = self.llm_client.chat(messages, model=self.model_name)
+                
+                # Try to extract JSON
+                json_match = re.search(r'({[\s\S]*?})', content)
+                if json_match:
+                    json_str = json_match.group(1)
+                    result = json.loads(json_str)
+                    
+                    if "accuse" in result:
+                        if result["accuse"] and "target" in result and result["target"] in targets:
+                            return result
+                        elif not result["accuse"]:
+                            return {"accuse": False}
+                        
+            except Exception as e:
+                print(f"Accusation decision attempt {attempt+1} failed: {str(e)}")
+        
+        # Default: don't accuse if parsing fails
+        return {"accuse": False}
+
+    def reflect_on_phase(self, phase_type: str, events: str) -> None:
+        """
+        Troubleshooter reflects on recent events and updates opinions.
+        
+        Args:
+            phase_type: "mission" or "accusation"
+            events: Description of what happened
+        """
+        rules = self._read_file(RULE_BASE_PATH)
+        
+        reflection_prompt = f"""
+        {rules}
+        
+        Recent {phase_type} phase events:
+        {events}
+        
+        Reflect on these events and update your understanding of other Troubleshooters.
+        Who seems loyal? Who seems suspicious? Why?
+        
+        Keep your analysis brief and practical.
+        """
+        
+        messages = [{"role": "user", "content": reflection_prompt}]
+        try:
             content, _ = self.llm_client.chat(messages, model=self.model_name)
-            statements.append(f"Impression of {target}: {content.strip()}")
-        # Ask LLM who they are most likely to vote for and why
-        vote_prompt = (
-            f"Based on your impressions and the current situation, who are you most likely to vote for elimination? "
-            f"Alive players: {', '.join(targets)}. "
-            f"State the name and a short reason."
-        )
-        messages = [{"role": "user", "content": vote_prompt}]
-        vote_content, _ = self.llm_client.chat(messages, model=self.model_name)
-        return f"{' '.join(statements)} Likely to vote: {vote_content.strip()}"
-    
+            # Update general suspicion based on reflection
+            print(f"{self.name} reflects: {content.strip()}")
+        except Exception as e:
+            print(f"Error in reflection for {self.name}: {str(e)}")
+
+    # Legacy methods kept for compatibility if needed by other parts of the codebase
     def discuss(self, alive_players: list, player_histories: dict, conversation_history: List[str]) -> str:
+        """Legacy method - use discuss_mission instead for Paranoia gameplay."""
         targets = [name for name in alive_players if name != self.name]
         if not targets:
             return f"{self.name}: I have no one to discuss."
 
         history_text = "\n".join(conversation_history[-5:])  # Limit to last 5 for context
         discussion_prompt = (
-            f"You are {self.name} playing a game of Mafia. Your role is {self.role} (keep it secret). "
-            f"Other alive players: {', '.join(targets)}.\n"
+            f"You are {self.name}, a loyal Troubleshooter. Your role is {self.role}. "
+            f"Other alive Troubleshooters: {', '.join(targets)}.\n"
             f"Recent discussion:\n{history_text}\n\n"
-            f"Based on this, respond with your thoughts, suspicions, or questions for others."
+            f"Based on this, respond with your thoughts about loyalty and potential treason."
         )
 
         messages = [{"role": "user", "content": discussion_prompt}]

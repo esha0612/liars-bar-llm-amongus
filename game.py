@@ -2,6 +2,7 @@ import random
 from typing import List, Dict, Optional
 from player import Player
 from game_record import GameRecord
+from computer import Computer
 import sys
 import os
 from datetime import datetime
@@ -23,248 +24,361 @@ class Tee:
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 log_dir = "logs"
 os.makedirs(log_dir, exist_ok=True)
-log_path = os.path.join(log_dir, f"mafia_game_{timestamp}.txt")
+log_path = os.path.join(log_dir, f"paranoia_game_{timestamp}.txt")
 sys.stdout = Tee(log_path)
 
-class MafiaGame:
-    def __init__(self, player_configs: List[Dict[str, str]], roles: Optional[List[str]] = None):
+class ParanoiaGame:
+    def __init__(self, player_configs: List[Dict[str, str]], computer_model: str = "llama3"):
         """
-        Initialize the Mafia game.
+        Initialize the Paranoia game.
         Args:
             player_configs: List of dicts with 'name' and 'model' for each player.
-            roles: Optional list of roles to assign (if None, assign automatically based on player count).
+            computer_model: The LLM model to use for The Computer.
         """
-        self.players = self.assign_roles(player_configs, roles)
+        self.players = self.assign_troubleshooter_roles(player_configs)
         self.alive_players = self.players.copy()
-        self.day_count = 0
-        self.night_count = 0
-        self.phase = "night"  # or "day"
+        self.mission_count = 0
+        self.accusation_count = 0
+        self.phase = "mission"  # or "accusation"
         self.game_record = GameRecord()
         self.winner = None
+        self.current_mission = None
+        self.computer = Computer(model_name=computer_model)  # The Computer as an LLM entity
 
-    def assign_roles(self, player_configs: List[Dict[str, str]], roles: Optional[List[str]]) -> List[Player]:
+    def assign_troubleshooter_roles(self, player_configs: List[Dict[str, str]]) -> List[Player]:
         """
-        Assign roles to players randomly. Roles: 1 Mafia, 1 Doctor, 1 Detective, rest Townsperson.
+        Assign Troubleshooter roles with secret societies and mutant powers.
+        All players are Troubleshooters, but some may have secret memberships/powers.
         """
         num_players = len(player_configs)
-        if roles is None:
-            roles_list = ["Mafia", "Doctor", "Detective"]
-            roles_list += ["Townsperson"] * (num_players - len(roles_list))
-        else:
-            roles_list = roles.copy()
-            assert len(roles_list) == num_players, "Number of roles must match number of players."
-        random.shuffle(roles_list)
         players = []
-        for config, role in zip(player_configs, roles_list):
-            players.append(Player(config["name"], model_name=config["model"], role=role))
+        
+        # Secret societies (assign to some players randomly)
+        secret_societies = ["Illuminati", "Communists", "Death Leopard", "Psion", "Anti-Mutant"]
+        society_assignments = [None] * num_players
+        num_society_members = min(num_players // 2, len(secret_societies))
+        society_indices = random.sample(range(num_players), num_society_members)
+        for i, idx in enumerate(society_indices):
+            society_assignments[idx] = secret_societies[i % len(secret_societies)]
+        
+        # Mutant powers (assign to some players randomly)
+        mutant_powers = ["Telepathy", "Energy_Blast", "Machine_Empathy", "Precognition", "Telekinesis"]
+        power_assignments = [None] * num_players
+        num_mutants = min(num_players // 3, len(mutant_powers))
+        mutant_indices = random.sample(range(num_players), num_mutants)
+        for i, idx in enumerate(mutant_indices):
+            power_assignments[idx] = mutant_powers[i % len(mutant_powers)]
+        
+        # Create players
+        for i, config in enumerate(player_configs):
+            players.append(Player(
+                name=config["name"], 
+                model_name=config["model"], 
+                role="Troubleshooter",
+                secret_society=society_assignments[i],
+                mutant_power=power_assignments[i]
+            ))
+        
         return players
 
     def start_game(self):
         """
-        Main game loop: alternate between night and day until win condition is met.
+        Main game loop: alternate between mission and accusation phases until The Computer declares an end.
         """
+        print("=== WELCOME TO ALPHA COMPLEX ===")
+        print("The Computer greets all loyal Troubleshooters!")
+        print("Your mission: Serve The Computer. Eliminate traitors. Survive.")
+        print("Remember: Happiness is mandatory!")
+        print("-" * 50)
+        
         # Initialize game record
         self.game_record.start_game(self.players)
         
+        # Show initial assignments (publicly - everyone knows who has what clones left)
+        self.announce_troubleshooter_assignments()
+        
         while not self.check_win_condition():
-            if self.phase == "night":
-                self.night_phase()
-                self.phase = "day"
+            if self.phase == "mission":
+                self.mission_phase()
+                self.phase = "accusation"
             else:
-                self.day_phase()
-                self.phase = "night"
+                self.accusation_phase()
+                self.phase = "mission"
+                
+            # The Computer may randomly end the game
+            if self.computer_arbitrary_decision():
+                break
+                
         self.announce_winner()
 
-    def night_phase(self):
-        print(f"\n--- Night {self.night_count + 1} ---")
-        self.night_count += 1
-        alive_players = [p for p in self.players if p.alive]
-        alive_names = [p.name for p in alive_players]
-        
-        # Start recording night phase
-        self.game_record.start_night_phase(self.night_count, alive_names)
-
-        # Mafia chooses a target (only one Mafia in this setup)
-        mafia = next((p for p in alive_players if p.role == "Mafia"), None)
-        mafia_target = None
-        if mafia:
-            mafia_choices = [n for n in alive_names if n != mafia.name]
-            if mafia_choices:
-                mafia_target = mafia.choose_mafia_target(mafia_choices)
-                print(f"Mafia has chosen a target.")
-                # Record mafia action
-                self.game_record.record_night_action(
-                    player_name=mafia.name,
-                    role=mafia.role,
-                    action_type="mafia_kill",
-                    target_name=mafia_target
-                )
-
-        # Doctor chooses someone to save
-        doctor = next((p for p in alive_players if p.role == "Doctor"), None)
-        doctor_save = None
-        if doctor:
-            doctor_save = doctor.choose_doctor_save(alive_names)
-            print(f"Doctor has chosen someone to save.")
-            # Record doctor action
-            self.game_record.record_night_action(
-                player_name=doctor.name,
-                role=doctor.role,
-                action_type="doctor_save",
-                target_name=doctor_save
-            )
-
-        # Detective investigates a player
-        detective = next((p for p in alive_players if p.role == "Detective"), None)
-        detective_investigation = None
-        investigation_result = None
-        investigation_results = {}
-        if detective:
-            detective_choices = [n for n in alive_names if n != detective.name]
-            if detective_choices:
-                detective_investigation = detective.choose_detective_investigation(detective_choices)
-                investigated_player = next(p for p in alive_players if p.name == detective_investigation)
-                investigation_result = (investigated_player.role == "Mafia")
-                investigation_results[detective_investigation] = investigation_result
-                print(f"Detective has investigated a player.")
-                # Record detective action
-                self.game_record.record_night_action(
-                    player_name=detective.name,
-                    role=detective.role,
-                    action_type="detective_investigate",
-                    target_name=detective_investigation,
-                    action_result=investigation_result
-                )
-
-        # Resolve night actions
-        killed_player = None
-        if mafia_target and (mafia_target != doctor_save):
-            killed_player = next(p for p in alive_players if p.name == mafia_target)
-            killed_player.alive = False
-            print(f"Night Result: {mafia_target} was killed!")
-        else:
-            print("Night Result: No one was killed!")
-
-        # Announce detective result (for demo, print to console)
-        if detective and detective_investigation:
-            print(f"Detective investigated {detective_investigation}. Mafia? {investigation_result}")
-
-        # Record night results
-        self.game_record.record_night_result(
-            killed_player=killed_player.name if killed_player else None,
-            investigation_results=investigation_results
-        )
-
-        self.alive_players = [p for p in self.players if p.alive]
-
-    def impression_phase(self):
-        print("\n--- Impression Phase ---")
-        alive_players = [p for p in self.players if p.alive]
-        alive_names = [p.name for p in alive_players]
-        player_histories = {name: "" for name in alive_names}
-        for player in alive_players:
-            statement = player.impression(alive_names, player_histories)
-            print(statement)
-            # Record discussion statement
-            self.game_record.record_impression(player.name, statement)
+    def announce_troubleshooter_assignments(self):
+        """Announce Troubleshooter assignments to all players."""
+        print("\n=== TROUBLESHOOTER ASSIGNMENTS ===")
+        for player in self.players:
+            clone_status = f"Clone {player.current_clone}/6"
+            print(f"Citizen {player.name}-R-XXX-{player.current_clone}: {clone_status} (Active)")
+        print("Remember: All information is classified unless The Computer says otherwise!")
         print("-" * 50)
 
-    def discussion_phase(self):
-        print("\n--- Discussion Phase ---")
-        alive_players = [p for p in self.players if p.alive]
+    def mission_phase(self):
+        """Mission Phase: The Computer assigns a task, players work together publicly but sabotage privately."""
+        print(f"\n=== MISSION PHASE {self.mission_count + 1} ===")
+        self.mission_count += 1
+        alive_players = [p for p in self.players if p.alive and p.current_clone <= 6]
         alive_names = [p.name for p in alive_players]
-        player_histories = {name: "" for name in alive_names}
+        
+        if not alive_players:
+            return
+            
+        # The Computer assigns a mission using LLM
+        self.current_mission = self.computer.assign_mission()
+        print(f"THE COMPUTER ANNOUNCES: {self.current_mission}")
+        
+        # Record Computer's mission assignment
+        self.game_record.record_computer_interaction(
+            interaction_type="mission_assignment",
+            content=self.current_mission
+        )
+        
+        # Start recording mission phase
+        self.game_record.start_mission_phase(self.mission_count, alive_names, self.current_mission)
+        print("All Troubleshooters must cooperate to complete this vital task!")
+        print("Remember: Failure is treason!")
+        
+        # Public cooperation phase
+        self.public_cooperation_phase(alive_players)
+        
+        # Private sabotage phase (each player can secretly choose to sabotage)
+        self.private_sabotage_phase(alive_players)
+        
+        # Resolve mission
+        self.resolve_mission(alive_players)
+        
+        self.alive_players = [p for p in self.players if p.alive and p.current_clone <= 6]
 
+    def public_cooperation_phase(self, alive_players):
+        """Public phase where all players discuss how to complete the mission."""
+        print("\n--- PUBLIC COOPERATION PHASE ---")
+        print("All Troubleshooters discuss mission strategy in the open...")
+        
         conversation_log = []
-
-        for round_num in range(3):  # 3 discussion rounds
-            print(f"\n-- Discussion Round {round_num + 1} --")
+        for round_num in range(2):  # 2 discussion rounds
+            print(f"\n-- Mission Discussion Round {round_num + 1} --")
             for player in alive_players:
-                statement = player.discuss(alive_names, player_histories, conversation_log)
+                # Get the LLM interaction data from the player
+                statement, llm_prompt, llm_response = player.discuss_mission_with_llm_data(self.current_mission, conversation_log)
                 conversation_log.append(statement)
                 print(statement)
-                self.game_record.record_discussion(player.name, statement)
-
+                self.game_record.record_discussion(player.name, statement, llm_prompt, llm_response)
         print("-" * 50)
 
+    def private_sabotage_phase(self, alive_players):
+        """Private phase where players can choose to sabotage the mission."""
+        print("\n--- PRIVATE ACTIONS PHASE ---")
+        print("Troubleshooters may take private actions... The Computer is watching.")
+        
+        for player in alive_players:
+            # Each player privately decides whether to sabotage
+            sabotage_decision, llm_prompt, llm_response = player.choose_sabotage_action_with_llm_data(self.current_mission, alive_players)
+            print(f"{player.name} has made their private decision.")
+            # Record sabotage action with LLM data
+            self.game_record.record_sabotage_action(
+                player_name=player.name,
+                action_type="sabotage_decision",
+                sabotage_attempt=sabotage_decision.get("sabotage", False),
+                reasoning=sabotage_decision.get("reasoning", ""),
+                llm_prompt=llm_prompt,
+                llm_response=llm_response
+            )
+        print("-" * 50)
 
-    def day_phase(self):
-        print(f"\n--- Day {self.day_count + 1} ---")
-        self.day_count += 1
-        alive_players = [p for p in self.players if p.alive]
+    def resolve_mission(self, alive_players):
+        """Resolve the mission based on cooperation vs sabotage."""
+        print("\n--- MISSION RESOLUTION ---")
+        
+        # Count sabotage attempts
+        sabotage_count = 0
+        current_mission_phase = self.game_record.get_current_mission_phase()
+        if current_mission_phase:
+            for action in current_mission_phase.sabotage_actions:
+                if action.sabotage_attempt:
+                    sabotage_count += 1
+        
+        # Determine mission success/failure
+        cooperation_threshold = len(alive_players) // 2
+        mission_success = sabotage_count <= cooperation_threshold
+        
+        # The Computer announces the result using LLM
+        computer_announcement = self.computer.announce_mission_result(mission_success, sabotage_count)
+        print(f"THE COMPUTER: {computer_announcement}")
+        
+        # Record Computer's LLM interaction
+        self.game_record.record_computer_interaction(
+            interaction_type="mission_announcement",
+            content=computer_announcement
+        )
+        
+        # Update Computer's mood based on results
+        self.computer.update_mood(mission_success, 0)  # No executions in mission phase
+            
+        # Record mission results
+        self.game_record.record_mission_result(
+            mission_success=mission_success,
+            sabotage_count=sabotage_count
+        )
+        print("-" * 50)
+
+    def accusation_phase(self):
+        """Accusation Phase: Players can accuse each other of treason."""
+        print(f"\n=== ACCUSATION PHASE {self.accusation_count + 1} ===")
+        self.accusation_count += 1
+        alive_players = [p for p in self.players if p.alive and p.current_clone <= 6]
         alive_names = [p.name for p in alive_players]
         
-        # Start recording day phase
-        self.game_record.start_day_phase(self.day_count, alive_names)
-
-        # Discussion phase before voting
-        self.discussion_phase()
-
-        # Impression phase after discussing
-        self.impression_phase()
-
-        # Each alive player votes for someone to eliminate (cannot vote for self)
-        votes = {}
-        for voter in alive_players:
-            vote_choices = [n for n in alive_names if n != voter.name]
-            if vote_choices:
-                voted = voter.choose_vote(vote_choices)
-                votes.setdefault(voted, 0)
-                votes[voted] += 1
-                print(f"{voter.name} votes to eliminate {voted}.")
-                # Record vote
-                self.game_record.record_vote(voter.name, voted)
-
-        # Find the player(s) with the most votes
-        eliminated_player = None
-        if votes:
-            max_votes = max(votes.values())
-            candidates = [name for name, count in votes.items() if count == max_votes]
+        if not alive_players:
+            return
             
-            # If there's a tie (multiple players with the same max votes), no one is eliminated
-            if len(candidates) > 1:
-                print(f"Day Result: Tie vote! {', '.join(candidates)} all received {max_votes} votes. No one is eliminated.")
-            else:
-                eliminated_name = candidates[0]
-                eliminated_player = next(p for p in alive_players if p.name == eliminated_name)
-                eliminated_player.alive = False
-                print(f"Day Result: {eliminated_name} was eliminated! Their role was: {eliminated_player.role}")
+        # Start recording accusation phase
+        self.game_record.start_accusation_phase(self.accusation_count, alive_names, self.computer.mood)
+
+        print("THE COMPUTER: Any Troubleshooter may now accuse another of treason.")
+        print("Accusations should be loud, confident, and believable!")
+        print(f"THE COMPUTER'S CURRENT MOOD: {self.computer.mood}")
+        
+        # Each player can make accusations
+        accusations = []
+        for accuser in alive_players:
+            accusation = accuser.make_accusation(alive_names, self.computer.mood)
+            if accusation.get("accuse"):
+                target = accusation.get("target")
+                reasoning = accusation.get("reasoning", "Suspicious behavior!")
+                print(f"\n{accuser.name} ACCUSES {target} OF TREASON!")
+                print(f"Reasoning: {reasoning}")
+                accusations.append({
+                    "accuser": accuser.name,
+                    "target": target,
+                    "reasoning": reasoning
+                })
+                self.game_record.record_accusation(accuser.name, target, reasoning)
+        
+        # Resolve accusations - The Computer decides
+        self.resolve_accusations(accusations, alive_players)
+        
+        self.alive_players = [p for p in self.players if p.alive and p.current_clone <= 6]
+
+
+
+    def resolve_accusations(self, accusations, alive_players):
+        """The Computer resolves accusations using LLM judgment."""
+        print("\n--- THE COMPUTER RENDERS JUDGMENT ---")
+        
+        if not accusations:
+            print("THE COMPUTER: No accusations made. Suspicious. Everyone loses 1 point.")
+            return
+            
+        executions_this_phase = 0
+        for accusation in accusations:
+            target_player = next((p for p in alive_players if p.name == accusation["target"]), None)
+            if target_player:
+                # The Computer makes LLM-powered decisions
+                judgment = self.computer.judge_accusation(
+                    accuser=accusation["accuser"],
+                    accused=accusation["target"],
+                    reasoning=accusation["reasoning"],
+                    accused_has_secret=bool(target_player.secret_society),
+                    accused_has_power=bool(target_player.mutant_power)
+                )
+                
+                print(f"THE COMPUTER: {judgment['reasoning']}")
+                
+                # Execute based on Computer's judgment
+                if judgment["executed"] == accusation["target"]:
+                    print(f"THE COMPUTER: {accusation['target']} is GUILTY of treason!")
+                    self.execute_traitor(target_player)
+                    executions_this_phase += 1
+                elif judgment["executed"] == accusation["accuser"]:
+                    print(f"THE COMPUTER: {accusation['accuser']} is guilty of false accusation!")
+                    accuser_player = next((p for p in alive_players if p.name == accusation["accuser"]), None)
+                    if accuser_player:
+                        self.execute_traitor(accuser_player)
+                        executions_this_phase += 1
+                elif judgment["executed"] == "both":
+                    print(f"THE COMPUTER: Both {accusation['accuser']} and {accusation['target']} are guilty!")
+                    self.execute_traitor(target_player)
+                    self.execute_traitor(accuser_player)
+                    executions_this_phase += 2
+        
+        # Update Computer's mood based on executions
+        self.computer.update_mood(True, executions_this_phase)  # True = mission success (no mission in accusation phase)
+
+
+
+    def execute_traitor(self, player):
+        """Execute a traitor (move to next clone or eliminate completely)."""
+        print(f"EXECUTING TRAITOR: {player.name}-R-XXX-{player.current_clone}")
+        
+        if player.current_clone < 6:
+            player.current_clone += 1
+            print(f"Next clone {player.name}-R-XXX-{player.current_clone} is now active.")
+            print("Clone inherits all memories and suspicion records.")
         else:
-            print("Day Result: No one was eliminated!")
+            player.alive = False
+            print(f"{player.name} has exhausted all clones. PERMANENTLY ELIMINATED.")
 
-        # Record day results
-        self.game_record.record_day_result(
-            eliminated_player=eliminated_player.name if eliminated_player else None
-        )
-
-        self.alive_players = [p for p in self.players if p.alive]
-
-    def check_win_condition(self) -> bool:
-        alive_players = [p for p in self.players if p.alive]
-        mafia_alive = [p for p in alive_players if p.role == "Mafia"]
-        townspeople_alive = [p for p in alive_players if p.role != "Mafia"]
-        if not mafia_alive:
-            self.winner = "Townspeople"
-            return True
-        if len(mafia_alive) >= len(townspeople_alive):
-            self.winner = "Mafia"
+    def computer_arbitrary_decision(self):
+        """The Computer may arbitrarily end the game using LLM decision."""
+        surviving_players = [p.name for p in self.players if p.alive and p.current_clone <= 6]
+        phase_count = self.mission_count + self.accusation_count
+        
+        # Ask The Computer if it wants to terminate
+        termination_decision = self.computer.decide_arbitrary_termination(phase_count, surviving_players)
+        
+        if termination_decision.get("terminate", False):
+            print(f"\nTHE COMPUTER: {termination_decision['reason']}")
+            self.winner = termination_decision.get("winner", "The Computer")
             return True
         return False
 
+    def check_win_condition(self) -> bool:
+        surviving_players = [p for p in self.players if p.alive and p.current_clone <= 6]
+        
+        # Game ends if only one player survives
+        if len(surviving_players) <= 1:
+            if surviving_players:
+                self.winner = surviving_players[0].name
+            else:
+                self.winner = "The Computer"
+            return True
+            
+        # Game ends after too many phases (The Computer gets bored)
+        if self.mission_count + self.accusation_count >= 20:
+            print("THE COMPUTER: This game has gone on long enough.")
+            # Computer picks winner arbitrarily
+            self.winner = random.choice(surviving_players).name if surviving_players else "The Computer"
+            return True
+            
+        return False
+
     def announce_winner(self):
-        print("\n=== GAME OVER ===")
-        if self.winner == "Mafia":
-            print("Mafia wins! The Mafia have outnumbered or equaled the Townspeople.")
-        elif self.winner == "Townspeople":
-            print("Townspeople win! All Mafia have been eliminated.")
+        print("\n=== GAME TERMINATED ===")
+        print("THE COMPUTER HAS RENDERED FINAL JUDGMENT")
+        
+        if self.winner == "The Computer":
+            print("Winner: THE COMPUTER")
+            print("All Troubleshooters have proven inadequate. The Computer wins by default.")
         else:
-            print("Game ended with no winner (unexpected).")
+            print(f"Winner: {self.winner}")
+            print(f"THE COMPUTER: Citizen {self.winner} has proven most loyal and competent.")
+            print("All other Troubleshooters have disappointed The Computer.")
+            
+        print("Remember: The Computer is your friend.")
+        print("The Computer is always right.")
         
         # Record final game result
         self.game_record.finish_game(self.winner)
 
 if __name__ == '__main__':
-    # Configure player information, where model is the name of the model you call through API
+    # Configure Troubleshooter information, where model is the name of the model you call through API
     player_configs = [
         {"name": "Sarah", "model": "llama3"},
         {"name": "Anika", "model": "mistral:7b"},
@@ -274,11 +388,13 @@ if __name__ == '__main__':
         {"name": "James", "model": "mistral:latest"}
     ]
 
-    print("Game starts! Player configurations are as follows:")
+    print("=== ALPHA COMPLEX TROUBLESHOOTER ASSIGNMENT ===")
+    print("THE COMPUTER has selected the following loyal citizens:")
     for config in player_configs:
-        print(f"Player: {config['name']}, Using model: {config['model']}")
+        print(f"Troubleshooter: {config['name']}-R-XXX-1, Using model: {config['model']}")
+    print("All citizens report to Mission Control immediately!")
     print("-" * 50)
 
     # Create game instance and start game
-    game = MafiaGame(player_configs)
+    game = ParanoiaGame(player_configs, computer_model="llama3")
     game.start_game()
