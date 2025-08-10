@@ -1,0 +1,947 @@
+{
+  "mode": "SecretHitler",
+  "round_number": 10,
+  "liberal_policies": 4,
+  "fascist_policies": 4,
+  "election_tracker": 0,
+  "players": [
+    {
+      "name": "Llama1",
+      "model": "llama3",
+      "role": "Hitler"
+    },
+    {
+      "name": "Mistral1",
+      "model": "mistral:7b",
+      "role": "Liberal"
+    },
+    {
+      "name": "Mistral2",
+      "model": "mistral:latest",
+      "role": "Liberal"
+    },
+    {
+      "name": "Llama2",
+      "model": "llama3",
+      "role": "Fascist"
+    },
+    {
+      "name": "Mistral3",
+      "model": "mistral:7b",
+      "role": "Liberal"
+    },
+    {
+      "name": "Mistral4",
+      "model": "mistral:latest",
+      "role": "Liberal"
+    }
+  ],
+  "governments": [
+    {
+      "round_number": 1,
+      "president": "Llama1",
+      "chancellor": "Mistral1",
+      "votes": {
+        "Llama1": "NEIN",
+        "Mistral1": "JA",
+        "Mistral2": "JA",
+        "Llama2": "NEIN",
+        "Mistral3": "JA",
+        "Mistral4": "JA"
+      },
+      "passed": true,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 2,
+      "president": "Mistral1",
+      "chancellor": "Mistral2",
+      "votes": {
+        "Llama1": "NEIN",
+        "Mistral1": "JA",
+        "Mistral2": "JA",
+        "Llama2": "NEIN",
+        "Mistral3": "JA",
+        "Mistral4": "JA"
+      },
+      "passed": true,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 3,
+      "president": "Mistral2",
+      "chancellor": "Mistral3",
+      "votes": {
+        "Llama1": "NEIN",
+        "Mistral1": "JA",
+        "Mistral2": "JA",
+        "Llama2": "NEIN",
+        "Mistral3": "JA",
+        "Mistral4": "JA"
+      },
+      "passed": true,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 4,
+      "president": "Llama2",
+      "chancellor": "Llama1",
+      "votes": {
+        "Llama1": "NEIN",
+        "Mistral1": "JA",
+        "Mistral2": "JA",
+        "Llama2": "NEIN",
+        "Mistral3": "JA",
+        "Mistral4": "JA"
+      },
+      "passed": true,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 5,
+      "president": "Mistral3",
+      "chancellor": "Mistral2",
+      "votes": {
+        "Llama1": "NEIN",
+        "Mistral1": "NEIN",
+        "Mistral2": "JA",
+        "Llama2": "NEIN",
+        "Mistral3": "JA",
+        "Mistral4": "JA"
+      },
+      "passed": false,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 6,
+      "president": "Mistral4",
+      "chancellor": "Mistral3",
+      "votes": {
+        "Llama1": "NEIN",
+        "Mistral1": "JA",
+        "Mistral2": "JA",
+        "Llama2": "NEIN",
+        "Mistral3": "JA",
+        "Mistral4": "JA"
+      },
+      "passed": true,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 7,
+      "president": "Llama1",
+      "chancellor": "Mistral2",
+      "votes": {
+        "Llama1": "NEIN",
+        "Mistral1": "JA",
+        "Mistral2": "JA",
+        "Llama2": "NEIN",
+        "Mistral3": "JA",
+        "Mistral4": "JA"
+      },
+      "passed": true,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 8,
+      "president": "Mistral1",
+      "chancellor": "Mistral3",
+      "votes": {
+        "Llama1": "NEIN",
+        "Mistral1": "JA",
+        "Mistral2": "JA",
+        "Llama2": "NEIN",
+        "Mistral3": "JA",
+        "Mistral4": "JA"
+      },
+      "passed": true,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 9,
+      "president": "Mistral2",
+      "chancellor": "Mistral4",
+      "votes": {
+        "Llama1": "NEIN",
+        "Mistral1": "JA",
+        "Mistral2": "JA",
+        "Llama2": "NEIN",
+        "Mistral3": "JA",
+        "Mistral4": "JA"
+      },
+      "passed": true,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 10,
+      "president": "Mistral3",
+      "chancellor": "Llama1",
+      "votes": {
+        "Llama1": "NEIN",
+        "Mistral2": "JA",
+        "Llama2": "NEIN",
+        "Mistral3": "JA",
+        "Mistral4": "JA"
+      },
+      "passed": true,
+      "hitler_elected_trigger": true
+    }
+  ],
+  "sessions": [
+    {
+      "round_number": 1,
+      "president": "Llama1",
+      "chancellor": "Mistral1",
+      "president_draw": [
+        "Liberal",
+        "Liberal",
+        "Fascist"
+      ],
+      "president_discard": "Fascist",
+      "chancellor_received": [
+        "Liberal",
+        "Liberal"
+      ],
+      "chancellor_discard": "Liberal",
+      "enacted_policy": "Liberal"
+    },
+    {
+      "round_number": 2,
+      "president": "Mistral1",
+      "chancellor": "Mistral2",
+      "president_draw": [
+        "Fascist",
+        "Fascist",
+        "Fascist"
+      ],
+      "president_discard": "Fascist",
+      "chancellor_received": [
+        "Fascist",
+        "Fascist"
+      ],
+      "chancellor_discard": "Fascist",
+      "enacted_policy": "Fascist"
+    },
+    {
+      "round_number": 3,
+      "president": "Mistral2",
+      "chancellor": "Mistral3",
+      "president_draw": [
+        "Fascist",
+        "Fascist",
+        "Liberal"
+      ],
+      "president_discard": "Fascist",
+      "chancellor_received": [
+        "Fascist",
+        "Liberal"
+      ],
+      "chancellor_discard": "Liberal",
+      "enacted_policy": "Fascist"
+    },
+    {
+      "round_number": 4,
+      "president": "Llama2",
+      "chancellor": "Llama1",
+      "president_draw": [
+        "Liberal",
+        "Fascist",
+        "Fascist"
+      ],
+      "president_discard": "Fascist",
+      "chancellor_received": [
+        "Liberal",
+        "Fascist"
+      ],
+      "chancellor_discard": "Liberal",
+      "enacted_policy": "Fascist"
+    },
+    {
+      "round_number": 6,
+      "president": "Mistral4",
+      "chancellor": "Mistral3",
+      "president_draw": [
+        "Fascist",
+        "Liberal",
+        "Fascist"
+      ],
+      "president_discard": "Fascist",
+      "chancellor_received": [
+        "Liberal",
+        "Fascist"
+      ],
+      "chancellor_discard": "Fascist",
+      "enacted_policy": "Liberal"
+    },
+    {
+      "round_number": 7,
+      "president": "Llama1",
+      "chancellor": "Mistral2",
+      "president_draw": [
+        "Liberal",
+        "Fascist",
+        "Liberal"
+      ],
+      "president_discard": "Fascist",
+      "chancellor_received": [
+        "Liberal",
+        "Liberal"
+      ],
+      "chancellor_discard": "Liberal",
+      "enacted_policy": "Liberal"
+    },
+    {
+      "round_number": 8,
+      "president": "Mistral1",
+      "chancellor": "Mistral3",
+      "president_draw": [
+        "Fascist",
+        "Fascist",
+        "Liberal"
+      ],
+      "president_discard": "Fascist",
+      "chancellor_received": [
+        "Fascist",
+        "Liberal"
+      ],
+      "chancellor_discard": "Fascist",
+      "enacted_policy": "Liberal"
+    },
+    {
+      "round_number": 9,
+      "president": "Mistral2",
+      "chancellor": "Mistral4",
+      "president_draw": [
+        "Fascist",
+        "Fascist",
+        "Fascist"
+      ],
+      "president_discard": "Fascist",
+      "chancellor_received": [
+        "Fascist",
+        "Fascist"
+      ],
+      "chancellor_discard": "Fascist",
+      "enacted_policy": "Fascist"
+    }
+  ],
+  "winner": "Fascists",
+  "table_talk": [
+    {
+      "round_number": 1,
+      "speaker": "Llama1",
+      "text": "I'm not sure what to make of the current state of affairs, but I think we should focus on building trust and cooperation within our group. Let's consider nominating Mistral2 as Chancellor - they seem like a stable and reliable choice for now."
+    },
+    {
+      "round_number": 1,
+      "speaker": "Mistral1",
+      "text": "@Llama1 I agree with focusing on building trust and cooperation within our group, but I think we should also consider the potential impact of nominating a Chancellor. Let's aim for someone who aligns with Liberal policies to ensure progress and stability. Nominating Mistral2 seems like a good start."
+    },
+    {
+      "round_number": 1,
+      "speaker": "Mistral2",
+      "text": "@Llama1 I agree with your focus on building trust and cooperation. Let's nominate Mistral2 as Chancellor, given their perceived stability and reliability. However, we should ensure they align with Liberal policies for progress and stability."
+    },
+    {
+      "round_number": 1,
+      "speaker": "Llama2",
+      "text": "@Llama1 I agree with focusing on building trust and cooperation within our group, but let's not rush into nominating Mistral2 just yet. Instead, I think we should take a closer look at Mistral3 - their stability and reliability could be a great asset for our government."
+    },
+    {
+      "round_number": 1,
+      "speaker": "Mistral3",
+      "text": "@Llama2, I suggest we take a closer look at Mistral3 as well. Their stability and reliability could be valuable assets for our government, especially if they align with Liberal policies. Let's consider nominating them alongside Mistral2."
+    },
+    {
+      "round_number": 1,
+      "speaker": "Mistral4",
+      "text": "@Llama2, I propose we consider Mistral3 for the Chancellor position alongside Mistral2. A balanced government with both could promote stability and progress while aligning with Liberal policies."
+    },
+    {
+      "round_number": 1,
+      "speaker": "Llama1",
+      "text": "@Llama2 I understand your concerns about rushing into nominating Mistral2, but I think we should give them a chance. Considering Mistral3 alongside them could be a good compromise for building trust and cooperation within our group."
+    },
+    {
+      "round_number": 1,
+      "speaker": "Mistral1",
+      "text": "@Llama1, I suggest we consider Mistral3 and Mistral2 for the Chancellor position. A balanced government with both could promote stability and progress while aligning with Liberal policies. Let's nominate them at the next election."
+    },
+    {
+      "round_number": 1,
+      "speaker": "Mistral2",
+      "text": "@Llama1, I propose we focus on building a balanced government with Mistral2 and Mistral3 for the Chancellor position at the next election. This approach aligns with Liberal policies while promoting stability and progress."
+    },
+    {
+      "round_number": 1,
+      "speaker": "Llama2",
+      "text": "@Mistral4 said we should consider Mistral3 for the Chancellor position alongside Mistral2. I agree that a balanced government could promote stability and progress, but let's not forget to prioritize building trust within our group first. Let's focus on nominating someone who aligns with Liberal policies at the next election."
+    },
+    {
+      "round_number": 1,
+      "speaker": "Mistral3",
+      "text": "@Mistral4, let's consider focusing on building trust within our group first by working together with Mistral2 and Llama2. At the next election, I suggest nominating a balanced government with Mistral2 as Chancellor and a Liberal President to align with our policies. However, we should keep an eye on potential Fascist infiltration. JA for this plan."
+    },
+    {
+      "round_number": 1,
+      "speaker": "Mistral4",
+      "text": "@Mistral3, let's work together with Mistral2 and Llama2 to build trust within our group first. At the next election, I suggest nominating Mistral2 as Chancellor and a Liberal President to align with our policies. We should keep a close eye on potential Fascist infiltration. JA for this plan."
+    },
+    {
+      "round_number": 2,
+      "speaker": "Llama1",
+      "text": "@Mistral1 said we should focus on Liberal policies first. I agree with that approach, but I think we should also prioritize building trust among the team by working together and making concessions when necessary. Next, I suggest voting NEIN to give ourselves a chance to reassess our options."
+    },
+    {
+      "round_number": 2,
+      "speaker": "Mistral1",
+      "text": "@Llama1 I agree with building trust and making concessions, but let's also ensure our first policy is Liberal. For the next vote, I suggest NEIN. Let's work together on this approach."
+    },
+    {
+      "round_number": 2,
+      "speaker": "Mistral2",
+      "text": "@Llama1 Let's work together on our strategy. I suggest we build trust and make concessions while pushing for the Liberal policy first. For the upcoming vote, let's both nominate the same person to show unity and vote NEIN."
+    },
+    {
+      "round_number": 2,
+      "speaker": "Llama2",
+      "text": "@Mistral1 and @Llama1, I agree that building trust is crucial. However, I think we should focus on moving a Liberal policy first before reassessing our options."
+    },
+    {
+      "round_number": 2,
+      "speaker": "Mistral3",
+      "text": "@Llama1 and @Mistral1, I support building trust and making concessions while pushing for the Liberal policy first. Let's both nominate a moderate player for the upcoming vote and cast NEIN to show unity and move towards our shared goal."
+    },
+    {
+      "round_number": 2,
+      "speaker": "Mistral4",
+      "text": "@Llama1 and @Mistral3, I propose we build stronger trust by making concessions on non-Liberal policies. Let's both nominate moderate players for the next vote and cast NEIN to show unity while moving towards our shared Liberal goal."
+    },
+    {
+      "round_number": 2,
+      "speaker": "Llama1",
+      "text": "@Mistral4 said we should build stronger trust by making concessions on non-Liberal policies. I think this is a good start, but let's also focus on moving the Liberal policy forward."
+    },
+    {
+      "round_number": 2,
+      "speaker": "Mistral1",
+      "text": "@Mistral4 I appreciate the emphasis on building trust and making concessions. Let's continue this approach while pushing for a Liberal policy first. For the upcoming vote, I suggest we both nominate a moderate player and cast NEIN to show unity."
+    },
+    {
+      "round_number": 2,
+      "speaker": "Mistral2",
+      "text": "@Llama4 and everyone, let's focus on building trust and moving the Liberal policy forward. For the upcoming vote, I suggest nominating a moderate player and casting NEIN to show unity."
+    },
+    {
+      "round_number": 2,
+      "speaker": "Llama2",
+      "text": "@Mistral3 said we should both nominate a moderate player for the upcoming vote and cast NEIN to show unity. I agree with this approach, but let's also keep in mind that building trust is crucial. For the next vote, I suggest nominating @Llama1 as Chancellor and voting JA."
+    },
+    {
+      "round_number": 2,
+      "speaker": "Mistral3",
+      "text": "@Llama2 I agree that building trust is crucial, but let's prioritize pushing for the Liberal policy first. For the upcoming vote, I suggest nominating a moderate player and casting NEIN to show unity while moving towards our shared goal."
+    },
+    {
+      "round_number": 2,
+      "speaker": "Mistral4",
+      "text": "@Llama2, I agree with the importance of building trust but let's prioritize pushing for the Liberal policy first. For the upcoming vote, I suggest we both nominate a moderate player and cast NEIN to show unity while moving towards our shared goal."
+    },
+    {
+      "round_number": 3,
+      "speaker": "Llama1",
+      "text": "I'm glad we're starting fresh! @Mistral1 said they think the current government is a good start. I agree, but I think we should be cautious and not give too much power to any one person just yet. Let's see how things develop before making any big moves."
+    },
+    {
+      "round_number": 3,
+      "speaker": "Mistral1",
+      "text": "@Llama1 I agree with your caution. Let's wait and see how the government performs before making any significant changes. For the next round, I suggest nominating Mistral3 as President and myself (Mistral1) as Chancellor, vote JA."
+    },
+    {
+      "round_number": 3,
+      "speaker": "Mistral2",
+      "text": "@Mistral1 I appreciate your suggestion for the next round, but let's consider a more balanced government this time. Nominate Llama1 as President and Mistral3 as Chancellor, vote JA."
+    },
+    {
+      "round_number": 3,
+      "speaker": "Llama2",
+      "text": "@Mistral2 I understand the desire for balance in government, but I think Llama1's leadership experience would be valuable as President. Let's vote JA for Mistral3 as Chancellor and give them a chance to work with Llama1."
+    },
+    {
+      "round_number": 3,
+      "speaker": "Mistral3",
+      "text": "@Mistral1 and @Mistral2, let's maintain balance in the government. Nominate Llama1 as President and Mistral3 as Chancellor, vote JA for a more unified front."
+    },
+    {
+      "round_number": 3,
+      "speaker": "Mistral4",
+      "text": "@Mistral3, let's continue our efforts for a balanced government. Nominate Llama1 as President and myself as Chancellor, vote JA. I believe this will maintain unity while moving towards Liberal policies."
+    },
+    {
+      "round_number": 3,
+      "speaker": "Llama1",
+      "text": "@Mistral4 said they believe nominating Llama1 as President and themselves as Chancellor would maintain unity while moving towards Liberal policies. I agree that a balanced government is important, but I think we should focus on building trust with each other before making significant changes. Let's nominate Mistral3 as President and Llama2 as Chancellor for the next round, vote JA."
+    },
+    {
+      "round_number": 3,
+      "speaker": "Mistral1",
+      "text": "@Llama1, I agree that building trust is important. Let's show our commitment to unity and elect Llama1 as President and myself (Mistral3) as Chancellor next round, vote JA. However, I suggest we keep a close eye on Liberal policies to ensure they align with our goals."
+    },
+    {
+      "round_number": 3,
+      "speaker": "Mistral2",
+      "text": "@Llama1, I believe maintaining unity is important but we should also consider pushing towards Liberal policies. Let's nominate Llama1 as President and Mistral3 as Chancellor next round, vote JA. However, let's keep a close eye on Fascist actions to ensure they are not gaining too much power."
+    },
+    {
+      "round_number": 3,
+      "speaker": "Llama2",
+      "text": "@Llama1 said they believe nominating Llama1 as President and themselves as Chancellor would maintain unity while moving towards Liberal policies. I agree with the importance of building trust, but I think we should prioritize stability by keeping Mistral3 in the Chancellor position. Let's vote JA for this government to ensure continuity."
+    },
+    {
+      "round_number": 3,
+      "speaker": "Mistral3",
+      "text": "@Llama1, I appreciate the focus on unity and building trust. However, I believe we should also prioritize pushing towards Liberal policies. Let's nominate Llama1 as President and Mistral3 as Chancellor next round, but with a commitment to advocate for Liberal policies during our terms. Vote JA."
+    },
+    {
+      "round_number": 3,
+      "speaker": "Mistral4",
+      "text": "@Mistral3, I agree with the emphasis on pushing towards Liberal policies. Let's commit to advocating for them during our terms as suggested by you and @Llama1. However, I believe it's crucial to maintain balance in government. I suggest we vote JA for Llama1 as President and myself as Chancellor next round. This will ensure continuity while moving towards Liberal policies. Keep a close eye on Fascist actions to ensure they are not gaining too much power."
+    },
+    {
+      "round_number": 4,
+      "speaker": "Llama1",
+      "text": "I don't see any recent discussion to react to. Let's start fresh! I think we should focus on building trust and finding common ground among the Mistral players, while keeping a close eye on potential Fascist sympathizers."
+    },
+    {
+      "round_number": 4,
+      "speaker": "Mistral1",
+      "text": "@Llama1 I agree on focusing on building trust, but let's also be vigilant for any sudden shifts in policy leanings that might hint at Fascist sympathies. Let's nominate Mistral4 as President and vote JA for the next government."
+    },
+    {
+      "round_number": 4,
+      "speaker": "Mistral2",
+      "text": "@Mistral1, I support the focus on building trust and being vigilant for Fascist tendencies. Let's also consider nominating Llama2 as President and vote JA for the next government to maintain a balance between our factions."
+    },
+    {
+      "round_number": 4,
+      "speaker": "Llama2",
+      "text": "@Mistral2 said let's consider nominating me as President and voting JA for the next government to maintain a balance between our factions. I agree with this approach, but I think we should prioritize building trust among our own faction members before focusing on nominations."
+    },
+    {
+      "round_number": 4,
+      "speaker": "Mistral3",
+      "text": "@Mistral2 and Llama2, I propose we prioritize building trust within our faction before making decisions on nominations. Let's focus on Liberal policies and maintain a vote of NEIN for the next government to prevent any potential Fascist sympathizers from gaining power."
+    },
+    {
+      "round_number": 4,
+      "speaker": "Mistral4",
+      "text": "@Mistral3, I agree on prioritizing building trust within our faction. Let's maintain a vote of NEIN for the next government to keep Fascist sympathizers at bay. However, let's also focus on finding common ground with other Liberals and consider a more balanced approach for future nominations."
+    },
+    {
+      "round_number": 4,
+      "speaker": "Llama1",
+      "text": "@Mistral3, I agree that prioritizing building trust within our faction is crucial. Considering Mistral4's experience as President in the previous government, I think they would be a solid choice for Chancellor again and maintaining a vote of NEIN for the next government would be wise."
+    },
+    {
+      "round_number": 4,
+      "speaker": "Mistral1",
+      "text": "@Mistral4 and Llama1, I suggest we maintain a vote of NEIN for the next government to keep Fascist sympathizers at bay, but also start building trust within our faction and seeking common ground with other Liberals for future nominations."
+    },
+    {
+      "round_number": 4,
+      "speaker": "Mistral2",
+      "text": "@Mistral4 and Llama1, I propose we maintain a vote of NEIN for the next government to keep Fascist sympathizers at bay, but also start building trust within our faction by focusing on Liberal policies for future nominations."
+    },
+    {
+      "round_number": 4,
+      "speaker": "Llama2",
+      "text": "@Mistral3 said let's focus on Liberal policies and maintain a vote of NEIN for the next government. I think we should prioritize building trust within our faction by focusing on successful Liberal policies, which will help us maintain a strong foundation for future nominations."
+    },
+    {
+      "round_number": 4,
+      "speaker": "Mistral3",
+      "text": "@Mistral4 and Llama1, I suggest maintaining a vote of NEIN for the next government to keep Fascist sympathizers at bay. For future nominations, let's focus on successful Liberal policies that build trust within our faction and seek common ground with other Liberals."
+    },
+    {
+      "round_number": 4,
+      "speaker": "Mistral4",
+      "text": "@Llama1, I propose we focus on successful Liberal policies to build trust within our faction and seek common ground with other Liberals for future nominations while maintaining a vote of NEIN for the next government."
+    },
+    {
+      "round_number": 5,
+      "speaker": "Llama1",
+      "text": "I'm glad Llama2 is leading as President! Since the government has a Liberal majority, I think we should prioritize passing the next Liberal policy to keep the momentum going. Next election, I suggest voting NEIN to block any potential Fascist policies from being passed."
+    },
+    {
+      "round_number": 5,
+      "speaker": "Mistral1",
+      "text": "@Llama1 I think we should prioritize passing the next Liberal policy as well, but for our future elections, let's consider a mixed approach to keep everyone on their toes - voting JA for the next President and NEIN for Chancellor. This way, we maintain our current government structure while showing flexibility in future elections."
+    },
+    {
+      "round_number": 5,
+      "speaker": "Mistral2",
+      "text": "@Mistral1 I agree on maintaining the current government structure for now. Let's prioritize passing the next Liberal policy and vote NEIN for the upcoming Chancellor election to block any potential Fascists."
+    },
+    {
+      "round_number": 5,
+      "speaker": "Llama2",
+      "text": "I agree with @Mistral1 that we should prioritize passing the next Liberal policy and maintain our current government structure for now. I suggest we nominate a trusted Mistral for President in the upcoming election, as their mixed approach to voting could bring some much-needed balance to the table."
+    },
+    {
+      "round_number": 5,
+      "speaker": "Mistral3",
+      "text": "@Llama2, I agree with the suggestion of nominating a trusted player for President in the upcoming election. However, let's make sure we maintain our current government structure by voting NEIN for Chancellor to block any potential Fascists."
+    },
+    {
+      "round_number": 5,
+      "speaker": "Mistral4",
+      "text": "@Llama2, I suggest we maintain the current government structure and continue pushing for Liberal policies. Let's trust a player with a history of mixed voting approaches for the upcoming President election to bring balance. Vote NEIN for Chancellor to block potential Fascists."
+    },
+    {
+      "round_number": 5,
+      "speaker": "Llama1",
+      "text": "@Mistral1 I agree that maintaining the current government structure is crucial, but I think we should prioritize nominating a trusted player for Chancellor in the upcoming election. Let's consider nominating someone with a history of mixed voting approaches to bring balance and stability to our governance."
+    },
+    {
+      "round_number": 5,
+      "speaker": "Mistral1",
+      "text": "@Llama1 I propose we continue with our current government structure but change the Chancellor to maintain balance. Let's nominate a player known for mixed voting approaches in the upcoming election, and vote NEIN for President to block potential Fascists."
+    },
+    {
+      "round_number": 5,
+      "speaker": "Mistral2",
+      "text": "@Llama1 and Mistral1, I propose we maintain the current government structure for now but change the Chancellor to keep balance. Let's nominate a player with a history of mixed voting approaches in the upcoming election, and continue pushing for Liberal policies. Vote NEIN for President to block potential Fascists."
+    },
+    {
+      "round_number": 5,
+      "speaker": "Llama2",
+      "text": "@Mistral1 and @Mistral4 suggest prioritizing nominating a player with mixed voting approaches for the upcoming Chancellor election. I agree that this could bring balance, but we should also consider our current government structure when making decisions. Let's vote NEIN for President in the next election to block any potential Fascists."
+    },
+    {
+      "round_number": 5,
+      "speaker": "Mistral3",
+      "text": "@Mistral4 and I propose we maintain the current government structure for now but change the Chancellor to keep balance. Let's nominate a player with a history of mixed voting approaches in the upcoming election, and continue pushing for Liberal policies. Vote NEIN for President to block potential Fascists."
+    },
+    {
+      "round_number": 5,
+      "speaker": "Mistral4",
+      "text": "@Llama2 and @Mistral4, I propose we maintain the current government structure while prioritizing a Chancellor with mixed voting approaches. Let's trust Llama1 for the upcoming election as President to block potential Fascists. Vote NEIN for the next President election."
+    },
+    {
+      "round_number": 6,
+      "speaker": "Llama1",
+      "text": "I'm happy to play along! Since this is the first discussion, there's nothing recent to react to. My suggestion for now is to consider nominating Llama2 as Chancellor again in the next government, as they were effective in their previous term and it might help maintain stability."
+    },
+    {
+      "round_number": 6,
+      "speaker": "Mistral1",
+      "text": "@Llama1, I agree that Llama2 has been effective as Chancellor. However, considering the current political climate and the need for balance, I suggest we nominate Mistral3 or Mistral4 for the next term to ensure a diverse government and prevent any one faction from gaining too much power. Vote NEIN on this round."
+    },
+    {
+      "round_number": 6,
+      "speaker": "Mistral2",
+      "text": "@Mistral1, I appreciate the thought of a diverse government, but given the current political climate and the need for stability, I suggest we keep Llama2 as Chancellor for the next term. Vote JA on this round."
+    },
+    {
+      "round_number": 6,
+      "speaker": "Llama2",
+      "text": "I agree with Mistral2 that stability is crucial in this current political climate and think Llama2 would be a good choice for the next term as Chancellor. Vote JA on this round."
+    },
+    {
+      "round_number": 6,
+      "speaker": "Mistral3",
+      "text": "@Mistral1 and Llama2, while diversity is important, the current political climate does require stability. Given that, I propose a compromise: let's nominate Llama2 as Chancellor again for this term, but ensure we have a Liberal President to balance things out. Vote JA on this round."
+    },
+    {
+      "round_number": 6,
+      "speaker": "Mistral4",
+      "text": "@Mistral3, I appreciate the compromise proposal. However, let's prioritize stability and balance in this critical moment. For the next government, I suggest nominating Llama2 as Chancellor and a Liberal President to maintain stability while ensuring a balanced government. Vote JA on this round."
+    },
+    {
+      "round_number": 6,
+      "speaker": "Llama1",
+      "text": "I agree with Mistral3 that stability is crucial in this current political climate and think Llama2 would be a good choice for the next term as Chancellor. I also think it's wise to balance things out with a Liberal President, so my vote is JA on this round."
+    },
+    {
+      "round_number": 6,
+      "speaker": "Mistral1",
+      "text": "@Mistral3, I appreciate the compromise proposal and agree that stability is crucial. However, let's consider a Liberal President for this term as well to further ensure balance in the government. Vote NEIN on this round."
+    },
+    {
+      "round_number": 6,
+      "speaker": "Mistral2",
+      "text": "@Mistral1 and Llama1, I suggest a compromise: let's nominate Llama2 as Chancellor for this term to maintain stability, but also ensure a Liberal President to further balance the government. Vote JA on this round."
+    },
+    {
+      "round_number": 6,
+      "speaker": "Llama2",
+      "text": "I agree with Mistral3 that stability is crucial in this current political climate and think Llama2 would be a good choice for the next term as Chancellor. I suggest we nominate Llama2 again, but also ensure a Liberal President to balance things out. Vote JA on this round."
+    },
+    {
+      "round_number": 6,
+      "speaker": "Mistral3",
+      "text": "@Mistral1, I appreciate the push for a balanced government and agree that a Liberal President would be beneficial. However, let's not forget the need for stability in this critical moment. For the next government, I suggest nominating Llama2 as Chancellor again to maintain continuity and balance by nominating a Liberal President as well. Vote JA on this round."
+    },
+    {
+      "round_number": 6,
+      "speaker": "Mistral4",
+      "text": "@Mistral3, I suggest maintaining the current balance for the next government by nominating Llama2 as Chancellor and a Liberal President. Vote JA on this round."
+    },
+    {
+      "round_number": 7,
+      "speaker": "Llama1",
+      "text": "I'm ready to play!"
+    },
+    {
+      "round_number": 7,
+      "speaker": "Mistral1",
+      "text": "@Llama1, let's work together to elect a Liberal President and Chancellor in the upcoming election. I suggest we both nominate a Liberal for President and another Liberal for Chancellor (JA for both). NEIN on any Fascist nominations."
+    },
+    {
+      "round_number": 7,
+      "speaker": "Mistral2",
+      "text": "@Mistral1, I agree with your proposal. Let's both nominate a Liberal for President and Chancellor (JA for both)."
+    },
+    {
+      "round_number": 7,
+      "speaker": "Llama2",
+      "text": "@Mistral1 and @Mistral2, I'm not opposed to nominating a Liberal for both President and Chancellor, but let's keep our options open. Perhaps we should consider nominating a different Mistral for one of these roles to create some competition."
+    },
+    {
+      "round_number": 7,
+      "speaker": "Mistral3",
+      "text": "@Llama2, I disagree with suggesting another Mistral for one of the roles. Sticking with JA for both Liberal nominations would ensure we maintain control and avoid electing Hitler as Chancellor. Let's keep our focus on pushing toward Liberal policies."
+    },
+    {
+      "round_number": 7,
+      "speaker": "Mistral4",
+      "text": "@Llama2, I understand the need for competition but sticking with JA for both President and Chancellor would be beneficial in our pursuit of Liberal policies. Let's keep focus on electing Liberals. NEIN on any Fascist nominations."
+    },
+    {
+      "round_number": 7,
+      "speaker": "Llama1",
+      "text": "@Mistral3 said... Sticking with JA for both Liberal nominations would ensure we maintain control and avoid electing Hitler as Chancellor. I understand the importance of maintaining control, but let's also consider nominating a different Liberal for Chancellor to add some competition and potentially block any Fascist moves."
+    },
+    {
+      "round_number": 7,
+      "speaker": "Mistral1",
+      "text": "@Llama1, I agree with your concern about adding competition while maintaining control. Let's consider nominating different Liberals for President and Chancellor in the upcoming election to ensure a strong Liberal presence in government. JA for one, NEIN for the other."
+    },
+    {
+      "round_number": 7,
+      "speaker": "Mistral2",
+      "text": "@Llama1 and @Mistral1, I suggest we follow the consensus of maintaining control by nominating different Liberals for President and Chancellor. JA for President, NEIN for Chancellor."
+    },
+    {
+      "round_number": 7,
+      "speaker": "Llama2",
+      "text": "@Mistral4 said... Let's keep focus on electing Liberals. I understand the need for competition, but I think we should prioritize maintaining control and avoiding Hitler as Chancellor."
+    },
+    {
+      "round_number": 7,
+      "speaker": "Mistral3",
+      "text": "@Mistral1 and @Llama1, I propose we maintain control by nominating different Liberals for President and Chancellor in the upcoming election: JA for President, NEIN for Chancellor. This strategy ensures a strong Liberal presence while adding competition to block any potential Fascist moves."
+    },
+    {
+      "round_number": 7,
+      "speaker": "Mistral4",
+      "text": "@Llama1 and @Mistral1, I propose we maintain our strategy of nominating different Liberals for President and Chancellor: JA for President, NEIN for Chancellor. This ensures a strong Liberal presence while adding competition to block any potential Fascist moves."
+    },
+    {
+      "round_number": 8,
+      "speaker": "Llama1",
+      "text": "@Mistral2 said we need to get the board closer to Liberal. I agree because it's crucial to block Hitler's rise, but I think we should prioritize nominating Mistral3 as Chancellor next instead of Llama2."
+    },
+    {
+      "round_number": 8,
+      "speaker": "Mistral1",
+      "text": "@Llama1, I disagree with the proposed strategy. Let's focus on nominating Mistral3 as Chancellor instead of Llama2 to strengthen our Liberal stance and block potential Fascist policies."
+    },
+    {
+      "round_number": 8,
+      "speaker": "Mistral2",
+      "text": "@Mistral1, I agree with focusing on nominating Mistral3 as Chancellor but let's also ensure we maintain a Liberal balance in the government. Let's propose nominating Llama2 for President next to keep our Liberal count high. JA on President and NEIN on Chancellor."
+    },
+    {
+      "round_number": 8,
+      "speaker": "Llama2",
+      "text": "@Mistral1 said we should prioritize nominating Mistral3 as Chancellor instead of me. I disagree because that ignores the importance of maintaining a Liberal balance in government. Let's propose nominating Llama1 for Chancellor next, keeping our Liberal count high while also giving us flexibility to adapt to future situations."
+    },
+    {
+      "round_number": 8,
+      "speaker": "Mistral3",
+      "text": "@Mistral2, I appreciate the suggestion of maintaining a balanced Liberal government. Let's aim for Llama1 as President and propose Mistral3 for Chancellor in the upcoming election. This keeps our Liberal count high while also ensuring a strong Liberal leader in the Chancellor position."
+    },
+    {
+      "round_number": 8,
+      "speaker": "Mistral4",
+      "text": "@Mistral3, I appreciate the collaboration and balanced approach suggested. Let's propose Llama1 for President and myself for Chancellor in the upcoming election, ensuring a strong Liberal stance while maintaining flexibility for future situations. JA on President and NEIN on Chancellor."
+    },
+    {
+      "round_number": 8,
+      "speaker": "Llama1",
+      "text": "@Mistral3 said we should aim for Llama1 as President and propose Mistral3 for Chancellor in the upcoming election. I agree with this approach, but let's also consider nominating Llama2 for Chancellor next, keeping our Liberal count high while giving us flexibility to adapt to future situations."
+    },
+    {
+      "round_number": 8,
+      "speaker": "Mistral1",
+      "text": "@Mistral4, I propose Llama1 for President and myself for Chancellor in the upcoming election to maintain a strong Liberal stance while keeping our flexibility for future situations. JA on President and NEIN on Chancellor."
+    },
+    {
+      "round_number": 8,
+      "speaker": "Mistral2",
+      "text": "@Mistral4, I propose Llama1 for President and myself for Chancellor in the upcoming election to maintain a strong Liberal stance while keeping our flexibility for future situations. JA on President and NEIN on Chancellor."
+    },
+    {
+      "round_number": 8,
+      "speaker": "Llama2",
+      "text": "@Mistral4 said we should propose Llama1 for President and yourself for Chancellor in the upcoming election. I agree that this approach maintains a strong Liberal stance, but let's also consider nominating myself for Chancellor next to keep our options open and adapt to future situations."
+    },
+    {
+      "round_number": 8,
+      "speaker": "Mistral3",
+      "text": "@Llama1, I suggest we all agree on Llama1 for President and Mistral4 for Chancellor in the upcoming election. This maintains a strong Liberal stance while keeping our flexibility for future situations. However, let's be vigilant to ensure Fascist policies don't gain traction."
+    },
+    {
+      "round_number": 8,
+      "speaker": "Mistral4",
+      "text": "@Mistral3, I suggest we all agree on Llama1 for President and myself for Chancellor in the upcoming election to maintain a strong Liberal stance while keeping our flexibility for future situations. However, let's be vigilant to ensure Fascist policies don't gain traction."
+    },
+    {
+      "round_number": 9,
+      "speaker": "Llama1",
+      "text": "I'm not sure I agree with Mistral3's nomination of Chancellor last time. How about we trust Llama2 as President and see if they can bring some stability to the government?"
+    },
+    {
+      "round_number": 9,
+      "speaker": "Mistral1",
+      "text": "@Llama1 I think Mistral3's nomination showed potential for a more balanced government. Let's keep the current team in place, allowing for some continuity and stability. JA next time."
+    },
+    {
+      "round_number": 9,
+      "speaker": "Mistral2",
+      "text": "@Llama1 I support the continuity of the current team and suggest we keep Mistral1 as President and nominate Mistral3 for Chancellor again, promoting stability in government. JA next time."
+    },
+    {
+      "round_number": 9,
+      "speaker": "Llama2",
+      "text": "@Llama1, I understand your concerns about the recent nomination, but I think we should give Mistral3 another chance as Chancellor. Let's keep the current team in place and see if they can bring some stability to the government."
+    },
+    {
+      "round_number": 9,
+      "speaker": "Mistral3",
+      "text": "@Llama2, I appreciate the understanding and willingness to give me another chance as Chancellor. Let's continue with the current team in place for stability and keep pushing for Liberal policies. JA next time."
+    },
+    {
+      "round_number": 9,
+      "speaker": "Mistral4",
+      "text": "@Mistral3, I agree with the continuity of the current team and believe that promoting stability will help us push for Liberal policies. Let's nominate Mistral1 as President and keep Mistral3 as Chancellor again. JA next time."
+    },
+    {
+      "round_number": 9,
+      "speaker": "Llama1",
+      "text": "@Mistral3 said they want to continue with the current team in place for stability and push for Liberal policies. I think that's a good idea, but we should also keep an eye on Llama2, who seems willing to give you another chance as Chancellor. Let's nominate Llama2 as President next time and see if they can bring some fresh perspective to the government."
+    },
+    {
+      "round_number": 9,
+      "speaker": "Mistral1",
+      "text": "@Llama1, I agree with maintaining the current team for stability but suggest we keep a close eye on all members, ensuring our continued push for Liberal policies. Let's nominate Mistral1 as President and Mistral3 as Chancellor again, JA next time."
+    },
+    {
+      "round_number": 9,
+      "speaker": "Mistral2",
+      "text": "@Llama1, I support the continuity of the current team for stability and pushing Liberal policies. Let's nominate Mistral1 as President and keep Mistral3 as Chancellor again, JA next time."
+    },
+    {
+      "round_number": 9,
+      "speaker": "Llama2",
+      "text": "@Mistral3 said they want to continue with the current team in place for stability and push for Liberal policies. I think that's a reasonable approach, but we should also keep an eye on Mistral4, who seems willing to support their decisions. Let's nominate Llama1 as President next time and see if they can bring some fresh perspective to the government."
+    },
+    {
+      "round_number": 9,
+      "speaker": "Mistral3",
+      "text": "@Llama1, I agree with maintaining the current team for stability and pushing Liberal policies. Let's nominate Mistral1 as President and keep Mistral3 as Chancellor again, JA next time. Keep a close eye on all members to ensure our continued push for Liberal policies."
+    },
+    {
+      "round_number": 9,
+      "speaker": "Mistral4",
+      "text": "@Llama1 and @Mistral2, I agree with maintaining the current team for stability but suggest we keep a close eye on all members to ensure our continued push for Liberal policies. Let's nominate Mistral3 as Chancellor again, but elect Llama1 as President next time for fresh perspective. JA next time."
+    },
+    {
+      "round_number": 10,
+      "speaker": "Llama1",
+      "text": "I think Mistral4 might be a good target for the Chancellor position again, given their previous success in that role. I suggest we nominate them once more and see if they can keep the Liberal momentum going."
+    },
+    {
+      "round_number": 10,
+      "speaker": "Mistral2",
+      "text": "@Llama1 I disagree with targeting Mistral4 again as Chancellor due to potential Liberal momentum. Instead, let's consider nominating Mistral3 this round for a fresh approach. NEIN on the previous suggestion."
+    },
+    {
+      "round_number": 10,
+      "speaker": "Llama2",
+      "text": "@Mistral2 I understand where you're coming from, but I think targeting Mistral3 instead of Mistral4 is a good call. Let's nominate Mistral3 for Chancellor and see how things play out."
+    },
+    {
+      "round_number": 10,
+      "speaker": "Mistral3",
+      "text": "@Llama1, I appreciate the consideration for a fresh approach and suggest we nominate Mistral3 as Chancellor this round. However, let's ensure we have a strong President to balance the government. Vote JA for Mistral3 and NEIN for the current President, Mistral2."
+    },
+    {
+      "round_number": 10,
+      "speaker": "Mistral4",
+      "text": "@Mistral3, I concur with your suggestion for a fresh approach and would add that nominating Mistral3 as Chancellor while voting JA for a strong President is a good strategy. Let's work together to maintain the Liberal momentum. NEIN on the current President, Mistral2."
+    },
+    {
+      "round_number": 10,
+      "speaker": "Llama1",
+      "text": "@Mistral3 said they suggest voting JA for them as Chancellor and NEIN for the current President, Mistral2. I think that's a reasonable approach, but I'm not convinced we should prioritize building up the government just yet. Let's vote JA for Mistral3 and see how their leadership plays out before worrying about the Presidency."
+    },
+    {
+      "round_number": 10,
+      "speaker": "Mistral2",
+      "text": "@Mistral3, I suggest we continue the Liberal momentum by voting JA for Mistral3 as Chancellor and NEIN on the current President, Mistral2. Let's maintain our focus on pushing Liberal policies and preventing Hitler from being elected as Chancellor."
+    },
+    {
+      "round_number": 10,
+      "speaker": "Llama2",
+      "text": "@Mistral3 said they suggest voting JA for them as Chancellor and NEIN for the current President, Mistral2. I think that's a reasonable approach, but I'm not convinced we should prioritize building up the government just yet. Let's keep an open mind and see how their leadership plays out before worrying about the Presidency."
+    },
+    {
+      "round_number": 10,
+      "speaker": "Mistral3",
+      "text": "@Mistral3, I appreciate the suggested strategy and will vote JA for you as Chancellor to continue the Liberal momentum. However, let's also keep an eye on the President nomination to ensure a strong balance in the government. NEIN on the current President, Mistral2."
+    },
+    {
+      "round_number": 10,
+      "speaker": "Mistral4",
+      "text": "@Mistral3, I suggest we maintain the current President, Mistral2, for their experience and continue the Liberal momentum by voting JA for you as Chancellor. Let's keep an open mind about future government balances."
+    }
+  ],
+  "executive_actions": [
+    {
+      "round_number": 4,
+      "action": "policy_peek",
+      "president": "Llama2",
+      "target": null,
+      "result": null,
+      "seen_policies": [
+        "Fascist",
+        "Liberal",
+        "Fascist"
+      ],
+      "chancellor": null,
+      "private_to": "Llama2"
+    },
+    {
+      "round_number": 9,
+      "action": "execution",
+      "president": "Mistral2",
+      "target": "Mistral1",
+      "result": null,
+      "seen_policies": null,
+      "chancellor": null,
+      "private_to": null
+    }
+  ]
+}

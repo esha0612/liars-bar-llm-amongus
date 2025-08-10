@@ -124,13 +124,23 @@ class SecretHitlerGame:
         print(f"President: {president.name}, Nominee for Chancellor: {nominee}")
         self.record.start_government(president.name, nominee)
 
-        # TABLE TALK — multi-turn discussion
-        TALKS_PER_PLAYER = 2           # tweak to taste
-        RECENT_WINDOW = 8              # how many prior lines to show each speaker
+        # Start table talk with the president
+        order = alive[self.president_index:] + alive[:self.president_index]
 
-        for pass_idx in range(TALKS_PER_PLAYER):
-            for p in alive:
+        TALKS_PER_PLAYER = 2
+        RECENT_WINDOW = 8
+
+        for _ in range(TALKS_PER_PLAYER):
+            for p in order:
                 recent_txt = self.record.format_recent_table_talk_text(round_no, k=RECENT_WINDOW)
+                if not recent_txt and round_no > 1:
+                    # reuse the final few lines from last round to give context
+                    recent_txt = self.record.format_recent_table_talk_text(round_no - 1, k=3) + (
+                        f"Kickoff: Proposed government is President={president.name}, "
+                        f"Chancellor={nominee}. Board L={self.record.liberal_policies}, "
+                        f"F={self.record.fascist_policies}, Tracker={self.record.election_tracker}. "
+                        f"State your stance (JA/NEIN) and one reason."
+                    )
                 line = p.table_talk(
                     alive_names,
                     self.last_elected_president,
