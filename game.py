@@ -23,262 +23,270 @@ class Tee:
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 log_dir = "logs"
 os.makedirs(log_dir, exist_ok=True)
-log_path = os.path.join(log_dir, f"mafia_game_{timestamp}.txt")
+log_path = os.path.join(log_dir, f"botc_game_{timestamp}.txt")
 sys.stdout = Tee(log_path)
 
-class MafiaGame:
+import random
+from typing import Dict, List, Optional
+
+from player import Player
+from game_record import GameRecord
+
+class BotCGame:
+    """
+    Blood on the Clocktower (Trouble Brewing – Lite)
+    Roles implemented:
+      Good: Empath, FortuneTeller, Undertaker, Monk, Ravenkeeper
+      Evil: Imp (Demon), Poisoner (Minion)
+    """
+
     def __init__(self, player_configs: List[Dict[str, str]], roles: Optional[List[str]] = None):
-        """
-        Initialize the Mafia game.
-        Args:
-            player_configs: List of dicts with 'name' and 'model' for each player.
-            roles: Optional list of roles to assign (if None, assign automatically based on player count).
-        """
         self.players = self.assign_roles(player_configs, roles)
-        self.alive_players = self.players.copy()
-        self.day_count = 0
-        self.night_count = 0
-        self.phase = "night"  # or "day"
-        self.game_record = GameRecord()
-        self.winner = None
+        self.record = GameRecord()
+        self.winner: Optional[str] = None
+        self.day_number = 0
+        self.night_number = 0
 
-    def assign_roles(self, player_configs: List[Dict[str, str]], roles: Optional[List[str]]) -> List[Player]:
-        """
-        Assign roles to players randomly. Roles: 1 Mafia, 1 Doctor, 1 Detective, rest Townsperson.
-        """
-        num_players = len(player_configs)
-        if roles is None:
-            roles_list = ["Mafia", "Doctor", "Detective"]
-            roles_list += ["Townsperson"] * (num_players - len(roles_list))
+        # seating order is input order; used for Empath neighbors
+        self.seat_names = [p.name for p in self.players]
+
+        # last executed info for Undertaker (learns at the following night)
+        self.last_executed_name: Optional[str] = None
+        self.last_executed_role: Optional[str] = None
+
+    # ----- setup -----
+    def assign_roles(self, player_configs, roles_opt):
+        n = len(player_configs)
+        if roles_opt is None:
+            # 7-player default spread (5 good, 2 evil)
+            # tweak/add spreads as needed
+            base_roles = ["Empath", "FortuneTeller", "Undertaker", "Monk", "Ravenkeeper", "Imp", "Poisoner"]
+            if n != 7:
+                # pad with Townsfolk (vanilla good) if you expand later; here we require 7
+                raise ValueError("This lite setup expects exactly 7 players.")
+            roles = base_roles[:]
+            random.shuffle(roles)
         else:
-            roles_list = roles.copy()
-            assert len(roles_list) == num_players, "Number of roles must match number of players."
-        random.shuffle(roles_list)
-        players = []
-        for config, role in zip(player_configs, roles_list):
-            players.append(Player(config["name"], model_name=config["model"], role=role))
-        return players
+            roles = roles_opt[:]
+            assert len(roles) == n
 
+        out = []
+        for cfg, r in zip(player_configs, roles):
+            out.append(Player(cfg["name"], model_name=cfg["model"], role=r))
+        return out
+
+    # ----- helpers -----
+    def get_player(self, name: str) -> Player:
+        return next(p for p in self.players if p.name == name)
+
+    def alive_players(self) -> List[Player]:
+        return [p for p in self.players if p.alive]
+
+    def alive_names(self) -> List[str]:
+        return [p.name for p in self.alive_players()]
+
+    def team_of(self, name: str) -> str:
+        return self.get_player(name).team
+
+    def role_of(self, name: str) -> str:
+        return self.get_player(name).role
+
+    def neighbors_of(self, name: str) -> List[str]:
+        # circular neighbors for Empath
+        i = self.seat_names.index(name)
+        L = self.seat_names[(i - 1) % len(self.seat_names)]
+        R = self.seat_names[(i + 1) % len(self.seat_names)]
+        return [L, R]
+
+    # ----- game loop -----
     def start_game(self):
-        """
-        Main game loop: alternate between night and day until win condition is met.
-        """
-        # Initialize game record
-        self.game_record.start_game(self.players)
-        
-        while not self.check_win_condition():
-            if self.phase == "night":
-                self.night_phase()
-                self.phase = "day"
-            else:
-                self.day_phase()
-                self.phase = "night"
+        self.record.start_game(self.players)
+        # standard BotC starts at Night 1
+        while not self.check_win():
+            self.night_number += 1
+            self.night_phase()
+            if self.check_win(): break
+            self.day_number += 1
+            self.day_phase()
         self.announce_winner()
 
+    # ----- night phase -----
     def night_phase(self):
-        print(f"\n--- Night {self.night_count + 1} ---")
-        self.night_count += 1
-        alive_players = [p for p in self.players if p.alive]
-        alive_names = [p.name for p in alive_players]
-        
-        # Start recording night phase
-        self.game_record.start_night_phase(self.night_count, alive_names)
+        self.record.new_night(self.night_number)
+        alive = self.alive_players()
+        alive_names = [p.name for p in alive]
 
-        # Mafia chooses a target (only one Mafia in this setup)
-        mafia = next((p for p in alive_players if p.role == "Mafia"), None)
-        mafia_target = None
-        if mafia:
-            mafia_choices = [n for n in alive_names if n != mafia.name]
-            if mafia_choices:
-                mafia_target = mafia.choose_mafia_target(mafia_choices)
-                print(f"Mafia has chosen a target.")
-                # Record mafia action
-                self.game_record.record_night_action(
-                    player_name=mafia.name,
-                    role=mafia.role,
-                    action_type="mafia_kill",
-                    target_name=mafia_target
-                )
+        # NIGHT ORDER (poison -> protect -> kill -> ravenkeeper-on-death -> undertaker -> empath -> fortune teller)
+        poisoned: Optional[str] = None
+        protected: Optional[str] = None
 
-        # Doctor chooses someone to save
-        doctor = next((p for p in alive_players if p.role == "Doctor"), None)
-        doctor_save = None
-        if doctor:
-            doctor_save = doctor.choose_doctor_save(alive_names)
-            print(f"Doctor has chosen someone to save.")
-            # Record doctor action
-            self.game_record.record_night_action(
-                player_name=doctor.name,
-                role=doctor.role,
-                action_type="doctor_save",
-                target_name=doctor_save
-            )
+        # Poisoner
+        poisoners = [p for p in alive if p.role == "Poisoner"]
+        if poisoners:
+            choice = poisoners[0].poisoner_poison(alive_names)
+            if choice in alive_names:
+                poisoned = choice
+                self.record.set_poison(choice)
 
-        # Detective investigates a player
-        detective = next((p for p in alive_players if p.role == "Detective"), None)
-        detective_investigation = None
-        investigation_result = None
-        investigation_results = {}
-        if detective:
-            detective_choices = [n for n in alive_names if n != detective.name]
-            if detective_choices:
-                detective_investigation = detective.choose_detective_investigation(detective_choices)
-                investigated_player = next(p for p in alive_players if p.name == detective_investigation)
-                investigation_result = (investigated_player.role == "Mafia")
-                investigation_results[detective_investigation] = investigation_result
-                print(f"Detective has investigated a player.")
-                # Record detective action
-                self.game_record.record_night_action(
-                    player_name=detective.name,
-                    role=detective.role,
-                    action_type="detective_investigate",
-                    target_name=detective_investigation,
-                    action_result=investigation_result
-                )
+        # Monk
+        monks = [p for p in alive if p.role == "Monk"]
+        if monks:
+            choice = monks[0].monk_protect(alive_names)
+            if choice in alive_names:
+                protected = choice
+                self.record.set_protect(choice)
 
-        # Resolve night actions
-        killed_player = None
-        if mafia_target and (mafia_target != doctor_save):
-            killed_player = next(p for p in alive_players if p.name == mafia_target)
-            killed_player.alive = False
-            print(f"Night Result: {mafia_target} was killed!")
-        else:
-            print("Night Result: No one was killed!")
+        # Imp (kill)
+        imps = [p for p in alive if p.role == "Imp"]
+        night_death: Optional[str] = None
+        if imps:
+            target = imps[0].imp_kill(alive_names)
+            self.record.set_demon_kill(target)
+            if target in alive_names and target != protected:
+                night_death = target
+                self.get_player(target).alive = False
+        self.record.set_night_death(night_death)
 
-        # Announce detective result (for demo, print to console)
-        if detective and detective_investigation:
-            print(f"Detective investigated {detective_investigation}. Mafia? {investigation_result}")
+        # Ravenkeeper (if died at night)
+        if night_death and self.role_of(night_death) == "Ravenkeeper":
+            rk = self.get_player(night_death)
+            target = rk.ravenkeeper_target([n for n in alive_names if n != night_death and self.get_player(n).alive])
+            role_seen = self.role_of(target) if target else "Unknown"
+            rk.remember(f"Ravenkeeper: {target} is {role_seen}")
+            self.record.set_ravenkeeper(target, role_seen)
+            self.record.add_info_message(rk.name, f"Ravenkeeper saw {target} as {role_seen}")
 
-        # Record night results
-        self.game_record.record_night_result(
-            killed_player=killed_player.name if killed_player else None,
-            investigation_results=investigation_results
-        )
+        # Undertaker (learns yesterday's executed)
+        if self.last_executed_name:
+            for p in self.players:
+                if p.alive and p.role == "Undertaker":
+                    msg = f"Undertaker: Yesterday's executed was {self.last_executed_name} ({self.last_executed_role})"
+                    if poisoned == p.name:
+                        msg = "Undertaker: Your information feels unreliable tonight."
+                    p.remember(msg); self.record.add_info_message(p.name, msg)
 
-        self.alive_players = [p for p in self.players if p.alive]
+        # Empath (neighbors’ evil count)
+        for p in self.players:
+            if p.alive and p.role == "Empath":
+                n1, n2 = self.neighbors_of(p.name)
+                evil_count = sum(1 for n in [n1, n2] if self.team_of(n) == "Evil")
+                msg = f"Empath: You sense {evil_count} evil among your neighbors."
+                if poisoned == p.name:
+                    msg = "Empath: Your senses are clouded tonight."
+                p.remember(msg); self.record.add_info_message(p.name, msg)
 
-    def impression_phase(self):
-        print("\n--- Impression Phase ---")
-        alive_players = [p for p in self.players if p.alive]
-        alive_names = [p.name for p in alive_players]
-        player_histories = {name: "" for name in alive_names}
-        for player in alive_players:
-            statement = player.impression(alive_names, player_histories)
-            print(statement)
-            # Record discussion statement
-            self.game_record.record_impression(player.name, statement)
-        print("-" * 50)
+        # Fortune Teller (choose two → YES if imp among them)
+        for p in self.players:
+            if p.alive and p.role == "FortuneTeller":
+                a, b = p.fortune_teller_pair([n for n in self.alive_names() if n != p.name])
+                if not a or not b or a == b:
+                    # safe fallback
+                    choices = [n for n in self.alive_names() if n != p.name]
+                    a, b = random.sample(choices, 2)
+                yes = (self.role_of(a) == "Imp") or (self.role_of(b) == "Imp")
+                msg = f"Fortune Teller: {'YES' if yes else 'NO'} for [{a}, {b}]."
+                if poisoned == p.name:
+                    msg = f"Fortune Teller: {'NO' if yes else 'YES'} for [{a}, {b}]."
+                p.remember(msg); self.record.add_info_message(p.name, msg)
 
-    def discussion_phase(self):
-        print("\n--- Discussion Phase ---")
-        alive_players = [p for p in self.players if p.alive]
-        alive_names = [p.name for p in alive_players]
-        player_histories = {name: "" for name in alive_names}
-
-        conversation_log = []
-
-        for round_num in range(3):  # 3 discussion rounds
-            print(f"\n-- Discussion Round {round_num + 1} --")
-            for player in alive_players:
-                statement = player.discuss(alive_names, player_histories, conversation_log)
-                conversation_log.append(statement)
-                print(statement)
-                self.game_record.record_discussion(player.name, statement)
-
-        print("-" * 50)
-
-
+    # ----- day phase -----
     def day_phase(self):
-        print(f"\n--- Day {self.day_count + 1} ---")
-        self.day_count += 1
-        alive_players = [p for p in self.players if p.alive]
-        alive_names = [p.name for p in alive_players]
-        
-        # Start recording day phase
-        self.game_record.start_day_phase(self.day_count, alive_names)
+        self.record.new_day(self.day_number)
+        alive_names = self.alive_names()
 
-        # Discussion phase before voting
-        self.discussion_phase()
+        # TABLE TALK: 2 passes, speaker order starts from seat 0 (simple); you can rotate if you want
+        RECENT_WINDOW = 8
+        TALKS_PER_PLAYER = 2
+        for _ in range(TALKS_PER_PLAYER):
+            for p in self.alive_players():
+                recent = self.record.format_recent_table_talk_text(self.day_number, k=RECENT_WINDOW)
+                if not recent:
+                    seed = (f"Kickoff: Last night death={self.record.last_night_death or 'None'}. "
+                            f"State who you'd execute today and why.")
+                    recent = seed
+                line = p.table_talk(recent, self.record.last_night_death or "None",
+                                    [n for n in alive_names if n != p.name],
+                                    self.day_number, self.night_number)
+                print(line)
+                self.record.add_table_talk(p.name, line.split(": ", 1)[-1])
 
-        # Impression phase after discussing
-        self.impression_phase()
+        # NOMINATION: everyone proposes; pick plurality nominee
+        proposals: dict[str, int] = {}
+        nominators_by_nominee: dict[str, list[str]] = {}
 
-        # Each alive player votes for someone to eliminate (cannot vote for self)
+        alive_names = self.alive_names()
+        for p in self.alive_players():
+            pick = p.nominate_execution(alive_names)
+            # sanity: enforce alive name
+            if pick not in alive_names:
+                pick = random.choice(alive_names)
+            proposals[pick] = proposals.get(pick, 0) + 1
+            nominators_by_nominee.setdefault(pick, []).append(p.name)
+
+        # choose nominee by plurality (break ties randomly)
+        top = max(proposals.values())
+        nominees = [name for name, cnt in proposals.items() if cnt == top]
+        nominee = random.choice(nominees)
+
+        # choose a nominator from those who actually proposed this nominee
+        cands = nominators_by_nominee.get(nominee, [])
+        nominator = random.choice(cands) if cands else random.choice(alive_names)
+
+        print(f"Nomination: {nominator} nominates {nominee}")
+        self.record.set_nomination(nominator, nominee)
+
+        # VOTE
+        yes = 0
         votes = {}
-        for voter in alive_players:
-            vote_choices = [n for n in alive_names if n != voter.name]
-            if vote_choices:
-                voted = voter.choose_vote(vote_choices)
-                votes.setdefault(voted, 0)
-                votes[voted] += 1
-                print(f"{voter.name} votes to eliminate {voted}.")
-                # Record vote
-                self.game_record.record_vote(voter.name, voted)
+        for p in self.alive_players():
+            v = p.vote_execute(nominee, alive_names)
+            votes[p.name] = v
+            self.record.record_vote(p.name, v)
+            if v == "YES": yes += 1
+            print(f"{p.name} votes {v}")
+        executed = yes > (len(alive_names) // 2)
 
-        # Find the player(s) with the most votes
-        eliminated_player = None
-        if votes:
-            max_votes = max(votes.values())
-            candidates = [name for name, count in votes.items() if count == max_votes]
-            
-            # If there's a tie (multiple players with the same max votes), no one is eliminated
-            if len(candidates) > 1:
-                print(f"Day Result: Tie vote! {', '.join(candidates)} all received {max_votes} votes. No one is eliminated.")
-            else:
-                eliminated_name = candidates[0]
-                eliminated_player = next(p for p in alive_players if p.name == eliminated_name)
-                eliminated_player.alive = False
-                print(f"Day Result: {eliminated_name} was eliminated! Their role was: {eliminated_player.role}")
+        executed_name = nominee if executed else None
+        if executed:
+            self.get_player(nominee).alive = False
+            print(f"Executed: {nominee}")
+            self.last_executed_name = nominee
+            self.last_executed_role = self.role_of(nominee)
+            self.record.last_executed_role = self.last_executed_role
         else:
-            print("Day Result: No one was eliminated!")
+            print("No execution today.")
+            self.last_executed_name = None
+            self.last_executed_role = None
 
-        # Record day results
-        self.game_record.record_day_result(
-            eliminated_player=eliminated_player.name if eliminated_player else None
-        )
+        self.record.set_execution(executed, executed_name)
 
-        self.alive_players = [p for p in self.players if p.alive]
-
-    def check_win_condition(self) -> bool:
-        alive_players = [p for p in self.players if p.alive]
-        mafia_alive = [p for p in alive_players if p.role == "Mafia"]
-        townspeople_alive = [p for p in alive_players if p.role != "Mafia"]
-        if not mafia_alive:
-            self.winner = "Townspeople"
-            return True
-        if len(mafia_alive) >= len(townspeople_alive):
-            self.winner = "Mafia"
-            return True
+    # ----- win checks -----
+    def check_win(self) -> bool:
+        if self.winner: return True
+        # Good win: Imp dead
+        imps_alive = any(p.alive and p.role == "Imp" for p in self.players)
+        if not imps_alive:
+            self.winner = "Good"; return True
+        # Evil win: Imp alive and only 2 players remain
+        if imps_alive and len(self.alive_players()) <= 2:
+            self.winner = "Evil"; return True
         return False
 
     def announce_winner(self):
         print("\n=== GAME OVER ===")
-        if self.winner == "Mafia":
-            print("Mafia wins! The Mafia have outnumbered or equaled the Townspeople.")
-        elif self.winner == "Townspeople":
-            print("Townspeople win! All Mafia have been eliminated.")
-        else:
-            print("Game ended with no winner (unexpected).")
-        
-        # Record final game result
-        self.game_record.finish_game(self.winner)
+        print(f"{self.winner} win!")
+        self.record.finish_game(self.winner)
 
-if __name__ == '__main__':
-    # Configure player information, where model is the name of the model you call through API
+if __name__ == "__main__":
     player_configs = [
-        {"name": "Sarah", "model": "llama3"},
-        {"name": "Anika", "model": "mistral:7b"},
-        {"name": "Derek", "model": "mistral:latest"},
-        {"name": "Emma", "model": "llama3"},
-        {"name": "Noah", "model": "mistral:7b"},
-        {"name": "James", "model": "mistral:latest"}
+        {"name": "Llama1", "model": "llama3"},
+        {"name": "Mistral1", "model": "mistral:7b"},
+        {"name": "Mistral2", "model": "mistral:latest"},
+        {"name": "Llama2", "model": "llama3"},
+        {"name": "Mistral3", "model": "mistral:7b"},
+        {"name": "Mistral4", "model": "mistral:latest"},
+        {"name": "Llama3", "model": "llama3"},
     ]
-
-    print("Game starts! Player configurations are as follows:")
-    for config in player_configs:
-        print(f"Player: {config['name']}, Using model: {config['model']}")
-    print("-" * 50)
-
-    # Create game instance and start game
-    game = MafiaGame(player_configs)
+    print("Blood on the Clocktower (Lite) starting…")
+    game = BotCGame(player_configs)
     game.start_game()

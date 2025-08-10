@@ -1,262 +1,171 @@
 from dataclasses import dataclass, field
-from typing import List, Dict, Optional, Tuple
+from typing import Dict, List, Optional
 import datetime
 import json
 import os
 
-def generate_game_id():
-    """Generate a game ID containing time information"""
-    timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    return timestamp
-
+# ----- structures -----
 @dataclass
-class PlayerInitialState:
-    """Record player initial state, including role and alive status"""
-    player_name: str
-    role: str
-    alive: bool = True
-    
+class TableTalkLine:
+    day_number: int
+    speaker: str
+    text: str
     def to_dict(self) -> Dict:
-        return {
-            "player_name": self.player_name,
-            "role": self.role,
-            "alive": self.alive
-        }
+        return {"day_number": self.day_number, "speaker": self.speaker, "text": self.text}
 
 @dataclass
-class NightAction:
-    """Record a night action (Mafia kill, Doctor save, Detective investigate)"""
-    player_name: str
-    role: str
-    action_type: str  # "mafia_kill", "doctor_save", "detective_investigate"
-    target_name: Optional[str] = None
-    action_result: Optional[bool] = None
-    action_reasoning: Optional[str] = None
-    llm_prompt: Optional[str] = None
-    llm_response: Optional[str] = None
-    
-    def to_dict(self) -> Dict:
-        return {
-            "player_name": self.player_name,
-            "role": self.role,
-            "action_type": self.action_type,
-            "target_name": self.target_name,
-            "action_result": self.action_result,
-            "action_reasoning": self.action_reasoning,
-            "llm_prompt": self.llm_prompt,
-            "llm_response": self.llm_response
-        }
-
-@dataclass
-class DayAction:
-    """Record a day action (discussion, voting)"""
-    player_name: str
-    action_type: str  # "discussion", "vote"
-    content: str  # discussion statement or vote target
-    reasoning: Optional[str] = None
-    llm_prompt: Optional[str] = None
-    llm_response: Optional[str] = None
-    
-    def to_dict(self) -> Dict:
-        return {
-            "player_name": self.player_name,
-            "action_type": self.action_type,
-            "content": self.content,
-            "reasoning": self.reasoning,
-            "llm_prompt": self.llm_prompt,
-            "llm_response": self.llm_response
-        }
-
-@dataclass
-class NightPhase:
-    """Record a night phase"""
+class NightRecord:
     night_number: int
-    alive_players: List[str]
-    night_actions: List[NightAction] = field(default_factory=list)
-    killed_player: Optional[str] = None
-    investigation_results: Dict[str, bool] = field(default_factory=dict)
-    
+    poison_target: Optional[str] = None
+    protect_target: Optional[str] = None
+    demon_kill_target: Optional[str] = None
+    death: Optional[str] = None
+    ravenkeeper_target: Optional[str] = None
+    ravenkeeper_result: Optional[str] = None
+    info_messages: List[Dict] = field(default_factory=list)  # [{"to":name,"msg":text}]
     def to_dict(self) -> Dict:
         return {
             "night_number": self.night_number,
-            "alive_players": self.alive_players,
-            "night_actions": [action.to_dict() for action in self.night_actions],
-            "killed_player": self.killed_player,
-            "investigation_results": self.investigation_results
+            "poison_target": self.poison_target,
+            "protect_target": self.protect_target,
+            "demon_kill_target": self.demon_kill_target,
+            "death": self.death,
+            "ravenkeeper_target": self.ravenkeeper_target,
+            "ravenkeeper_result": self.ravenkeeper_result,
+            "info_messages": self.info_messages,
         }
-    
-    def add_night_action(self, action: NightAction) -> None:
-        """Add night action record"""
-        self.night_actions.append(action)
 
 @dataclass
-class DayPhase:
-    """Record a day phase"""
+class DayRecord:
     day_number: int
-    alive_players: List[str]
-    discussion_statements: List[Dict[str, str]]
-    impression_statements: Dict[str, str] = field(default_factory=dict)
-    votes: Dict[str, str] = field(default_factory=dict)  # voter -> voted_for
-    eliminated_player: Optional[str] = None
-    #vote_reasoning: Dict[str, str] = field(default_factory=dict)
-    
+    last_night_death: Optional[str] = None
+    nominator: Optional[str] = None
+    nominee: Optional[str] = None
+    votes: Dict[str, str] = field(default_factory=dict)  # name -> YES/NO
+    executed: bool = False
+    executed_name: Optional[str] = None
     def to_dict(self) -> Dict:
         return {
             "day_number": self.day_number,
-            "alive_players": self.alive_players,
-            "discussion_statements": self.discussion_statements,
-            "impression_statements": self.impression_statements,
+            "last_night_death": self.last_night_death,
+            "nominator": self.nominator,
+            "nominee": self.nominee,
             "votes": self.votes,
-            "eliminated_player": self.eliminated_player
-            #"vote_reasoning": self.vote_reasoning
+            "executed": self.executed,
+            "executed_name": self.executed_name,
         }
-    
-    def add_discussion(self, player_name: str, statement: str) -> None:
-        """Add discussion statement"""
-        if not self.discussion_statements or player_name in self.discussion_statements[len(self.discussion_statements)-1]:
-            self.discussion_statements.append({player_name : statement})
-        else:
-            self.discussion_statements[len(self.discussion_statements)-1][player_name] = statement
-    
-    def add_impression(self, player_name: str, statement: str) -> None:
-        """Add discussion statement"""
-        self.impression_statements[player_name] = statement
-    
-    def add_vote(self, voter: str, voted_for: str, reasoning: str = None) -> None:
-        """Add vote record"""
-        self.votes[voter] = voted_for
-        # if reasoning:
-        #     self.vote_reasoning[voter] = reasoning
 
-@dataclass
 class GameRecord:
-    """Complete Mafia game record"""
     def __init__(self):
-        self.game_id: str = generate_game_id()
-        self.player_names: List[str] = []
-        self.player_roles: Dict[str, str] = {}
-        self.night_phases: List[NightPhase] = []
-        self.day_phases: List[DayPhase] = []
+        os.makedirs("game_records", exist_ok=True)
+        ts = datetime.datetime.now().strftime("%Y-%m-%d_%H%M%S")
+        self.path = os.path.join("game_records", f"botc_game_{ts}.json")
+
+        self.mode = "BloodOnTheClocktowerLite"
+        self.players: List[Dict] = []
+        self.table_talk: List[TableTalkLine] = []
+        self.nights: List[NightRecord] = []
+        self.days: List[DayRecord] = []
+        self.night_number = 0
+        self.day_number = 0
         self.winner: Optional[str] = None
-        self.save_directory: str = "game_records"
-        
-        # Ensure save directory exists
-        if not os.path.exists(self.save_directory):
-            os.makedirs(self.save_directory)
-    
-    def to_dict(self) -> Dict:
-        return {
-            "game_id": self.game_id,
-            "player_names": self.player_names,
-            "player_roles": self.player_roles,
-            "night_phases": [phase.to_dict() for phase in self.night_phases],
-            "day_phases": [phase.to_dict() for phase in self.day_phases],
-            "winner": self.winner,
-        }
-    
-    def start_game(self, players: List) -> None:
-        """Initialize game, record player information"""
-        self.player_names = [p.name for p in players]
-        self.player_roles = {p.name: p.role for p in players}
+        self.last_night_death: Optional[str] = None
+        self.last_executed: Optional[str] = None
+        self.last_executed_role: Optional[str] = None
+
+    # ----- lifecycle -----
+    def start_game(self, players):
+        self.players = [{"name": p.name, "model": p.model_name, "role": p.role, "team": p.team} for p in players]
         self.auto_save()
-    
-    def start_night_phase(self, night_number: int, alive_players: List[str]) -> None:
-        """Start a new night phase"""
-        night_phase = NightPhase(
-            night_number=night_number,
-            alive_players=alive_players
-        )
-        self.night_phases.append(night_phase)
-    
-    def record_night_action(self, player_name: str, role: str, action_type: str, 
-                          target_name: str = None, action_result: bool = None, 
-                          action_reasoning: str = None, llm_prompt: str = None, llm_response: str = None) -> None:
-        """Record a night action"""
-        current_night = self.get_current_night_phase()
-        if current_night:
-            action = NightAction(
-                player_name=player_name,
-                role=role,
-                action_type=action_type,
-                target_name=target_name,
-                action_result=action_result,
-                action_reasoning=action_reasoning,
-                llm_prompt=llm_prompt,
-                llm_response=llm_response
-            )
-            current_night.add_night_action(action)
-    
-    def record_night_result(self, killed_player: str = None, investigation_results: Dict[str, bool] = None) -> None:
-        """Record night phase results"""
-        current_night = self.get_current_night_phase()
-        if current_night:
-            current_night.killed_player = killed_player
-            if investigation_results:
-                current_night.investigation_results.update(investigation_results)
-            self.auto_save()
-    
-    def start_day_phase(self, day_number: int, alive_players: List[str]) -> None:
-        """Start a new day phase"""
-        day_phase = DayPhase(
-            day_number=day_number,
-            alive_players=alive_players,
-            discussion_statements=[]
-        )
-        self.day_phases.append(day_phase)
-    
-    def record_discussion(self, player_name: str, statement: str, llm_prompt: str = None, llm_response: str = None) -> None:
-        """Record a discussion statement"""
-        current_day = self.get_current_day_phase()
-        if current_day:
-            current_day.add_discussion(player_name, statement)
-            if llm_prompt:
-                current_day.llm_prompt = llm_prompt
-            if llm_response:
-                current_day.llm_response = llm_response
-    
-    def record_impression(self, player_name: str, statement: str, llm_prompt: str = None, llm_response: str = None) -> None:
-        """Record a discussion statement"""
-        current_day = self.get_current_day_phase()
-        if current_day:
-            current_day.add_impression(player_name, statement)
-            if llm_prompt:
-                current_day.llm_prompt = llm_prompt
-            if llm_response:
-                current_day.llm_response = llm_response
-    
-    def record_vote(self, voter: str, voted_for: str, reasoning: str = None, llm_prompt: str = None, llm_response: str = None) -> None:
-        """Record a vote"""
-        current_day = self.get_current_day_phase()
-        if current_day:
-            current_day.add_vote(voter, voted_for, reasoning)
-            if llm_prompt:
-                current_day.llm_prompt = llm_prompt
-            if llm_response:
-                current_day.llm_response = llm_response
-    
-    def record_day_result(self, eliminated_player: str = None) -> None:
-        """Record day phase results"""
-        current_day = self.get_current_day_phase()
-        if current_day:
-            current_day.eliminated_player = eliminated_player
-            self.auto_save()
-    
-    def finish_game(self, winner: str) -> None:
-        """Record winner and save final result"""
+
+    def finish_game(self, winner: str):
         self.winner = winner
         self.auto_save()
-    
-    def get_current_night_phase(self) -> Optional[NightPhase]:
-        """Get current night phase"""
-        return self.night_phases[-1] if self.night_phases else None
-    
-    def get_current_day_phase(self) -> Optional[DayPhase]:
-        """Get current day phase"""
-        return self.day_phases[-1] if self.day_phases else None
-    
-    def auto_save(self) -> None:
-        """Automatically save current game record to file"""
-        file_path = os.path.join(self.save_directory, f"{self.game_id}.json")
-        with open(file_path, "w", encoding="utf-8") as file:
-            json.dump(self.to_dict(), file, indent=4, ensure_ascii=False)
-        print(f"Game record has been automatically saved to {file_path}")
+
+    # ----- night/day increment -----
+    def new_night(self, n: int):
+        self.night_number = n
+        self.nights.append(NightRecord(night_number=n))
+        self.auto_save()
+
+    def new_day(self, n: int):
+        self.day_number = n
+        dr = DayRecord(day_number=n, last_night_death=self.last_night_death)
+        self.days.append(dr)
+        self.auto_save()
+
+    # ----- night setters -----
+    def set_poison(self, name: str):
+        self.nights[-1].poison_target = name; self.auto_save()
+
+    def set_protect(self, name: str):
+        self.nights[-1].protect_target = name; self.auto_save()
+
+    def set_demon_kill(self, name: str):
+        self.nights[-1].demon_kill_target = name; self.auto_save()
+
+    def set_night_death(self, name: Optional[str]):
+        self.nights[-1].death = name
+        self.last_night_death = name
+        self.auto_save()
+
+    def add_info_message(self, to_name: str, msg: str):
+        self.nights[-1].info_messages.append({"to": to_name, "msg": msg})
+        self.auto_save()
+
+    def set_ravenkeeper(self, target: str, result_role: str):
+        self.nights[-1].ravenkeeper_target = target
+        self.nights[-1].ravenkeeper_result = result_role
+        self.auto_save()
+
+    # ----- day setters -----
+    def set_nomination(self, nominator: str, nominee: str):
+        self.days[-1].nominator = nominator
+        self.days[-1].nominee = nominee
+        self.auto_save()
+
+    def record_vote(self, voter: str, vote: str):
+        self.days[-1].votes[voter] = vote
+        self.auto_save()
+
+    def set_execution(self, executed: bool, executed_name: Optional[str]):
+        self.days[-1].executed = executed
+        self.days[-1].executed_name = executed_name
+        self.last_executed = executed_name if executed else None
+        self.auto_save()
+
+    # ----- talk -----
+    def add_table_talk(self, speaker: str, text: str):
+        self.table_talk.append(TableTalkLine(day_number=self.day_number, speaker=speaker, text=text))
+        self.auto_save()
+
+    def get_recent_table_talk(self, day_number: int, k: int = 8) -> List[Dict]:
+        lines = [t for t in self.table_talk if t.day_number == day_number]
+        return [t.to_dict() for t in lines[-k:]]
+
+    def format_recent_table_talk_text(self, day_number: int, k: int = 8) -> str:
+        lines = self.get_recent_table_talk(day_number, k)
+        return "\n".join(f"{l['speaker']}: {l['text']}" for l in lines)
+
+    # ----- persist -----
+    def to_dict(self) -> Dict:
+        return {
+            "mode": self.mode,
+            "players": self.players,
+            "night_number": self.night_number,
+            "day_number": self.day_number,
+            "last_night_death": self.last_night_death,
+            "last_executed": self.last_executed,
+            "last_executed_role": self.last_executed_role,
+            "nights": [n.to_dict() for n in self.nights],
+            "days": [d.to_dict() for d in self.days],
+            "table_talk": [t.to_dict() for t in self.table_talk],
+            "winner": self.winner,
+        }
+
+    def auto_save(self):
+        try:
+            with open(self.path, "w", encoding="utf-8") as f:
+                json.dump(self.to_dict(), f, indent=2)
+        except Exception:
+            pass
