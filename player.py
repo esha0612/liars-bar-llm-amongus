@@ -2,7 +2,7 @@ import random
 import json
 import re
 from typing import List, Dict
-
+from llm_client import LLMClient
 import os
 import sys
 from datetime import datetime
@@ -57,7 +57,6 @@ class Player:
         self.opinions = {}
         
         # LLM related initialization
-        from llm_client import LLMClient
         self.llm_client = LLMClient()
 
     def _read_file(self, filepath: str) -> str:
