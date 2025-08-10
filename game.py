@@ -37,6 +37,10 @@ class SecretHitlerGame:
         random.shuffle(self.deck)
         self.discard: List[str] = []
 
+        self.veto_unlocked = False
+        self.special_next_president_name: Optional[str] = None
+        self.special_return_president_name: Optional[str] = None
+
         # Presidency rotation & term limits
         self.president_index = 0
         self.last_elected_president: Optional[str] = None
@@ -95,7 +99,15 @@ class SecretHitlerGame:
     def single_round(self, round_no: int):
         alive = [p for p in self.players if p.alive]
         alive_names = [p.name for p in alive]
-        president = alive[self.president_index]
+        # Handle Special Election override
+        if self.special_next_president_name:
+            president = next(p for p in alive if p.name == self.special_next_president_name)
+            # remember where to return after this special round
+            self.special_next_president_name = None
+            special_in_effect = True
+        else:
+            president = alive[self.president_index]
+            special_in_effect = False
 
         # Term limits: last elected Chancellor always ineligible;
         # with 5–6 players, last elected President ineligible as Chancellor too.
@@ -187,6 +199,28 @@ class SecretHitlerGame:
         two_for_chancellor = draw3[:]
         self.record.set_president_discard(pres_discard, two_for_chancellor)
 
+        # If veto is unlocked (5+ Fascist enacted), allow Chancellor to request veto
+        self.veto_unlocked = (self.record.fascist_policies >= 5)
+        if self.veto_unlocked:
+            veto_decision = ch_obj.chancellor_veto_decision(two_for_chancellor)
+            if veto_decision == "VETO":
+                pres_decision = president.president_veto_accept(chancellor_name=ch_obj.name,
+                                                                received_policies=two_for_chancellor)
+                # Record the veto request/decision
+                self.record.add_executive_action(
+                    round_number=round_no, action="veto", president=president.name,
+                    chancellor=ch_obj.name, result=pres_decision
+                )
+                if pres_decision == "ACCEPT":
+                    # discard both, no policy enacted, tracker +1, end round
+                    self.discard.extend(two_for_chancellor)
+                    print("VETO accepted. No policy enacted. Election Tracker +1.")
+                    self.record.election_tracker += 1
+                    # (optional) self.record.set_policy_counts(self.deck, self.discard)
+                    return
+                else:
+                    print("VETO rejected. Proceeding with Chancellor's choice.")
+        
         ch_obj = next(p for p in alive if p.name == nominee)
         chan_discard = ch_obj.chancellor_discard(two_for_chancellor, alive_players=alive_names)
         if chan_discard not in two_for_chancellor:
@@ -197,12 +231,30 @@ class SecretHitlerGame:
         self.record.set_chancellor_discard_and_enact(chan_discard, enacted)
         print(f"Policy enacted: {enacted}")
 
+        # Unlock veto if 5 Fascist now
+        self.veto_unlocked = (self.record.fascist_policies >= 5)
+
+        # Apply executive powers if a Fascist policy was enacted
+        if enacted == "Fascist":
+            self.apply_executive_powers(round_no, president, ch_obj)
+
         # Update term limits
         self.last_elected_president = president.name
         self.last_elected_chancellor = nominee
 
-        # Rotate presidency
-        self.president_index = (self.president_index + 1) % len(alive)
+        # Rotate presidency (respect special election return rule)
+        alive = [p for p in self.players if p.alive]
+        if special_in_effect and self.special_return_president_name:
+            # Return to the player to the left of the original president who invoked Special Election
+            try:
+                idx = [p.name for p in alive].index(self.special_return_president_name)
+                self.president_index = idx
+            except ValueError:
+                # fallback to normal rotation if they died
+                self.president_index = (self.president_index + 1) % len(alive)
+            self.special_return_president_name = None
+        else:
+            self.president_index = (self.president_index + 1) % len(alive)
 
     def draw_policies(self, k: int) -> List[str]:
         while len(self.deck) < k:
@@ -228,10 +280,110 @@ class SecretHitlerGame:
         print("\n=== GAME OVER ===")
         print(f"{self.winner} win!")
         self.record.finish_game(self.winner)
+    
+    def _alive_names(self) -> list[str]:
+        return [p.name for p in self.players if p.alive]
+
+    def _party_of(self, name: str) -> str:
+        # Party membership: Hitler counts as Fascist
+        p = next(x for x in self.players if x.name == name)
+        return "Fascist" if p.role in ("Fascist", "Hitler") else "Liberal"
+
+    def apply_executive_powers(self, round_no: int, president: Player, chancellor: Player):
+        n = len([p for p in self.players if p.alive])
+        fp = self.record.fascist_policies  # after increment
+
+        powers = []
+        if n <= 6:
+            # 5–6 players: 3=peek, 4=execute, 5=execute
+            if fp == 3: powers = ["policy_peek"]
+            elif fp in (4, 5): powers = ["execution"]
+        elif n <= 8:
+            # 7–8 players: 2=investigate, 3=special, 4=execute, 5=execute
+            if fp == 2: powers = ["investigate"]
+            elif fp == 3: powers = ["special_election"]
+            elif fp in (4, 5): powers = ["execution"]
+        else:
+            # 9–10 players: 1=investigate, 2=investigate, 3=special, 4=execute, 5=execute
+            if fp in (1, 2): powers = ["investigate"]
+            elif fp == 3: powers = ["special_election"]
+            elif fp in (4, 5): powers = ["execution"]
+
+        for power in powers:
+            alive_names = self._alive_names()
+            if power == "investigate":
+                # President chooses a target (not self)
+                target = president.choose_investigation_target(alive_names)
+                # Reveal party to President only
+                party = self._party_of(target)
+                print(f"{president.name} investigated {target}.")
+                self.record.add_executive_action(
+                    round_number=round_no, action="investigate",
+                    president=president.name, target=target, result=party,
+                    private_to=president.name
+                )
+
+            elif power == "special_election":
+                # President chooses next president (not self)
+                target_pres = president.choose_special_election_president(alive_names)
+                print(f"Special Election called: next President will be {target_pres}.")
+                self.record.add_executive_action(
+                    round_number=round_no, action="special_election",
+                    president=president.name, target=target_pres
+                )
+                # Schedule: next round president is target_pres,
+                # then return to the player to the left of current president.
+                self.special_next_president_name = target_pres
+                # compute return name = the player to the left of current president
+                order = [p.name for p in self.players if p.alive]
+                curr_idx = order.index(president.name)
+                self.special_return_president_name = order[(curr_idx + 1) % len(order)]
+
+            elif power == "policy_peek":
+                # Reveal top 3 to President (do not remove from deck)
+                while len(self.deck) < 3:
+                    self.deck += self.discard
+                    self.discard = []
+                    random.shuffle(self.deck)
+                top3 = self.deck[:3]
+                print(f"{president.name} performed Policy Peek.")
+                self.record.add_executive_action(
+                    round_number=round_no, action="policy_peek",
+                    president=president.name, seen_policies=top3[:], private_to=president.name
+                )
+                # Optional public statement
+                try:
+                    claim = president.policy_peek_public_comment(top3)
+                    if claim:
+                        print(f"{president.name} says: {claim}")
+                except Exception:
+                    pass
+
+            elif power == "execution":
+                # President executes a player (not self)
+                # Refresh alive names each time (someone may have just died)
+                alive_names = self._alive_names()
+                if len(alive_names) <= 2:
+                    continue
+                target = president.choose_execution_target(alive_names)
+                if target == president.name:  # forbid self-exec
+                    target = random.choice([n for n in alive_names if n != president.name])
+                print(f"{president.name} executes {target}!")
+                self.record.add_executive_action(
+                    round_number=round_no, action="execution",
+                    president=president.name, target=target
+                )
+                # Kill target
+                victim = next(p for p in self.players if p.name == target)
+                victim.alive = False
+                # Hitler executed? Liberals win immediately
+                if victim.role == "Hitler":
+                    print("Hitler was executed. Liberals WIN!")
+                    self.winner = "Liberals"
+                    return
 
 
 if __name__ == "__main__":
-    # Example configs; keep your own
     player_configs = [
         {"name": "Llama1", "model": "llama3"},
         {"name": "Mistral1", "model": "mistral:7b"},

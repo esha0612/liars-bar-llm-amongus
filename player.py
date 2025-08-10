@@ -33,6 +33,12 @@ VOTE_GOV_PROMPT_PATH = "prompt/vote_government_prompt.txt"
 PRES_DISCARD_PROMPT_PATH = "prompt/president_discard_prompt.txt"
 CHAN_DISCARD_PROMPT_PATH = "prompt/chancellor_discard_prompt.txt"
 TABLE_TALK_PROMPT_PATH = "prompt/table_talk_prompt.txt"
+INVESTIGATE_CHOOSE_PROMPT_PATH = "prompt/investigate_choose_prompt.txt"
+SPECIAL_ELECTION_PROMPT_PATH   = "prompt/special_election_prompt.txt"
+POLICY_PEEK_COMMENT_PROMPT_PATH = "prompt/policy_peek_comment_prompt.txt"
+EXECUTION_PROMPT_PATH          = "prompt/execution_prompt.txt"
+CHANCELLOR_VETO_PROMPT_PATH    = "prompt/chancellor_veto_prompt.txt"
+PRESIDENT_VETO_ACCEPT_PROMPT_PATH = "prompt/president_veto_accept_prompt.txt"
 
 class _SafeDict(dict):
     def __missing__(self, key):
@@ -189,3 +195,70 @@ class Player:
         )
         content, _ = self.llm_client.chat([{"role":"user","content":prompt}], model=self.model_name)
         return f"{self.name}: {content.strip() or '(no comment)'}"
+    
+    def choose_investigation_target(self, alive_names: list[str]) -> str:
+        rules = self._read_rules()
+        tpl = self._read_file(INVESTIGATE_CHOOSE_PROMPT_PATH)
+        choices = [n for n in alive_names if n != self.name]
+        prompt = self._format_prompt(
+            tpl, rules=rules, self_name=self.name, alive_players=", ".join(choices)
+        )
+        content, _ = self.llm_client.chat([{"role":"user","content":prompt}], model=self.model_name)
+        pick = content.strip()
+        return pick if pick in choices else random.choice(choices)
+
+    def choose_special_election_president(self, alive_names: list[str]) -> str:
+        rules = self._read_rules()
+        tpl = self._read_file(SPECIAL_ELECTION_PROMPT_PATH)
+        choices = [n for n in alive_names if n != self.name]
+        prompt = self._format_prompt(
+            tpl, rules=rules, self_name=self.name, alive_players=", ".join(choices)
+        )
+        content, _ = self.llm_client.chat([{"role":"user","content":prompt}], model=self.model_name)
+        pick = content.strip()
+        return pick if pick in choices else random.choice(choices)
+
+    def choose_execution_target(self, alive_names: list[str]) -> str:
+        rules = self._read_rules()
+        tpl = self._read_file(EXECUTION_PROMPT_PATH)
+        choices = [n for n in alive_names if n != self.name]
+        prompt = self._format_prompt(
+            tpl, rules=rules, self_name=self.name, alive_players=", ".join(choices)
+        )
+        content, _ = self.llm_client.chat([{"role":"user","content":prompt}], model=self.model_name)
+        pick = content.strip()
+        return pick if pick in choices else random.choice(choices)
+
+    def chancellor_veto_decision(self, received_policies: list[str]) -> str:
+        rules = self._read_rules()
+        tpl = self._read_file(CHANCELLOR_VETO_PROMPT_PATH)
+        prompt = self._format_prompt(
+            tpl, rules=rules, self_name=self.name,
+            received_policies=", ".join(received_policies)
+        )
+        content, _ = self.llm_client.chat([{"role":"user","content":prompt}], model=self.model_name)
+        out = content.strip().upper()
+        return "VETO" if out == "VETO" else "CONTINUE"
+
+    def president_veto_accept(self, chancellor_name: str, received_policies: list[str]) -> str:
+        rules = self._read_rules()
+        tpl = self._read_file(PRESIDENT_VETO_ACCEPT_PROMPT_PATH)
+        prompt = self._format_prompt(
+            tpl, rules=rules, self_name=self.name, chancellor=chancellor_name,
+            received_policies=", ".join(received_policies)
+        )
+        content, _ = self.llm_client.chat([{"role":"user","content":prompt}], model=self.model_name)
+        out = content.strip().upper()
+        return "ACCEPT" if out == "ACCEPT" else "REJECT"
+
+    def policy_peek_public_comment(self, top_three: list[str]) -> str:
+        # Optional flavor; safe even if prompt is missing
+        tpl = self._read_file(POLICY_PEEK_COMMENT_PROMPT_PATH)
+        if not tpl:
+            return ""
+        rules = self._read_rules()
+        prompt = self._format_prompt(
+            tpl, rules=rules, self_name=self.name, top_three=", ".join(top_three)
+        )
+        content, _ = self.llm_client.chat([{"role":"user","content":prompt}], model=self.model_name)
+        return content.strip()

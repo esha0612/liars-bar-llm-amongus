@@ -59,6 +59,29 @@ class TableTalkLine:
             "text": self.text
         }
 
+@dataclass
+class ExecutiveAction:
+    round_number: int
+    action: str                     # "investigate"|"special_election"|"policy_peek"|"execution"|"veto"
+    president: str
+    target: Optional[str] = None    # investigate/special/execute target
+    result: Optional[str] = None    # e.g., "Liberal"/"Fascist" for investigate; "ACCEPT"/"REJECT" for veto
+    seen_policies: Optional[List[str]] = None  # for policy peek (private info)
+    chancellor: Optional[str] = None           # for veto
+    private_to: Optional[str] = None          # e.g., president (peek/investigation result)
+
+    def to_dict(self) -> Dict:
+        return {
+            "round_number": self.round_number,
+            "action": self.action,
+            "president": self.president,
+            "target": self.target,
+            "result": self.result,
+            "seen_policies": self.seen_policies,
+            "chancellor": self.chancellor,
+            "private_to": self.private_to,
+        }
+
 class GameRecord:
     def __init__(self):
         # Ensure the folder exists
@@ -80,6 +103,7 @@ class GameRecord:
         self.sessions: List[LegislativeSession] = []
         self.winner: Optional[str] = None
         self.table_talk: List[TableTalkLine] = []
+        self.executive_actions: List[ExecutiveAction] = []
 
     def add_table_talk(self, round_number: int, speaker: str, text: str):
         self.table_talk.append(TableTalkLine(round_number, speaker, text))
@@ -93,6 +117,10 @@ class GameRecord:
     def format_recent_table_talk_text(self, round_number: int, k: int = 8) -> str:
         lines = self.get_recent_table_talk(round_number, k)
         return "\n".join(f"{l['speaker']}: {l['text']}" for l in lines)
+
+    def add_executive_action(self, **kwargs):
+        self.executive_actions.append(ExecutiveAction(**kwargs))
+        self.auto_save()
 
     # ---------- lifecycle ----------
     def start_game(self, players):
@@ -177,6 +205,7 @@ class GameRecord:
             "sessions": [s.to_dict() for s in self.sessions],
             "winner": self.winner,
             "table_talk": [t.to_dict() for t in self.table_talk],
+            "executive_actions": [e.to_dict() for e in self.executive_actions],
         }
 
     def auto_save(self):
