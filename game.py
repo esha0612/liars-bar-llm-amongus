@@ -26,12 +26,6 @@ os.makedirs(log_dir, exist_ok=True)
 log_path = os.path.join(log_dir, f"botc_game_{timestamp}.txt")
 sys.stdout = Tee(log_path)
 
-import random
-from typing import Dict, List, Optional
-
-from player import Player
-from game_record import GameRecord
-
 class BotCGame:
     """
     Blood on the Clocktower (Trouble Brewing – Lite)
@@ -279,13 +273,13 @@ class BotCGame:
 
 if __name__ == "__main__":
     player_configs = [
-        {"name": "Llama1", "model": "llama3"},
-        {"name": "Mistral1", "model": "mistral:7b"},
-        {"name": "Mistral2", "model": "mistral:latest"},
-        {"name": "Llama2", "model": "llama3"},
-        {"name": "Mistral3", "model": "mistral:7b"},
-        {"name": "Mistral4", "model": "mistral:latest"},
-        {"name": "Llama3", "model": "llama3"},
+        {"name": "Llama1", "model": "ollama/llama3"},
+        {"name": "Mistral1", "model": "ollama/mistral:7b"},
+        {"name": "Mistral2", "model": "ollama/mistral:latest"},
+        {"name": "Llama2", "model": "ollama/llama3"},
+        {"name": "Mistral3", "model": "ollama/mistral:7b"},
+        {"name": "Mistral4", "model": "ollama/mistral:latest"},
+        {"name": "Llama3", "model": "ollama/llama3"},
     ]
     print("Blood on the Clocktower (Lite) starting…")
     game = BotCGame(player_configs)

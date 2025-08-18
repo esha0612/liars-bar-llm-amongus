@@ -2,7 +2,8 @@ import random
 import json
 import re
 from typing import List, Dict, Optional, Tuple
-from llm_client import LLMClient
+# from llm_client import LLMClient
+from multi_llm_client import LLMRouter
 import os
 import sys
 from datetime import datetime
@@ -79,7 +80,7 @@ class Player:
         self.private_info_log: List[str] = []
 
         # LLM
-        self.llm_client = LLMClient()
+        self.llm_client = LLMRouter()
 
     # ---------- IO helpers ----------
     def _read_file(self, path: str) -> str:

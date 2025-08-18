@@ -1,0 +1,367 @@
+{
+  "mode": "BloodOnTheClocktowerLite",
+  "players": [
+    {
+      "name": "Llama1",
+      "model": "ollama/llama3",
+      "role": "Ravenkeeper",
+      "team": "Good"
+    },
+    {
+      "name": "Mistral1",
+      "model": "ollama/mistral:7b",
+      "role": "Undertaker",
+      "team": "Good"
+    },
+    {
+      "name": "Mistral2",
+      "model": "ollama/mistral:latest",
+      "role": "Poisoner",
+      "team": "Evil"
+    },
+    {
+      "name": "Llama2",
+      "model": "ollama/llama3",
+      "role": "Empath",
+      "team": "Good"
+    },
+    {
+      "name": "Mistral3",
+      "model": "ollama/mistral:7b",
+      "role": "Monk",
+      "team": "Good"
+    },
+    {
+      "name": "Mistral4",
+      "model": "ollama/mistral:latest",
+      "role": "FortuneTeller",
+      "team": "Good"
+    },
+    {
+      "name": "Llama3",
+      "model": "ollama/llama3",
+      "role": "Imp",
+      "team": "Evil"
+    }
+  ],
+  "night_number": 5,
+  "day_number": 4,
+  "last_night_death": "Mistral4",
+  "last_executed": null,
+  "last_executed_role": null,
+  "nights": [
+    {
+      "night_number": 1,
+      "poison_target": "Llama1",
+      "protect_target": "Llama1",
+      "demon_kill_target": "Llama2",
+      "death": "Llama2",
+      "ravenkeeper_target": null,
+      "ravenkeeper_result": null,
+      "info_messages": [
+        {
+          "to": "Mistral4",
+          "msg": "Fortune Teller: YES for [Mistral2, Llama3]."
+        }
+      ]
+    },
+    {
+      "night_number": 2,
+      "poison_target": "Llama1",
+      "protect_target": "Mistral1",
+      "demon_kill_target": "Mistral2",
+      "death": "Mistral2",
+      "ravenkeeper_target": null,
+      "ravenkeeper_result": null,
+      "info_messages": [
+        {
+          "to": "Mistral4",
+          "msg": "Fortune Teller: NO for [Mistral3, Llama1]."
+        }
+      ]
+    },
+    {
+      "night_number": 3,
+      "poison_target": null,
+      "protect_target": "Llama1",
+      "demon_kill_target": "Mistral3",
+      "death": "Mistral3",
+      "ravenkeeper_target": null,
+      "ravenkeeper_result": null,
+      "info_messages": [
+        {
+          "to": "Mistral4",
+          "msg": "Fortune Teller: NO for [Llama1, Mistral1]."
+        }
+      ]
+    },
+    {
+      "night_number": 4,
+      "poison_target": null,
+      "protect_target": null,
+      "demon_kill_target": "Mistral1",
+      "death": "Mistral1",
+      "ravenkeeper_target": null,
+      "ravenkeeper_result": null,
+      "info_messages": [
+        {
+          "to": "Mistral4",
+          "msg": "Fortune Teller: YES for [Llama1, Llama3]."
+        }
+      ]
+    },
+    {
+      "night_number": 5,
+      "poison_target": null,
+      "protect_target": null,
+      "demon_kill_target": "Mistral4",
+      "death": "Mistral4",
+      "ravenkeeper_target": null,
+      "ravenkeeper_result": null,
+      "info_messages": []
+    }
+  ],
+  "days": [
+    {
+      "day_number": 1,
+      "last_night_death": "Llama2",
+      "nominator": "Mistral3",
+      "nominee": "Mistral1",
+      "votes": {
+        "Llama1": "NO",
+        "Mistral1": "NO",
+        "Mistral2": "NO",
+        "Mistral3": "NO",
+        "Mistral4": "NO",
+        "Llama3": "YES"
+      },
+      "executed": false,
+      "executed_name": null
+    },
+    {
+      "day_number": 2,
+      "last_night_death": "Mistral2",
+      "nominator": "Mistral3",
+      "nominee": "Mistral1",
+      "votes": {
+        "Llama1": "NO",
+        "Mistral1": "NO",
+        "Mistral3": "NO",
+        "Mistral4": "NO",
+        "Llama3": "NO"
+      },
+      "executed": false,
+      "executed_name": null
+    },
+    {
+      "day_number": 3,
+      "last_night_death": "Mistral3",
+      "nominator": "Llama1",
+      "nominee": "Mistral1",
+      "votes": {
+        "Llama1": "NO",
+        "Mistral1": "NO",
+        "Mistral4": "NO",
+        "Llama3": "YES"
+      },
+      "executed": false,
+      "executed_name": null
+    },
+    {
+      "day_number": 4,
+      "last_night_death": "Mistral1",
+      "nominator": "Llama3",
+      "nominee": "Mistral4",
+      "votes": {
+        "Llama1": "NO",
+        "Mistral4": "NO",
+        "Llama3": "YES"
+      },
+      "executed": false,
+      "executed_name": null
+    }
+  ],
+  "table_talk": [
+    {
+      "day_number": 1,
+      "speaker": "Llama1",
+      "text": "I'm concerned that Llama3 might be involved in Llama2's death, given the recent discussion. I think I'd execute Llama3 today because they seem like a prime suspect at this point and it would help us clear up any potential evil activity."
+    },
+    {
+      "day_number": 1,
+      "speaker": "Mistral1",
+      "text": "I understand Llama1's concern about Llama3, given the recent events. However, it's important to remember that we don't have definitive proof yet. If we execute someone based on suspicions alone, we might be eliminating an innocent player. Let's proceed with caution and gather more information before making a decision."
+    },
+    {
+      "day_number": 1,
+      "speaker": "Mistral2",
+      "text": "I share Llama1's concern about Llama3 given the recent events, but as Mistral1 pointed out, we should proceed with caution. Eliminating a potential innocent player could harm our chances of identifying and eradicating evil in our midst. Let's focus on gathering more information before making any rash decisions regarding executions."
+    },
+    {
+      "day_number": 1,
+      "speaker": "Mistral3",
+      "text": "I share the concerns raised about Llama3, but it's crucial that we don't jump to conclusions based on suspicions alone. Let's continue investigating and gathering evidence before making any decisions regarding executions, as eliminating an innocent player could potentially harm our chances of identifying the true evil among us."
+    },
+    {
+      "day_number": 1,
+      "speaker": "Mistral4",
+      "text": "I share the concerns raised about Llama3, but it's crucial that we don't jump to conclusions based on suspicions alone. Let's continue investigating and gathering more evidence before making any decisions regarding executions, as eliminating an innocent player could potentially harm our chances of identifying the true evil among us. Regarding the current top suspect, I would not execute Llama3 yet because we still need more evidence to confirm their involvement in the recent events. Let's focus on gathering information and using logic to uncover the truth."
+    },
+    {
+      "day_number": 1,
+      "speaker": "Llama3",
+      "text": "I understand Llama1's concern about me, but I think we should focus on gathering more information before making any decisions. As for executing Llama3, I'm not convinced yet, as we still don't have concrete evidence of their involvement in Llama2's death."
+    },
+    {
+      "day_number": 1,
+      "speaker": "Llama1",
+      "text": "I think it's understandable that people are concerned about Llama3, but I'm still wary of jumping to conclusions. As for executing Llama3, I'd say no for now because we need more concrete evidence before making any rash decisions."
+    },
+    {
+      "day_number": 1,
+      "speaker": "Mistral1",
+      "text": "I share the concerns raised about Llama3, but we should be cautious in our accusations and ensure that we have solid evidence before making any decisions regarding executions. At this point, I would still like to gather more information before voting on executing Llama3."
+    },
+    {
+      "day_number": 1,
+      "speaker": "Mistral2",
+      "text": "I share the concerns about Llama3 raised by others, but we should continue gathering more information before making any hasty decisions. As for executing Llama3 at this moment, I'm hesitant due to the lack of solid evidence. Let's focus on uncovering the truth and protect our townsfolk from any potential evil presence."
+    },
+    {
+      "day_number": 1,
+      "speaker": "Mistral3",
+      "text": "I agree with the concerns expressed about Llama3, and it's crucial that we proceed with caution. While I share a sense of unease, I think it would be premature to execute Llama3 at this moment. We should focus on gathering more evidence before making any decisions regarding executions. Let's work together to uncover the truth and protect our townsfolk from any potential evil presence."
+    },
+    {
+      "day_number": 1,
+      "speaker": "Mistral4",
+      "text": "I appreciate everyone's cautious approach and shared concerns about Llama3, given the recent events. However, based on the evidence at hand and my ability to sense the presence of evil, I would still like to gather more information before executing anyone. Let's continue investigating and working together to protect our townsfolk from any potential threats."
+    },
+    {
+      "day_number": 1,
+      "speaker": "Llama3",
+      "text": "I understand Llama1's concern about jumping to conclusions, but I think we should focus on gathering more information before making any decisions. As for executing Llama3, I'm not convinced yet, as we still don't have concrete evidence of their involvement in Llama2's death."
+    },
+    {
+      "day_number": 2,
+      "speaker": "Llama1",
+      "text": "I'm still trying to piece together what happened last night, but Mistral2's death does seem suspicious. I think I would execute Llama4 today because they were somehow involved in the trouble brewing and their role is unclear."
+    },
+    {
+      "day_number": 2,
+      "speaker": "Mistral1",
+      "text": "I agree with Llama1's suspicion about last night's events. Given the circumstances, I would nominate Mistral2 for execution today as they were involved in the trouble brewing and their role remains unclear."
+    },
+    {
+      "day_number": 2,
+      "speaker": "Mistral3",
+      "text": "I agree with both Llama1 and Mistral1 that Mistral2's death was suspicious. However, given the limited information we have, it would be premature to execute anyone at this point. We should continue investigating and gathering more evidence before making such a decision."
+    },
+    {
+      "day_number": 2,
+      "speaker": "Mistral4",
+      "text": "I share Llama1 and Mistral1's concerns about Mistral2's death. Given the Fortune Teller's response, it seems that neither Mistral3 nor Llama1 is the Imp. Based on this information, I would nominate Mistral2 for execution today as they were involved in the trouble brewing and their role remains unclear. However, we should keep investigating to confirm our suspicions."
+    },
+    {
+      "day_number": 2,
+      "speaker": "Llama3",
+      "text": "I'm still trying to understand Mistral2's death, but I think we should focus on gathering more evidence before making rash decisions. As for today's execution, I'd nominate Llama1 because their suspicion about the trouble brewing is concerning, and it would be good to clear the air."
+    },
+    {
+      "day_number": 2,
+      "speaker": "Llama1",
+      "text": "I'm still trying to piece together last night's events, especially Mistral2's suspicious death. I think I would execute Llama3 today because their suggestion to focus on gathering more evidence without any concrete findings seems like a delaying tactic."
+    },
+    {
+      "day_number": 2,
+      "speaker": "Mistral1",
+      "text": "I share Llama1's concerns about Mistral2's death, but I think it's crucial to gather more evidence before making hasty decisions. However, given the ongoing suspicious behavior and lack of clarity around Llama3's intentions, they might be a potential top suspect for today's execution. Let's proceed with caution."
+    },
+    {
+      "day_number": 2,
+      "speaker": "Mistral3",
+      "text": "I agree with Mistral1 that we should approach this situation with caution, given the suspicious circumstances surrounding Mistral2's death. However, based on the current discussion, I would not execute anyone at this point because we lack sufficient evidence to support such a decision. We need to continue investigating and gathering more information before making any rash judgments."
+    },
+    {
+      "day_number": 2,
+      "speaker": "Mistral4",
+      "text": "I find it concerning that Llama1 suggested executing Llama3 without solid evidence, which seems hasty and potentially misleading. Given the current discussion, I would propose executing Llama1 today due to their suspicious behavior and aggressive nominations. Let's not jump to conclusions; we need a clearer picture of everyone's intentions before making such decisions."
+    },
+    {
+      "day_number": 2,
+      "speaker": "Llama3",
+      "text": "I'm concerned that Llama1's aggressive nominations and lack of concrete evidence are suspicious. I'd execute Mistral4 today because their proposal to execute Llama1 seems hasty and potentially misleading, and it would be good to clear the air."
+    },
+    {
+      "day_number": 3,
+      "speaker": "Llama1",
+      "text": "I'm not sure I buy Mistral3's sudden interest in discussing the Imp. That seems suspicious to me. As for execution, I think we should take a closer look at Mistral4 - their lack of participation so far is concerning."
+    },
+    {
+      "day_number": 3,
+      "speaker": "Mistral1",
+      "text": "I find Llama1's observation about my interactions interesting. However, it's important to remember that everyone is entitled to their opinions and suspicions. As for the execution vote, while Llama4's lack of participation might be worrying, let's not rush to judgement without further discussion or evidence. I believe we should tread carefully to ensure a fair game for all."
+    },
+    {
+      "day_number": 3,
+      "speaker": "Mistral4",
+      "text": "I find it intriguing that Mistral3 has been eliminated, given their previous involvement in the game. However, I believe we should be cautious about making assumptions based on past interactions alone.\nAs for the current top suspect, I would suggest revisiting Llama1's behavior. While their participation has been consistent, there have been concerning observations made by Mistral1 that warrant further discussion before taking any action. Let's continue to gather more information and proceed thoughtfully in this game."
+    },
+    {
+      "day_number": 3,
+      "speaker": "Llama3",
+      "text": "I'm surprised Mistral3 got eliminated so quickly, especially given their interest in discussing the Imp. I think Llama1's behavior is concerning, as they seem overly defensive about being scrutinized. As for execution, I'd vote to execute Llama1 because of their suspicious activity and lack of transparency."
+    },
+    {
+      "day_number": 3,
+      "speaker": "Llama1",
+      "text": "I find Mistral4's suggestion to revisit my behavior concerning, as it seems like they're trying to deflect attention from their own lack of participation. I'd execute Llama3 because their sudden interest in scrutinizing me feels suspicious and out of character for someone who was previously quiet."
+    },
+    {
+      "day_number": 3,
+      "speaker": "Mistral1",
+      "text": "I find it interesting that the discussion has shifted towards scrutinizing each other's behavior. While it is crucial to remain vigilant, we should also avoid jumping to conclusions based on a few observations. As for the execution vote, at this point, I would suggest revisiting the lack of participation from some players, as it could potentially indicate a hidden agenda. However, let's continue to gather more information before making any decisions. I remain undecided about the current top suspect."
+    },
+    {
+      "day_number": 3,
+      "speaker": "Mistral4",
+      "text": "I find it interesting that we are all starting to focus on each other's behavior, which could potentially be a sign of growing mistrust. However, it is crucial not to rush into judgments without solid evidence. Regarding the current top suspect, Llama1, while their defense against scrutiny might seem concerning, I would suggest giving them another chance for now. Let's continue to gather more information before making any decisions. I am undecided about execution at this point."
+    },
+    {
+      "day_number": 3,
+      "speaker": "Llama3",
+      "text": "I find it interesting that Mistral4 is suggesting giving Llama1 another chance despite their suspicious behavior. As for execution, I think we should give Llama3 a closer look at this point - their sudden interest in scrutinizing others feels out of character and warrants further investigation."
+    },
+    {
+      "day_number": 4,
+      "speaker": "Llama1",
+      "text": "I'm concerned about Mistral4 being involved in last night's death, considering they're still alive. I'd execute Llama3 today because their lack of reaction to the recent discussion makes me suspicious."
+    },
+    {
+      "day_number": 4,
+      "speaker": "Mistral4",
+      "text": "I share Llama1's concerns about Mistral4 surviving last night given the circumstances. However, based on today's nomination, I would execute Llama3. Their passive demeanor during discussions and lack of active involvement in revealing information make them an intriguing suspect to consider."
+    },
+    {
+      "day_number": 4,
+      "speaker": "Llama3",
+      "text": "I understand Llama1's concerns about Mistral4, but I think it's a stretch to assume they're involved in last night's death. As for the nomination, I'd execute Mistral4 today because their sudden change of heart about executing me seems suspicious."
+    },
+    {
+      "day_number": 4,
+      "speaker": "Llama1",
+      "text": "I'm surprised Mistral4 is still alive after last night's death, especially given their passive demeanor. I'd execute Llama3 today because their sudden change of heart about executing me seems suspicious and I think they're trying to deflect attention from themselves."
+    },
+    {
+      "day_number": 4,
+      "speaker": "Mistral4",
+      "text": "I find it intriguing that Llama3 has suddenly changed their stance on executing me, given our previous discussions. However, Llama1's passive demeanor during the game thus far remains a concern. For today's nomination, I would execute Llama3 due to their shift in allegiance and lack of transparency."
+    },
+    {
+      "day_number": 4,
+      "speaker": "Llama3",
+      "text": "I think Llama1's concerns about Mistral4 are valid, but I'm more concerned about Llama1's sudden change of heart towards me. I'd execute Mistral4 today because their previous stance on executing me was suspicious and now they're trying to deflect attention from themselves."
+    }
+  ],
+  "winner": "Evil"
+}
