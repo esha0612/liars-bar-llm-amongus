@@ -1,4 +1,4 @@
-from game import Game
+from game import BotCGame
 from typing import Dict, List
 import argparse
 
@@ -19,7 +19,7 @@ class MultiGameRunner:
             print(f"\n=== Start {game_num}/{self.num_games} Game ===")
             
             # Create and run new game
-            game = Game(self.player_configs)
+            game = BotCGame(self.player_configs)
             game.start_game()
             
             print(f"Game {game_num} ended")
@@ -50,7 +50,8 @@ if __name__ == '__main__':
         {"name": "Derek", "model": "mistral:latest"},
         {"name": "Emma", "model": "llama3"},
         {"name": "Noah", "model": "mistral:7b"},
-        {"name": "James", "model": "mistral:latest"}
+        {"name": "James", "model": "mistral:latest"},
+        {"name": "George", "model": "llama3"},
     ]
 
     # Create and run multiple games
