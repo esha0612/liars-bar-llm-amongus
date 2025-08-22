@@ -1,4 +1,5 @@
 import random
+import time
 from typing import List, Optional, Dict
 from player import Player
 from game_record import GameRecord, PlayerInitialState
@@ -28,6 +29,11 @@ class Game:
         self.game_record: GameRecord = GameRecord()
         self.game_record.start_game([p.name for p in self.players])
         self.round_count = 0
+        
+        # Game timeout settings
+        self.max_game_duration = 3600  # 1 hour maximum game duration
+        self.max_rounds = 50  # Maximum 50 rounds to prevent infinite loops
+        self.game_start_time = None
 
     def _create_deck(self) -> List[str]:
         """Create and shuffle the deck"""
@@ -391,11 +397,44 @@ class Game:
 
     def start_game(self) -> None:
         """Start game main loop"""
+        self.game_start_time = time.time()
         self.deal_cards()
         self.choose_target_card()
         self.start_round_record()
+        
         while not self.game_over:
+            # Check for timeout conditions
+            if self._check_timeout():
+                print("Game timeout reached, ending game")
+                self._handle_timeout_end()
+                break
+                
+            if self.round_count >= self.max_rounds:
+                print(f"Maximum rounds ({self.max_rounds}) reached, ending game")
+                self._handle_timeout_end()
+                break
+                
             self.play_round()
+    
+    def _check_timeout(self) -> bool:
+        """Check if the game has exceeded the maximum duration"""
+        if self.game_start_time is None:
+            return False
+        elapsed_time = time.time() - self.game_start_time
+        return elapsed_time > self.max_game_duration
+    
+    def _handle_timeout_end(self) -> None:
+        """Handle game ending due to timeout"""
+        # Find the player with the most cards as the winner
+        alive_players = [p for p in self.players if p.alive]
+        if alive_players:
+            winner = max(alive_players, key=lambda p: len(p.hand))
+            print(f"\nGame ended due to timeout. {winner.name} wins by having the most cards ({len(winner.hand)})!")
+            self.game_record.finish_game(winner.name)
+        else:
+            print("\nGame ended due to timeout. No winner determined.")
+            self.game_record.finish_game("Timeout - No Winner")
+        self.game_over = True
 
 if __name__ == '__main__':
     # Configure player information, where model is the name of the model you call through API

@@ -305,7 +305,7 @@ class Player:
                 previous_opinion=previous_opinion
             )
             
-            # Request analysis from LLM
+            # Request analysis from LLM with timeout handling
             messages = [
                 {"role": "user", "content": prompt}
             ]
@@ -313,12 +313,18 @@ class Player:
             try:
                 content, _ = self.llm_client.chat(messages, model=self.model_name)
                 
-                # Update impression of the player
-                self.opinions[player_name] = content.strip()
-                print(f"{self.name} updated impression of {player_name}")
+                # Check if we got a valid response
+                if content and content.strip():
+                    # Update impression of the player
+                    self.opinions[player_name] = content.strip()
+                    print(f"{self.name} updated impression of {player_name}")
+                else:
+                    print(f"{self.name} got empty response for {player_name}, keeping previous opinion")
                 
             except Exception as e:
-                print(f"Error reflecting on player {player_name}: {str(e)}")
+                print(f"Error reflecting on player {player_name} for {self.name}: {str(e)}")
+                # Keep the previous opinion if reflection fails
+                print(f"Keeping previous opinion for {player_name}: {previous_opinion}")
 
     def process_penalty(self) -> bool:
         """Handle penalty"""
