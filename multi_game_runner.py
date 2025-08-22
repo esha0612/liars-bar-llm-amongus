@@ -50,7 +50,12 @@ if __name__ == '__main__':
         {"name": "Derek", "model": "mistral:latest"},
         {"name": "Emma", "model": "llama3"},
         {"name": "Noah", "model": "mistral:7b"},
-        {"name": "James", "model": "mistral:latest"}
+        {"name": "James", "model": "mistral:latest"},
+        {"name": "George", "model": "llama3"},
+        {"name": "Hannah", "model": "mistral:7b"},
+        {"name": "Christian", "model": "mistral:latest"},
+        {"name": "Monica", "model": "llama3"},
+        {"name": "Penny", "model": "mistral:7b"},
     ]
 
     # Create and run multiple games
