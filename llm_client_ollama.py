@@ -27,7 +27,17 @@ class LLMClientOllama:
                 options={"temperature": 0.7}
             )
             
-            content = response.message.content
+            # Handle different response structures
+            if hasattr(response, 'message') and hasattr(response.message, 'content'):
+                content = response.message.content
+            elif hasattr(response, 'content'):
+                content = response.content
+            elif isinstance(response, dict) and 'message' in response:
+                content = response['message'].get('content', '')
+            else:
+                # Try to get content from response directly
+                content = str(response) if response else ""
+            
             # Ollama doesn't natively support reasoning_content, can be extended if needed
             reasoning_content = ""
             

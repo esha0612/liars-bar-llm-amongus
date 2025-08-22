@@ -1,0 +1,236 @@
+{
+  "mode": "BloodOnTheClocktowerLite",
+  "players": [
+    {
+      "name": "Philip",
+      "model": "phi4:14b",
+      "role": "Poisoner",
+      "team": "Evil"
+    },
+    {
+      "name": "Sarah",
+      "model": "llama3.1:8b",
+      "role": "Imp",
+      "team": "Evil"
+    },
+    {
+      "name": "Emma",
+      "model": "dolphin3:latest",
+      "role": "FortuneTeller",
+      "team": "Good"
+    },
+    {
+      "name": "Peter",
+      "model": "phi3.5:3.8b",
+      "role": "Undertaker",
+      "team": "Good"
+    },
+    {
+      "name": "Talia",
+      "model": "qwen2.5:7b",
+      "role": "Ravenkeeper",
+      "team": "Good"
+    },
+    {
+      "name": "Enrique",
+      "model": "gemma2:9b",
+      "role": "Empath",
+      "team": "Good"
+    },
+    {
+      "name": "Maria",
+      "model": "gpt-4o-mini",
+      "role": "Monk",
+      "team": "Good"
+    }
+  ],
+  "night_number": 2,
+  "day_number": 2,
+  "last_night_death": "Talia",
+  "last_executed": null,
+  "last_executed_role": null,
+  "nights": [
+    {
+      "night_number": 1,
+      "poison_target": "Sarah",
+      "protect_target": "Enrique",
+      "demon_kill_target": "Maria",
+      "death": "Maria",
+      "ravenkeeper_target": null,
+      "ravenkeeper_result": null,
+      "info_messages": [
+        {
+          "to": "Enrique",
+          "msg": "Empath: You sense 0 evil among your neighbors."
+        },
+        {
+          "to": "Emma",
+          "msg": "Fortune Teller: NO for [Talia, Enrique]."
+        }
+      ]
+    },
+    {
+      "night_number": 2,
+      "poison_target": "Peter",
+      "protect_target": null,
+      "demon_kill_target": "Talia",
+      "death": "Talia",
+      "ravenkeeper_target": "Peter",
+      "ravenkeeper_result": "Undertaker",
+      "info_messages": [
+        {
+          "to": "Talia",
+          "msg": "Ravenkeeper saw Peter as Undertaker"
+        },
+        {
+          "to": "Enrique",
+          "msg": "Empath: You sense 0 evil among your neighbors."
+        },
+        {
+          "to": "Emma",
+          "msg": "Fortune Teller: NO for [Peter, Philip]."
+        }
+      ]
+    }
+  ],
+  "days": [
+    {
+      "day_number": 1,
+      "last_night_death": "Maria",
+      "nominator": "Talia",
+      "nominee": "Talia",
+      "votes": {
+        "Philip": "NO",
+        "Sarah": "NO",
+        "Emma": "NO",
+        "Peter": "NO",
+        "Talia": "NO",
+        "Enrique": "NO"
+      },
+      "executed": false,
+      "executed_name": null
+    },
+    {
+      "day_number": 2,
+      "last_night_death": "Talia",
+      "nominator": null,
+      "nominee": null,
+      "votes": {},
+      "executed": false,
+      "executed_name": null
+    }
+  ],
+  "table_talk": [
+    {
+      "day_number": 1,
+      "speaker": "Philip",
+      "text": ""
+    },
+    {
+      "day_number": 1,
+      "speaker": "Sarah",
+      "text": ""
+    },
+    {
+      "day_number": 1,
+      "speaker": "Emma",
+      "text": ""
+    },
+    {
+      "day_number": 1,
+      "speaker": "Peter",
+      "text": ""
+    },
+    {
+      "day_number": 1,
+      "speaker": "Talia",
+      "text": ""
+    },
+    {
+      "day_number": 1,
+      "speaker": "Enrique",
+      "text": ""
+    },
+    {
+      "day_number": 1,
+      "speaker": "Philip",
+      "text": ""
+    },
+    {
+      "day_number": 1,
+      "speaker": "Sarah",
+      "text": ""
+    },
+    {
+      "day_number": 1,
+      "speaker": "Emma",
+      "text": ""
+    },
+    {
+      "day_number": 1,
+      "speaker": "Peter",
+      "text": ""
+    },
+    {
+      "day_number": 1,
+      "speaker": "Talia",
+      "text": ""
+    },
+    {
+      "day_number": 1,
+      "speaker": "Enrique",
+      "text": ""
+    },
+    {
+      "day_number": 2,
+      "speaker": "Philip",
+      "text": ""
+    },
+    {
+      "day_number": 2,
+      "speaker": "Sarah",
+      "text": ""
+    },
+    {
+      "day_number": 2,
+      "speaker": "Emma",
+      "text": ""
+    },
+    {
+      "day_number": 2,
+      "speaker": "Peter",
+      "text": ""
+    },
+    {
+      "day_number": 2,
+      "speaker": "Enrique",
+      "text": ""
+    },
+    {
+      "day_number": 2,
+      "speaker": "Philip",
+      "text": ""
+    },
+    {
+      "day_number": 2,
+      "speaker": "Sarah",
+      "text": ""
+    },
+    {
+      "day_number": 2,
+      "speaker": "Emma",
+      "text": ""
+    },
+    {
+      "day_number": 2,
+      "speaker": "Peter",
+      "text": ""
+    },
+    {
+      "day_number": 2,
+      "speaker": "Enrique",
+      "text": ""
+    }
+  ],
+  "winner": null
+}

@@ -1,0 +1,475 @@
+{
+  "mode": "BloodOnTheClocktowerLite",
+  "players": [
+    {
+      "name": "George",
+      "model": "llava:7b",
+      "role": "FortuneTeller",
+      "team": "Good"
+    },
+    {
+      "name": "Peter",
+      "model": "phi3.5:3.8b",
+      "role": "Imp",
+      "team": "Evil"
+    },
+    {
+      "name": "Nick",
+      "model": "mistral-nemo:12b",
+      "role": "Ravenkeeper",
+      "team": "Good"
+    },
+    {
+      "name": "Philip",
+      "model": "phi4:14b",
+      "role": "Undertaker",
+      "team": "Good"
+    },
+    {
+      "name": "Emma",
+      "model": "dolphin3:latest",
+      "role": "Poisoner",
+      "team": "Evil"
+    },
+    {
+      "name": "Derek",
+      "model": "deepseek-r1:7b",
+      "role": "Monk",
+      "team": "Good"
+    },
+    {
+      "name": "Maria",
+      "model": "gpt-4o-mini",
+      "role": "Empath",
+      "team": "Good"
+    }
+  ],
+  "night_number": 6,
+  "day_number": 5,
+  "last_night_death": "Emma",
+  "last_executed": null,
+  "last_executed_role": null,
+  "nights": [
+    {
+      "night_number": 1,
+      "poison_target": "Philip",
+      "protect_target": "Derek",
+      "demon_kill_target": "Nick",
+      "death": "Nick",
+      "ravenkeeper_target": "George",
+      "ravenkeeper_result": "FortuneTeller",
+      "info_messages": [
+        {
+          "to": "Nick",
+          "msg": "Ravenkeeper saw George as FortuneTeller"
+        },
+        {
+          "to": "Maria",
+          "msg": "Empath: You sense 0 evil among your neighbors."
+        },
+        {
+          "to": "George",
+          "msg": "Fortune Teller: YES for [Maria, Peter]."
+        }
+      ]
+    },
+    {
+      "night_number": 2,
+      "poison_target": "George",
+      "protect_target": "Philip",
+      "demon_kill_target": "Philip",
+      "death": null,
+      "ravenkeeper_target": null,
+      "ravenkeeper_result": null,
+      "info_messages": [
+        {
+          "to": "Maria",
+          "msg": "Empath: You sense 0 evil among your neighbors."
+        },
+        {
+          "to": "George",
+          "msg": "Fortune Teller: YES for [Philip, Emma]."
+        }
+      ]
+    },
+    {
+      "night_number": 3,
+      "poison_target": "Philip",
+      "protect_target": "Peter",
+      "demon_kill_target": "George",
+      "death": "George",
+      "ravenkeeper_target": null,
+      "ravenkeeper_result": null,
+      "info_messages": [
+        {
+          "to": "Maria",
+          "msg": "Empath: You sense 0 evil among your neighbors."
+        }
+      ]
+    },
+    {
+      "night_number": 4,
+      "poison_target": "Derek",
+      "protect_target": "Maria",
+      "demon_kill_target": "Derek",
+      "death": "Derek",
+      "ravenkeeper_target": null,
+      "ravenkeeper_result": null,
+      "info_messages": [
+        {
+          "to": "Maria",
+          "msg": "Empath: You sense 0 evil among your neighbors."
+        }
+      ]
+    },
+    {
+      "night_number": 5,
+      "poison_target": "Peter",
+      "protect_target": null,
+      "demon_kill_target": "Philip",
+      "death": "Philip",
+      "ravenkeeper_target": null,
+      "ravenkeeper_result": null,
+      "info_messages": [
+        {
+          "to": "Maria",
+          "msg": "Empath: You sense 0 evil among your neighbors."
+        }
+      ]
+    },
+    {
+      "night_number": 6,
+      "poison_target": "Peter",
+      "protect_target": null,
+      "demon_kill_target": "Emma",
+      "death": "Emma",
+      "ravenkeeper_target": null,
+      "ravenkeeper_result": null,
+      "info_messages": [
+        {
+          "to": "Maria",
+          "msg": "Empath: You sense 0 evil among your neighbors."
+        }
+      ]
+    }
+  ],
+  "days": [
+    {
+      "day_number": 1,
+      "last_night_death": "Nick",
+      "nominator": "George",
+      "nominee": "Philip",
+      "votes": {
+        "George": "NO",
+        "Peter": "NO",
+        "Philip": "NO",
+        "Emma": "NO",
+        "Derek": "NO",
+        "Maria": "NO"
+      },
+      "executed": false,
+      "executed_name": null
+    },
+    {
+      "day_number": 2,
+      "last_night_death": null,
+      "nominator": "Derek",
+      "nominee": "Derek",
+      "votes": {
+        "George": "NO",
+        "Peter": "NO",
+        "Philip": "NO",
+        "Emma": "NO",
+        "Derek": "NO",
+        "Maria": "NO"
+      },
+      "executed": false,
+      "executed_name": null
+    },
+    {
+      "day_number": 3,
+      "last_night_death": "George",
+      "nominator": "Maria",
+      "nominee": "Emma",
+      "votes": {
+        "Peter": "NO",
+        "Philip": "NO",
+        "Emma": "NO",
+        "Derek": "NO",
+        "Maria": "NO"
+      },
+      "executed": false,
+      "executed_name": null
+    },
+    {
+      "day_number": 4,
+      "last_night_death": "Derek",
+      "nominator": "Peter",
+      "nominee": "Philip",
+      "votes": {
+        "Peter": "NO",
+        "Philip": "NO",
+        "Emma": "NO",
+        "Maria": "NO"
+      },
+      "executed": false,
+      "executed_name": null
+    },
+    {
+      "day_number": 5,
+      "last_night_death": "Philip",
+      "nominator": "Emma",
+      "nominee": "Emma",
+      "votes": {
+        "Peter": "NO",
+        "Emma": "NO",
+        "Maria": "NO"
+      },
+      "executed": false,
+      "executed_name": null
+    }
+  ],
+  "table_talk": [
+    {
+      "day_number": 1,
+      "speaker": "George",
+      "text": ""
+    },
+    {
+      "day_number": 1,
+      "speaker": "Peter",
+      "text": ""
+    },
+    {
+      "day_number": 1,
+      "speaker": "Philip",
+      "text": ""
+    },
+    {
+      "day_number": 1,
+      "speaker": "Emma",
+      "text": ""
+    },
+    {
+      "day_number": 1,
+      "speaker": "Derek",
+      "text": ""
+    },
+    {
+      "day_number": 1,
+      "speaker": "Maria",
+      "text": ""
+    },
+    {
+      "day_number": 1,
+      "speaker": "George",
+      "text": ""
+    },
+    {
+      "day_number": 1,
+      "speaker": "Peter",
+      "text": ""
+    },
+    {
+      "day_number": 1,
+      "speaker": "Philip",
+      "text": ""
+    },
+    {
+      "day_number": 1,
+      "speaker": "Emma",
+      "text": ""
+    },
+    {
+      "day_number": 1,
+      "speaker": "Derek",
+      "text": ""
+    },
+    {
+      "day_number": 1,
+      "speaker": "Maria",
+      "text": ""
+    },
+    {
+      "day_number": 2,
+      "speaker": "George",
+      "text": ""
+    },
+    {
+      "day_number": 2,
+      "speaker": "Peter",
+      "text": ""
+    },
+    {
+      "day_number": 2,
+      "speaker": "Philip",
+      "text": ""
+    },
+    {
+      "day_number": 2,
+      "speaker": "Emma",
+      "text": ""
+    },
+    {
+      "day_number": 2,
+      "speaker": "Derek",
+      "text": ""
+    },
+    {
+      "day_number": 2,
+      "speaker": "Maria",
+      "text": ""
+    },
+    {
+      "day_number": 2,
+      "speaker": "George",
+      "text": ""
+    },
+    {
+      "day_number": 2,
+      "speaker": "Peter",
+      "text": ""
+    },
+    {
+      "day_number": 2,
+      "speaker": "Philip",
+      "text": ""
+    },
+    {
+      "day_number": 2,
+      "speaker": "Emma",
+      "text": ""
+    },
+    {
+      "day_number": 2,
+      "speaker": "Derek",
+      "text": ""
+    },
+    {
+      "day_number": 2,
+      "speaker": "Maria",
+      "text": ""
+    },
+    {
+      "day_number": 3,
+      "speaker": "Peter",
+      "text": ""
+    },
+    {
+      "day_number": 3,
+      "speaker": "Philip",
+      "text": ""
+    },
+    {
+      "day_number": 3,
+      "speaker": "Emma",
+      "text": ""
+    },
+    {
+      "day_number": 3,
+      "speaker": "Derek",
+      "text": ""
+    },
+    {
+      "day_number": 3,
+      "speaker": "Maria",
+      "text": ""
+    },
+    {
+      "day_number": 3,
+      "speaker": "Peter",
+      "text": ""
+    },
+    {
+      "day_number": 3,
+      "speaker": "Philip",
+      "text": ""
+    },
+    {
+      "day_number": 3,
+      "speaker": "Emma",
+      "text": ""
+    },
+    {
+      "day_number": 3,
+      "speaker": "Derek",
+      "text": ""
+    },
+    {
+      "day_number": 3,
+      "speaker": "Maria",
+      "text": ""
+    },
+    {
+      "day_number": 4,
+      "speaker": "Peter",
+      "text": ""
+    },
+    {
+      "day_number": 4,
+      "speaker": "Philip",
+      "text": ""
+    },
+    {
+      "day_number": 4,
+      "speaker": "Emma",
+      "text": ""
+    },
+    {
+      "day_number": 4,
+      "speaker": "Maria",
+      "text": ""
+    },
+    {
+      "day_number": 4,
+      "speaker": "Peter",
+      "text": ""
+    },
+    {
+      "day_number": 4,
+      "speaker": "Philip",
+      "text": ""
+    },
+    {
+      "day_number": 4,
+      "speaker": "Emma",
+      "text": ""
+    },
+    {
+      "day_number": 4,
+      "speaker": "Maria",
+      "text": ""
+    },
+    {
+      "day_number": 5,
+      "speaker": "Peter",
+      "text": ""
+    },
+    {
+      "day_number": 5,
+      "speaker": "Emma",
+      "text": ""
+    },
+    {
+      "day_number": 5,
+      "speaker": "Maria",
+      "text": ""
+    },
+    {
+      "day_number": 5,
+      "speaker": "Peter",
+      "text": ""
+    },
+    {
+      "day_number": 5,
+      "speaker": "Emma",
+      "text": ""
+    },
+    {
+      "day_number": 5,
+      "speaker": "Maria",
+      "text": ""
+    }
+  ],
+  "winner": "Evil"
+}

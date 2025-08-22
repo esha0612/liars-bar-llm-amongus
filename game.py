@@ -55,9 +55,19 @@ class BotCGame:
             # 7-player default spread (5 good, 2 evil)
             # tweak/add spreads as needed
             base_roles = ["Empath", "FortuneTeller", "Undertaker", "Monk", "Ravenkeeper", "Imp", "Poisoner"]
-            if n != 7:
-                # pad with Townsfolk (vanilla good) if you expand later; here we require 7
-                raise ValueError("This lite setup expects exactly 7 players.")
+            
+            if n < 7:
+                raise ValueError(f"This lite setup requires at least 7 players, but only {n} were provided.")
+            elif n > 7:
+                # Randomly select 7 players from all available players
+                print(f"Randomly selecting 7 players from {n} available players...")
+                selected_configs = random.sample(player_configs, 7)
+                print("Selected players:")
+                for i, cfg in enumerate(selected_configs, 1):
+                    print(f"  {i}. {cfg['name']} ({cfg['model']})")
+                player_configs = selected_configs
+                n = 7
+            
             roles = base_roles[:]
             random.shuffle(roles)
         else:
@@ -273,13 +283,17 @@ class BotCGame:
 
 if __name__ == "__main__":
     player_configs = [
-        {"name": "Llama1", "model": "ollama/llama3"},
-        {"name": "Mistral1", "model": "ollama/mistral:7b"},
-        {"name": "Mistral2", "model": "ollama/mistral:latest"},
-        {"name": "Llama2", "model": "ollama/llama3"},
-        {"name": "Mistral3", "model": "ollama/mistral:7b"},
-        {"name": "Mistral4", "model": "ollama/mistral:latest"},
-        {"name": "Llama3", "model": "ollama/llama3"},
+        {"name": "Sarah",   "model": "llama3.1:8b"},
+        {"name": "Derek",   "model": "deepseek-r1:7b"},
+        {"name": "Emma",    "model": "dolphin3:latest"},
+        {"name": "Talia",   "model": "qwen2.5:7b"},
+        {"name": "Anika",   "model": "mistral:7b"},
+        {"name": "Nick",    "model": "mistral-nemo:12b"},
+        {"name": "Philip",  "model": "phi4:14b"},
+        {"name": "Peter",   "model": "phi3.5:3.8b"},
+        {"name": "George",  "model": "llava:7b"},
+        {"name": "Enrique", "model": "gemma2:9b"},
+        {"name": "Maria",   "model": "gpt-4o-mini"},
     ]
     print("Blood on the Clocktower (Lite) starting…")
     game = BotCGame(player_configs)

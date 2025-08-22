@@ -2,17 +2,34 @@
 import os
 from typing import List, Dict, Tuple, Optional
 
+# Load environment variables from .env file
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+    print("✅ Loaded environment variables from .env file")
+except ImportError:
+    print("⚠️  python-dotenv not available. Loading .env file manually...")
+    try:
+        with open('.env', 'r') as f:
+            for line in f:
+                if line.strip() and not line.startswith('#'):
+                    key, value = line.strip().split('=', 1)
+                    os.environ[key] = value
+        print("✅ Loaded environment variables from .env file manually")
+    except FileNotFoundError:
+        print("⚠️  No .env file found. Make sure to set environment variables manually.")
+    except Exception as e:
+        print(f"⚠️  Error loading .env file: {e}")
+
 # Import your helpers (each with .chat(messages, model) -> (content, reasoning))
 # Make sure these filenames/names match your project:
 from llm_client_openai import LLMClientOpenAI
-from llm_client_anthropic import LLMClientAnthropic
 from llm_client_ollama import LLMClientOllama
 
 
 # Defaults you can override with env vars
 OLLAMA_DEFAULT_MODEL = os.getenv("OLLAMA_DEFAULT_MODEL", "llama3.1")
 OPENAI_ENABLED = os.getenv("OPENAI_ENABLED", "auto")  # "auto" | "on" | "off"
-ANTHROPIC_ENABLED = os.getenv("ANTHROPIC_ENABLED", "auto")  # "auto" | "on" | "off"
 
 
 class LLMRouter:
@@ -34,16 +51,18 @@ class LLMRouter:
       - When a requested provider is unavailable, we log and FALL BACK to Ollama.
       - Return shape is always: (content, reasoning_content)
     """
+    
+    # Class-level flags to ensure debug messages are only printed once
+    _api_key_logged = False
+    _base_url_logged = False
 
     def __init__(
         self,
         openai: Optional[LLMClientOpenAI] = None,
-        anthropic: Optional[LLMClientAnthropic] = None,
-        ollama: Optional[LLMClientOllama] = None,
+        ollama: Optional[LLMClientOllama] = None
     ):
         self._ollama = self._init_ollama(ollama)
         self._openai = self._init_openai(openai)
-        self._anthropic = self._init_anthropic(anthropic)
 
     # ---------------------- init helpers ----------------------
 
@@ -73,33 +92,28 @@ class LLMRouter:
         api_key = os.getenv("OPENAI_API_KEY")
         if not api_key:
             print("[Router] OpenAI not configured (missing OPENAI_API_KEY) — skipping")
+            print("[Router] Make sure your .env file contains: OPENAI_API_KEY=your_actual_api_key")
             return None
+        
+        # Debug: Show API key status only once (first few characters only)
+        if not LLMRouter._api_key_logged:
+            if api_key and len(api_key) > 10:
+                print(f"[Router] OpenAI API key found")
+            else:
+                print(f"[Router] OpenAI API key found but seems invalid (length: {len(api_key) if api_key else 0})")
+            LLMRouter._api_key_logged = True
 
         try:
-            return LLMClientOpenAI(api_key=api_key, base_url=os.getenv("OPENAI_BASE_URL"))
+            base_url = os.getenv("OPENAI_BASE_URL")
+            if base_url and not LLMRouter._base_url_logged:
+                print(f"[Router] Using OpenAI base URL: {base_url}")
+                LLMRouter._base_url_logged = True
+            return LLMClientOpenAI(api_key=api_key, base_url=base_url)
         except Exception as e:
             print(f"[Router] OpenAI init failed: {e} — skipping")
             return None
 
-    def _init_anthropic(self, instance: Optional[LLMClientAnthropic]) -> Optional[LLMClientAnthropic]:
-        mode = self._env_truthy("ANTHROPIC_ENABLED", ANTHROPIC_ENABLED)  # "auto"|"on"|"off"
-        if instance is not None:
-            return instance
-
-        if mode == "off":
-            print("[Router] Anthropic disabled via ANTHROPIC_ENABLED=off")
-            return None
-
-        api_key = os.getenv("ANTHROPIC_API_KEY")
-        if not api_key:
-            print("[Router] Anthropic not configured (missing ANTHROPIC_API_KEY) — skipping")
-            return None
-
-        try:
-            return LLMClientAnthropic(api_key=api_key, base_url=os.getenv("ANTHROPIC_BASE_URL"))
-        except Exception as e:
-            print(f"[Router] Anthropic init failed: {e} — skipping")
-            return None
+    
 
     # ---------------------- routing ----------------------
 
@@ -126,8 +140,7 @@ class LLMRouter:
             p = provider.lower()
             if p in ("openai", "oai"):
                 return self._safe_chat(self._openai, messages, model, fallback="openai")
-            if p in ("anthropic", "claude"):
-                return self._safe_chat(self._anthropic, messages, model, fallback="anthropic")
+           
             if p in ("ollama", "local"):
                 return self._safe_chat(self._ollama, messages, model, fallback="ollama")
             print(f"[Router] Unknown provider '{provider}' — falling back to Ollama")
@@ -136,20 +149,12 @@ class LLMRouter:
         # 2) Prefix routing
         if model.startswith("openai/"):
             return self._safe_chat(self._openai, messages, model.split("/", 1)[1], fallback="openai")
-        if model.startswith("claude/") or model.startswith("anthropic/"):
-            return self._safe_chat(self._anthropic, messages, model.split("/", 1)[1], fallback="anthropic")
+      
         if model.startswith("ollama/"):
             return self._safe_chat(self._ollama, messages, model.split("/", 1)[1], fallback="ollama")
 
         # 3) No provider/prefix: try OpenAI -> Anthropic -> Ollama
-        content, reasoning = self._try_provider(self._openai, messages, model, tag="OpenAI")
-        if content or reasoning:
-            return content, reasoning
-
-        content, reasoning = self._try_provider(self._anthropic, messages, model, tag="Anthropic")
-        if content or reasoning:
-            return content, reasoning
-
+        
         # Final fallback
         return self._safe_chat(self._ollama, messages, self._default_ollama_model(model), fallback="ollama")
 
@@ -158,7 +163,7 @@ class LLMRouter:
     def _default_ollama_model(self, requested_model: str) -> str:
         # If the requested model was clearly not an Ollama model, fall back to a sensible default.
         # Otherwise, pass through the requested one.
-        if any(requested_model.startswith(prefix) for prefix in ("openai/", "claude/", "anthropic/")):
+        if any(requested_model.startswith(prefix) for prefix in ("openai/", "claude/")):
             return OLLAMA_DEFAULT_MODEL
         return requested_model or OLLAMA_DEFAULT_MODEL
 
