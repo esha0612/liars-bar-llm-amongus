@@ -3,6 +3,7 @@ from typing import List, Optional, Dict
 from player import Player
 from game_record import GameRecord, PlayerInitialState
 
+
 class Game:
     def __init__(self, player_configs: List[Dict[str, str]]) -> None:
         """Initialize the game
@@ -399,34 +400,19 @@ class Game:
 if __name__ == '__main__':
     # Configure player information, where model is the name of the model you call through API
     player_configs = [
-        # {
-        #     "name": "DeepSeek",
-        #     "model": "deepseek-r1:8b"
-        # },
-        #{
-        #    "name": "ChatGPT",
-        #    "model": "o3-mini"
-        #},
-        #{
-        #    "name": "Claude",
-        #    "model": "claude-3.7-sonnet"
-        #},
-        #{
-        #    "name": "Gemini",
-        #    "model": "gemini-2.0-flash-thinking"
-        #}
-        {
-            "name": "Llama3",
-            "model": "llama3"
-        },
-        {
-            "name": "Mistral1",
-            "model": "mistral:7b"
-        },
-        {
-            "name": "Mistral2",
-            "model": "mistral:latest"
-        }
+       
+        {"name": "Sarah",   "model": "llama3.1:8b"},
+        {"name": "Derek",   "model": "deepseek-r1:7b"},
+        {"name": "Emma",    "model": "dolphin3:latest"},
+        {"name": "Talia",   "model": "qwen 2.5:7b"},
+        {"name": "Anika",   "model": "mistral:7b"},
+        {"name": "Nick",    "model": "mistral-nemo:12b"},
+        {"name": "Philip",  "model": "phi4:14b"},
+        {"name": "Peter",   "model": "phi3.5:3.8b"},
+        {"name": "George",  "model": "llava:7b"},
+        {"name": "Enrique", "model": "gemma2:9b"},
+        {"name": "Maria",   "model": "gpt-4o-mini"}
+
     ]
 
     print("Game starts! Player configurations are as follows:")

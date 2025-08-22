@@ -1,8 +1,9 @@
 import random
 import json
 import re
+import time
 from typing import List, Dict
-from llm_client import LLMClient
+from multi_llm_client import LLMClient
 
 RULE_BASE_PATH = "prompt/rule_base.txt"
 PLAY_CARD_PROMPT_TEMPLATE_PATH = "prompt/play_card_prompt_template.txt"
@@ -27,6 +28,9 @@ class Player:
         # LLM related initialization
         self.llm_client = LLMClient()
         self.model_name = model_name
+        
+        # Timeout settings for retry loops
+        self.max_retry_time = 60  # Maximum 60 seconds for all retries combined
 
     def _read_file(self, filepath: str) -> str:
         """Read file content"""
@@ -88,8 +92,14 @@ class Player:
             current_cards=current_cards
         )
         
-        # Try to get a valid JSON response, up to 5 times
+        # Try to get a valid JSON response, up to 5 times with timeout
+        start_time = time.time()
         for attempt in range(5):
+            # Check if we've exceeded the maximum retry time
+            if time.time() - start_time > self.max_retry_time:
+                print(f"Player {self.name} exceeded maximum retry time, using fallback strategy")
+                return self._fallback_play_cards(), ""
+            
             # Send the same original prompt each time
             messages = [
                 {"role": "user", "content": prompt}
@@ -97,6 +107,11 @@ class Player:
             
             try:
                 content, reasoning_content = self.llm_client.chat(messages, model=self.model_name)
+                
+                # Check if we got a valid response
+                if not content:
+                    print(f"Attempt {attempt+1}: Empty response from {self.model_name}")
+                    continue
                 
                 # Try to extract JSON part from content
                 json_match = re.search(r'({[\s\S]*})', content)
@@ -110,6 +125,21 @@ class Player:
                         if not isinstance(result["played_cards"], list):
                             result["played_cards"] = [result["played_cards"]]
                         
+                        # Handle cases where model returns numbers instead of card names
+                        processed_cards = []
+                        for card in result["played_cards"]:
+                            if isinstance(card, (int, float)):
+                                # If model returns a number, try to map it to cards in hand
+                                if 1 <= card <= len(self.hand):
+                                    processed_cards.append(self.hand[int(card) - 1])
+                                else:
+                                    # If number is out of range, just take the first card
+                                    processed_cards.append(self.hand[0])
+                            else:
+                                processed_cards.append(card)
+                        
+                        result["played_cards"] = processed_cards
+                        
                         # Ensure selected cards are valid (1-3 cards from hand)
                         valid_cards = all(card in self.hand for card in result["played_cards"])
                         valid_count = 1 <= len(result["played_cards"]) <= 3
@@ -122,8 +152,32 @@ class Player:
                                 
             except Exception as e:
                 # Record error, do not modify retry request
-                print(f"Attempt {attempt+1} parsing failed: {str(e)}")
-        raise RuntimeError(f"Player {self.name} choose_cards_to_play method failed after multiple attempts")
+                print(f"Attempt {attempt+1} parsing failed for {self.name}: {str(e)}")
+                
+                # Add a small delay between retries to avoid overwhelming the API
+                time.sleep(1)
+        
+        # If all attempts failed, use fallback strategy
+        print(f"Player {self.name} failed to get valid response after 5 attempts, using fallback")
+        return self._fallback_play_cards(), ""
+
+    def _fallback_play_cards(self) -> Dict:
+        """Fallback strategy when LLM calls fail"""
+        # Play the first card in hand as a fallback
+        if self.hand:
+            card_to_play = [self.hand[0]]
+            self.hand.remove(card_to_play[0])
+            return {
+                "played_cards": card_to_play,
+                "behavior": "Fallback: Playing first card due to LLM failure",
+                "play_reason": "LLM response failed, using fallback strategy"
+            }
+        else:
+            return {
+                "played_cards": [],
+                "behavior": "No cards to play",
+                "play_reason": "Hand is empty"
+            }
 
     def decide_challenge(self,
                         round_base_info: str,
@@ -163,8 +217,14 @@ class Player:
             extra_hint=extra_hint
         )
         
-        # Try to get a valid JSON response, up to 5 times
+        # Try to get a valid JSON response, up to 5 times with timeout
+        start_time = time.time()
         for attempt in range(5):
+            # Check if we've exceeded the maximum retry time
+            if time.time() - start_time > self.max_retry_time:
+                print(f"Player {self.name} exceeded maximum retry time in challenge decision, using fallback")
+                return self._fallback_challenge_decision(), ""
+            
             # Send the same original prompt each time
             messages = [
                 {"role": "user", "content": prompt}
@@ -172,6 +232,11 @@ class Player:
             
             try:
                 content, reasoning_content = self.llm_client.chat(messages, model=self.model_name)
+                
+                # Check if we got a valid response
+                if not content:
+                    print(f"Attempt {attempt+1}: Empty response from {self.model_name} in challenge decision")
+                    continue
                 
                 # Parse JSON response
                 json_match = re.search(r'({[\s\S]*})', content)
@@ -187,8 +252,22 @@ class Player:
                 
             except Exception as e:
                 # Only record error, do not modify retry request
-                print(f"Attempt {attempt+1} parsing failed: {str(e)}")
-        raise RuntimeError(f"Player {self.name} decide_challenge method failed after multiple attempts")
+                print(f"Attempt {attempt+1} parsing failed for {self.name} in challenge decision: {str(e)}")
+                
+                # Add a small delay between retries to avoid overwhelming the API
+                time.sleep(1)
+        
+        # If all attempts failed, use fallback strategy
+        print(f"Player {self.name} failed to get valid challenge response after 5 attempts, using fallback")
+        return self._fallback_challenge_decision(), ""
+
+    def _fallback_challenge_decision(self) -> Dict:
+        """Fallback strategy when LLM calls fail for challenge decision"""
+        # Default to not challenging as a safe fallback
+        return {
+            "was_challenged": False,
+            "challenge_reason": "Fallback: Not challenging due to LLM failure"
+        }
 
     def reflect(self, alive_players: List[str], round_base_info: str, round_action_info: str, round_result: str) -> None:
         """
