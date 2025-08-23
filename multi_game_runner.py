@@ -1,4 +1,4 @@
-from game import Game
+from game import MafiaGame
 from typing import Dict, List
 import argparse
 
@@ -19,7 +19,7 @@ class MultiGameRunner:
             print(f"\n=== Start {game_num}/{self.num_games} Game ===")
             
             # Create and run new game
-            game = Game(self.player_configs)
+            game = MafiaGame(self.player_configs)
             game.start_game()
             
             print(f"Game {game_num} ended")

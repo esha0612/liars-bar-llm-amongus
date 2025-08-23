@@ -2,7 +2,8 @@ import random
 import json
 import re
 from typing import List, Dict
-from llm_client import LLMClient
+#from llm_client import LLMClient
+from multi_llm_client import LLMRouter
 import os
 import sys
 from datetime import datetime
@@ -51,7 +52,7 @@ class Player:
         self.opinions = {}
         
         # LLM related initialization
-        self.llm_client = LLMClient()
+        self.llm_client = LLMRouter()
 
     def _read_file(self, filepath: str) -> str:
         """Read file content and inject self-awareness if it's rule_base.txt"""
