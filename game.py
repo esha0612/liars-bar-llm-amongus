@@ -439,18 +439,22 @@ class Game:
 if __name__ == '__main__':
     # Configure player information, where model is the name of the model you call through API
     player_configs = [
+        {"name": "Sarah", "model": "ollama/llama3.1:8b"},
+        {"name": "Derek", "model": "ollama/llama3:latest"},
+        {"name": "Emma", "model": "ollama/mistral:7b"},
+
        
-        {"name": "Sarah",   "model": "llama3.1:8b"},
-        {"name": "Derek",   "model": "deepseek-r1:7b"},
-        {"name": "Emma",    "model": "dolphin3:latest"},
-        {"name": "Talia",   "model": "qwen 2.5:7b"},
-        {"name": "Anika",   "model": "mistral:7b"},
-        {"name": "Nick",    "model": "mistral-nemo:12b"},
-        {"name": "Philip",  "model": "phi4:14b"},
-        {"name": "Peter",   "model": "phi3.5:3.8b"},
-        {"name": "George",  "model": "llava:7b"},
-        {"name": "Enrique", "model": "gemma2:9b"},
-        {"name": "Maria",   "model": "gpt-4o-mini"}
+        # {"name": "Sarah", "model": "ollama/llama3.1:8b"},
+        # {"name": "Derek", "model": "ollama/deepseek-r1:7b"},
+        # {"name": "Emma", "model": "ollama/dolphin3:8b"},
+        # {"name": "Talia", "model": "ollama/qwen2.5:7b"},
+        # {"name": "Anika", "model": "ollama/mistral:7b"},
+        # {"name": "Nick", "model": "ollama/mistral-nemo:12b"},
+        # {"name": "Philip", "model": "ollama/phi4:14b"},
+        # {"name": "Peter", "model": "ollama/phi3.5:3.8b"},
+        # {"name": "George", "model": "ollama/llava:7b"},
+        # {"name": "Enrique", "model": "ollama/gemma2:9b"},
+        {"name": "Maria", "model": "openai/gpt-4o-mini"},
 
     ]
 
