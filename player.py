@@ -2,7 +2,8 @@ import random
 import json
 import re
 from typing import List, Dict, Optional, Tuple
-from llm_client import LLMClient
+#from llm_client import LLMClient
+from multi_llm_client import LLMRouter
 import os
 import sys
 from datetime import datetime
@@ -83,7 +84,7 @@ class Player:
         self.nomination_history: List[Tuple[int, str]] = [] # (round, nominee)
 
         # LLM
-        self.llm_client = LLMClient()
+        self.llm_client = LLMRouter()
 
     # ---------- Prompt helpers ----------
     def _format_prompt(self, template: str, **kwargs) -> str:
