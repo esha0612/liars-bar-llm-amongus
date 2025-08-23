@@ -3,7 +3,7 @@ import json
 import re
 import time
 from typing import List, Dict
-from multi_llm_client import LLMClient
+from multi_llm_client import LLMRouter
 
 RULE_BASE_PATH = "prompt/rule_base.txt"
 PLAY_CARD_PROMPT_TEMPLATE_PATH = "prompt/play_card_prompt_template.txt"
@@ -26,7 +26,7 @@ class Player:
         self.opinions = {}
         
         # LLM related initialization
-        self.llm_client = LLMClient()
+        self.llm_client = LLMRouter()
         self.model_name = model_name
         
         # Timeout settings for retry loops

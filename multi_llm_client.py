@@ -1,195 +1,206 @@
+# multi_llm_client.py
 import os
-import time
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Optional
 
-# Try to import python-dotenv for .env file support
+# Load environment variables from .env file
 try:
     from dotenv import load_dotenv
-    load_dotenv()  # Load environment variables from .env file
-    print("Loaded environment variables from .env file")
+    load_dotenv()
+    print("✅ Loaded environment variables from .env file")
 except ImportError:
-    print("Warning: python-dotenv not available. Make sure to set environment variables manually.")
-    # Try to load .env file manually
+    print("⚠️  python-dotenv not available. Loading .env file manually...")
     try:
         with open('.env', 'r') as f:
             for line in f:
                 if line.strip() and not line.startswith('#'):
                     key, value = line.strip().split('=', 1)
                     os.environ[key] = value
-        print("Loaded environment variables from .env file manually")
+        print("✅ Loaded environment variables from .env file manually")
     except FileNotFoundError:
-        print("No .env file found")
+        print("⚠️  No .env file found. Make sure to set environment variables manually.")
     except Exception as e:
-        print(f"Error loading .env file: {e}")
+        print(f"⚠️  Error loading .env file: {e}")
 
-# Try to import OpenAI, but handle missing dependency gracefully
-try:
-    from openai import OpenAI
-    OPENAI_AVAILABLE = True
-except ImportError:
-    print("Warning: OpenAI module not available. OpenAI models will not work.")
-    OPENAI_AVAILABLE = False
+# Import your helpers (each with .chat(messages, model) -> (content, reasoning))
+# Make sure these filenames/names match your project:
+from llm_client_openai import LLMClientOpenAI
+from llm_client_ollama import LLMClientOllama
 
-# Try to import Ollama, but handle missing dependency gracefully
-try:
-    from ollama import Client
-    OLLAMA_AVAILABLE = True
-except ImportError:
-    print("Warning: Ollama module not available. Ollama models will not work.")
-    OLLAMA_AVAILABLE = False
 
-class MultiLLMClient:
-    def __init__(self):
-        """Initialize multi-LLM client that supports both Ollama and OpenAI"""
-        # OpenAI configuration
-        self.openai_api_key = os.getenv("OPENAI_API_KEY", "YOUR_API_KEY")
-        self.openai_base_url = os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1")
-        
-        # Debug: Check if API key is loaded properly
-        if self.openai_api_key == "YOUR_API_KEY":
-            print("Warning: OpenAI API key not found in environment variables")
-            print("Make sure your .env file contains: OPENAI_API_KEY=your_actual_api_key")
-        else:
-            print(f"OpenAI API key loaded: {self.openai_api_key[:10]}...")
-        
-        # Ollama configuration
-        self.ollama_base_url = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-        
-        # Timeout settings (in seconds)
-        self.timeout = 30  # 30 seconds timeout for API calls
-        
-        # Initialize clients based on availability
-        if OPENAI_AVAILABLE:
-            try:
-                self.openai_client = OpenAI(
-                    api_key=self.openai_api_key,
-                    base_url=self.openai_base_url,
-                    timeout=self.timeout
-                )
-            except Exception as e:
-                print(f"Warning: Failed to initialize OpenAI client: {e}")
-                self.openai_client = None
-        else:
-            self.openai_client = None
-            
-        if OLLAMA_AVAILABLE:
-            try:
-                self.ollama_client = Client(self.ollama_base_url)
-            except Exception as e:
-                print(f"Warning: Failed to initialize Ollama client: {e}")
-                self.ollama_client = None
-        else:
-            self.ollama_client = None
-        
-        # Define OpenAI models (case-insensitive)
-        self.openai_models = {
-            "gpt-4o-mini",
-            "gpt-4o",
-            "gpt-4-turbo",
-            "gpt-4",
-            "gpt-3.5-turbo"
-        }
+# Defaults you can override with env vars
+OLLAMA_DEFAULT_MODEL = os.getenv("OLLAMA_DEFAULT_MODEL", "llama3.1")
+OPENAI_ENABLED = os.getenv("OPENAI_ENABLED", "auto")  # "auto" | "on" | "off"
+
+
+class LLMRouter:
+    """
+    Unified client/router for OpenAI and Ollama with graceful fallback.
+
+    Routing options:
+      - Prefix routing:
+          model="openai/gpt-4o-mini"
+          model="ollama/llama3.1"
+      - Explicit provider:
+          chat(messages, model="gpt-4o-mini", provider="openai")
+          chat(messages, model="llama3.1", provider="ollama")
+
+    Behavior:
+      - If OpenAI/Anthropic are not configured (e.g., no API key), they are skipped.
+      - When a requested provider is unavailable, we log and FALL BACK to Ollama.
+      - Return shape is always: (content, reasoning_content)
+    """
     
-    def _is_openai_model(self, model_name: str) -> bool:
-        """Check if the model is an OpenAI model"""
-        return model_name.lower() in {model.lower() for model in self.openai_models}
-    
-    def _is_ollama_model(self, model_name: str) -> bool:
-        """Check if the model is an Ollama model (not OpenAI)"""
-        return not self._is_openai_model(model_name)
-    
-    def chat(self, messages: List[Dict[str, str]], model: str) -> Tuple[str, str]:
-        """Interact with LLM (either OpenAI or Ollama)
+    # Class-level flags to ensure debug messages are only printed once
+    _api_key_logged = False
+    _base_url_logged = False
+
+    def __init__(
+        self,
+        openai: Optional[LLMClientOpenAI] = None,
+        ollama: Optional[LLMClientOllama] = None
+    ):
+        self._ollama = self._init_ollama(ollama)
+        self._openai = self._init_openai(openai)
+
+    # ---------------------- init helpers ----------------------
+
+    def _init_ollama(self, instance: Optional[LLMClientOllama]) -> LLMClientOllama:
+        try:
+            return instance or LLMClientOllama()
+        except Exception as e:
+            print(f"[Router] Ollama init failed: {e}")
+            # In practice you'd probably want this to raise, but we keep parity with the others:
+            raise
+
+    def _env_truthy(self, name: str, default: str) -> str:
+        v = (os.getenv(name, default) or "").strip().lower()
+        return v
+
+    def _init_openai(self, instance: Optional[LLMClientOpenAI]) -> Optional[LLMClientOpenAI]:
+        mode = self._env_truthy("OPENAI_ENABLED", OPENAI_ENABLED)  # "auto"|"on"|"off"
+        if instance is not None:
+            # Caller-provided client wins
+            return instance
+
+        if mode == "off":
+            print("[Router] OpenAI disabled via OPENAI_ENABLED=off")
+            return None
+
+        # auto/on: require an API key
+        api_key = os.getenv("OPENAI_API_KEY")
+        if not api_key:
+            print("[Router] OpenAI not configured (missing OPENAI_API_KEY) — skipping")
+            print("[Router] Make sure your .env file contains: OPENAI_API_KEY=your_actual_api_key")
+            return None
         
-        Args:
-            messages: List of messages with role and content
-            model: Model name to use
-        
-        Returns:
-            tuple: (content, reasoning_content)
+        # Debug: Show API key status only once (first few characters only)
+        if not LLMRouter._api_key_logged:
+            if api_key and len(api_key) > 10:
+                print(f"[Router] OpenAI API key found")
+            else:
+                print(f"[Router] OpenAI API key found but seems invalid (length: {len(api_key) if api_key else 0})")
+            LLMRouter._api_key_logged = True
+
+        try:
+            base_url = os.getenv("OPENAI_BASE_URL")
+            if base_url and not LLMRouter._base_url_logged:
+                print(f"[Router] Using OpenAI base URL: {base_url}")
+                LLMRouter._base_url_logged = True
+            return LLMClientOpenAI(api_key=api_key, base_url=base_url)
+        except Exception as e:
+            print(f"[Router] OpenAI init failed: {e} — skipping")
+            return None
+
+    
+
+    # ---------------------- routing ----------------------
+
+    def chat(
+        self,
+        messages: List[Dict[str, str]],
+        model: str,
+        provider: Optional[str] = None,
+    ) -> Tuple[str, str]:
         """
+        Route to a provider and make a chat call.
+
+        Args:
+            messages: [{"role": "...", "content": "..."}]
+            model: either plain model name or prefixed:
+                   "openai/...", "claude/...", "anthropic/...", "ollama/..."
+            provider: Optional explicit provider: "openai" | "anthropic"|"claude" | "ollama"|"local"
+
+        Returns:
+            (content, reasoning_content)
+        """
+        # 1) Explicit provider
+        if provider:
+            p = provider.lower()
+            if p in ("openai", "oai"):
+                return self._safe_chat(self._openai, messages, model, fallback="openai")
+           
+            if p in ("ollama", "local"):
+                return self._safe_chat(self._ollama, messages, model, fallback="ollama")
+            print(f"[Router] Unknown provider '{provider}' — falling back to Ollama")
+            return self._safe_chat(self._ollama, messages, self._default_ollama_model(model), fallback="ollama")
+
+        # 2) Prefix routing
+        if model.startswith("openai/"):
+            return self._safe_chat(self._openai, messages, model.split("/", 1)[1], fallback="openai")
+      
+        if model.startswith("ollama/"):
+            return self._safe_chat(self._ollama, messages, model.split("/", 1)[1], fallback="ollama")
+
+        # 3) No provider/prefix: try OpenAI -> Anthropic -> Ollama
+        
+        # Final fallback
+        return self._safe_chat(self._ollama, messages, self._default_ollama_model(model), fallback="ollama")
+
+    # ---------------------- helpers ----------------------
+
+    def _default_ollama_model(self, requested_model: str) -> str:
+        # If the requested model was clearly not an Ollama model, fall back to a sensible default.
+        # Otherwise, pass through the requested one.
+        if any(requested_model.startswith(prefix) for prefix in ("openai/", "claude/")):
+            return OLLAMA_DEFAULT_MODEL
+        return requested_model or OLLAMA_DEFAULT_MODEL
+
+    def _try_provider(
+        self,
+        client,
+        messages: List[Dict[str, str]],
+        model: str,
+        tag: str,
+    ) -> Tuple[str, str]:
+        if client is None:
+            print(f"[Router] {tag} unavailable — skipping")
+            return "", ""
         try:
-            if self._is_openai_model(model):
-                return self._chat_openai(messages, model)
-            else:
-                return self._chat_ollama(messages, model)
+            return client.chat(messages, model)
         except Exception as e:
-            print(f"Multi-LLM client error for model {model}: {str(e)}")
-            return "", ""
-    
-    def _chat_openai(self, messages: List[Dict[str, str]], model: str) -> Tuple[str, str]:
-        """Chat with OpenAI model"""
-        if not self.openai_client:
-            print(f"Error: OpenAI client not available for model {model}")
-            return "", ""
-            
-        try:
-            print(f"OpenAI Request to {model}: {messages}")
-            
-            # Add timeout to the request
-            response = self.openai_client.chat.completions.create(
-                model=model,
-                messages=messages,
-                timeout=self.timeout
-            )
-            
-            if response.choices:
-                message = response.choices[0].message
-                content = message.content if message.content else ""
-                reasoning_content = getattr(message, "reasoning_content", "")
-                print(f"OpenAI Response from {model}: {content}")
-                return content, reasoning_content
-            
-            return "", ""
-                
-        except Exception as e:
-            print(f"OpenAI API Error for {model}: {str(e)}")
-            return "", ""
-    
-    def _chat_ollama(self, messages: List[Dict[str, str]], model: str) -> Tuple[str, str]:
-        """Chat with Ollama model"""
-        if not self.ollama_client:
-            print(f"Error: Ollama client not available for model {model}")
-            return "", ""
-            
-        try:
-            print(f"Ollama Request to {model}: {messages}")
-            
-            # Add timeout to Ollama request
-            start_time = time.time()
-            
-            # Call Ollama API with timeout
-            response = self.ollama_client.chat(
-                model=model,
-                messages=messages,
-                options={"temperature": 0.7}
-            )
-            
-            # Check if we exceeded timeout
-            if time.time() - start_time > self.timeout:
-                print(f"Ollama request to {model} timed out after {self.timeout} seconds")
-                return "", ""
-            
-            # Handle different response structures
-            if hasattr(response, 'message') and hasattr(response.message, 'content'):
-                content = response.message.content
-            elif hasattr(response, 'content'):
-                content = response.content
-            elif isinstance(response, dict) and 'message' in response:
-                content = response['message'].get('content', '')
-            else:
-                # Try to get content from response directly
-                content = str(response) if response else ""
-            
-            # Ollama doesn't natively support reasoning_content, can be extended if needed
-            reasoning_content = ""
-            
-            print(f"Ollama Response from {model}: {content}")
-            return content, reasoning_content
-                
-        except Exception as e:
-            print(f"Ollama API Error for {model}: {str(e)}")
+            print(f"[Router] {tag} call failed: {e} — continuing to next provider")
             return "", ""
 
-# For backward compatibility, create an alias
-LLMClient = MultiLLMClient
+    def _safe_chat(
+        self,
+        client,
+        messages: List[Dict[str, str]],
+        model: str,
+        fallback: str,
+    ) -> Tuple[str, str]:
+        """
+        Call a client if available. If not (or if it errors), fall back to Ollama.
+        """
+        if client is not None:
+            try:
+                return client.chat(messages, model)
+            except Exception as e:
+                print(f"[Router] {fallback.capitalize()} call failed: {e} — falling back to Ollama")
+
+        # Always fall back to Ollama
+        try:
+            return self._ollama.chat(messages, self._default_ollama_model(model))
+        except Exception as e:
+            # At this point even Ollama failed; return empty but don't crash the game loop.
+            print(f"[Router] Ollama fallback failed: {e}")
+            return "", ""
