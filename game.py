@@ -52,23 +52,17 @@ class BotCGame:
     def assign_roles(self, player_configs, roles_opt):
         n = len(player_configs)
         if roles_opt is None:
-            # 7-player default spread (5 good, 2 evil)
-            # tweak/add spreads as needed
-            base_roles = ["Empath", "FortuneTeller", "Undertaker", "Monk", "Ravenkeeper", "Imp", "Poisoner"]
-            
-            if n < 7:
-                raise ValueError(f"This lite setup requires at least 7 players, but only {n} were provided.")
-            elif n > 7:
-                # Randomly select 7 players from all available players
-                print(f"Randomly selecting 7 players from {n} available players...")
-                selected_configs = random.sample(player_configs, 7)
-                print("Selected players:")
-                for i, cfg in enumerate(selected_configs, 1):
-                    print(f"  {i}. {cfg['name']} ({cfg['model']})")
-                player_configs = selected_configs
-                n = 7
-            
-            roles = base_roles[:]
+            # 11-player lite spread (9 Good, 2 Evil)
+            # Townsfolk: Empath, FortuneTeller, Undertaker, Monk, Ravenkeeper, Chef, Slayer, Mayor
+            # Outsider:  Butler
+            # Evil:      Imp (Demon), Poisoner (Minion)
+            if n != 11:
+                raise ValueError("This 11-player setup expects exactly 11 players.")
+            roles = [
+                "Empath", "FortuneTeller", "Undertaker", "Monk",
+                "Ravenkeeper", "Chef", "Slayer", "Mayor",
+                "Butler", "Imp", "Poisoner"
+            ]
             random.shuffle(roles)
         else:
             roles = roles_opt[:]
@@ -192,11 +186,35 @@ class BotCGame:
                 if poisoned == p.name:
                     msg = f"Fortune Teller: {'NO' if yes else 'YES'} for [{a}, {b}]."
                 p.remember(msg); self.record.add_info_message(p.name, msg)
+        
+        # Chef (first night only): learns number of pairs of evil neighbors
+        if self.night_number == 1:
+            evil_names = [p.name for p in self.players if (p.role in ("Imp","Poisoner"))]
+            # count adjacent pairs (circular) where both are evil
+            count_pairs = 0
+            for i in range(len(self.seat_names)):
+                a = self.seat_names[i]
+                b = self.seat_names[(i+1) % len(self.seat_names)]
+                if a in evil_names and b in evil_names:
+                    count_pairs += 1
+            for p in self.players:
+                if p.alive and p.role == "Chef":
+                    msg = f"Chef: You learned {count_pairs} pair(s) of evil neighbors."
+                    # If you use poisoning persistence, flip this when Chef is poisoned; here we assume single-night poison
+                    # if poisoned == p.name: msg = "Chef: Your info feels unreliable tonight."
+                    p.remember(msg)
+                    self.record.add_info_message(p.name, msg)
+
 
     # ----- day phase -----
     def day_phase(self):
         self.record.new_day(self.day_number)
         alive_names = self.alive_names()
+
+        # Butler chooses a master each day
+        for p in self.alive_players():
+            if p.role == "Butler":
+                p.butler_choose_master(alive_names)
 
         # TABLE TALK: 2 passes, speaker order starts from seat 0 (simple); you can rotate if you want
         RECENT_WINDOW = 8
@@ -213,6 +231,24 @@ class BotCGame:
                                     self.day_number, self.night_number)
                 print(line)
                 self.record.add_table_talk(p.name, line.split(": ", 1)[-1])
+        
+        # Slayer: once per game — instant day kill
+        for p in list(self.alive_players()):
+            if p.role == "Slayer" and not p.slayer_used:
+                target = p.slayer_decision(self.alive_names())
+                if target:
+                    # spend ability
+                    p.slayer_used = True
+                    # execute target immediately
+                    if target in self.alive_names():
+                        victim = self.get_player(target)
+                        victim.alive = False
+                        print(f"SLAYER! {p.name} slays {target}.")
+                        self.record.record_slayer_use(slayer=p.name, target=target, success=True)
+                        # Early win check if Imp was slain
+                        if self.check_win():
+                            return
+                # If no target, do nothing
 
         # NOMINATION: everyone proposes; pick plurality nominee
         proposals: dict[str, int] = {}
@@ -239,18 +275,59 @@ class BotCGame:
         print(f"Nomination: {nominator} nominates {nominee}")
         self.record.set_nomination(nominator, nominee)
 
-        # VOTE
-        yes = 0
-        votes = {}
-        for p in self.alive_players():
-            v = p.vote_execute(nominee, alive_names)
-            votes[p.name] = v
-            self.record.record_vote(p.name, v)
-            if v == "YES": yes += 1
-            print(f"{p.name} votes {v}")
-        executed = yes > (len(alive_names) // 2)
+        # VOTE (ensure Butlers vote after their master if set)
+        alive_objs = self.alive_players()
+        alive_names = [x.name for x in alive_objs]
 
+        def voter_order():
+            order = []
+            # push non-butlers & butlers without master first
+            butlers = []
+            for p in alive_objs:
+                if p.role == "Butler" and p.butler_master in alive_names:
+                    butlers.append(p)
+                else:
+                    order.append(p)
+            # append butlers after their masters by simple pass
+            # (if multiple butlers choose same master, relative order among them doesn't matter)
+            for b in butlers:
+                # ensure master already in order; if not, just put b at end
+                order.append(b)
+            return order
+
+        votes = {}
+        yes = 0
+        for voter in voter_order():
+            if voter.role == "Butler" and voter.butler_master in votes:
+                # We already know master's vote
+                masters_vote = votes[voter.butler_master]
+                if masters_vote != "YES":
+                    v = "NO"
+                else:
+                    v = voter.vote_execute(nominee, alive_names)
+            else:
+                # For masters or non-butlers (or butler whose master hasn't voted yet)
+                v = voter.vote_execute(nominee, alive_names)
+            votes[voter.name] = v
+            self.record.record_vote(voter.name, v)
+            print(f"{voter.name} votes {v}")
+            if v == "YES": yes += 1
+
+        executed = yes > (len(alive_names) // 2)
         executed_name = nominee if executed else None
+
+        # Mayor: may cancel their own execution
+        if executed and nominee in self.alive_names():
+            if self.role_of(nominee) == "Mayor":
+                mayor = self.get_player(nominee)
+                if mayor.alive:
+                    cancel = mayor.mayor_cancel_execution()
+                    self.record.set_mayor_cancelled(cancel)
+                    if cancel:
+                        print(f"Mayor {nominee} cancels their own execution. No one is executed.")
+                        executed = False
+                        executed_name = None
+        
         if executed:
             self.get_player(nominee).alive = False
             print(f"Executed: {nominee}")

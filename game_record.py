@@ -44,6 +44,10 @@ class DayRecord:
     votes: Dict[str, str] = field(default_factory=dict)  # name -> YES/NO
     executed: bool = False
     executed_name: Optional[str] = None
+    slayer_used: bool = False
+    slayer: Optional[str] = None
+    slayer_target: Optional[str] = None
+    mayor_cancelled: bool = False
     def to_dict(self) -> Dict:
         return {
             "day_number": self.day_number,
@@ -132,6 +136,16 @@ class GameRecord:
         self.days[-1].executed = executed
         self.days[-1].executed_name = executed_name
         self.last_executed = executed_name if executed else None
+        self.auto_save()
+    
+    def record_slayer_use(self, slayer: str, target: str, success: bool):
+        self.days[-1].slayer_used = success
+        self.days[-1].slayer = slayer
+        self.days[-1].slayer_target = target
+        self.auto_save()
+
+    def set_mayor_cancelled(self, cancelled: bool):
+        self.days[-1].mayor_cancelled = cancelled
         self.auto_save()
 
     # ----- talk -----

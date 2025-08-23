@@ -40,6 +40,10 @@ MONK_PROTECT_PROMPT_PATH = "prompt/monk_protect_prompt.txt"
 FT_PAIR_PROMPT_PATH = "prompt/fortune_teller_pair_prompt.txt"
 RAVENKEEPER_TARGET_PROMPT_PATH = "prompt/ravenkeeper_target_prompt.txt"
 
+BUTLER_CHOOSE_MASTER_PROMPT_PATH = "prompt/butler_choose_master_prompt.txt"
+SLAYER_DECISION_PROMPT_PATH      = "prompt/slayer_decision_prompt.txt"
+MAYOR_CANCEL_PROMPT_PATH         = "prompt/mayor_cancel_prompt.txt"
+
 # ---------- utils ----------
 class _SafeDict(dict):
     def __missing__(self, key):
@@ -75,6 +79,9 @@ class Player:
         self.role = role
         self.team = "Evil" if role in ("Imp","Poisoner") else "Good"
         self.alive = True
+
+        self.butler_master: Optional[str] = None
+        self.slayer_used: bool = False
 
         # private memory for info you receive at night
         self.private_info_log: List[str] = []
@@ -183,3 +190,39 @@ class Player:
         content, _ = self.llm_client.chat([{"role":"user","content":prompt}], model=self.model_name)
         pick = (content or "").strip()
         return pick if pick in alive_names else random.choice(alive_names)
+
+    def butler_choose_master(self, alive_names: List[str]) -> Optional[str]:
+        # Butler picks a master each day (if alive)
+        tpl = self._read_file(BUTLER_CHOOSE_MASTER_PROMPT_PATH)
+        rules = self._read_file(RULE_BASE_BOTC_PATH)
+        choices = [n for n in alive_names if n != self.name]
+        if not choices or self.role != "Butler":
+            return None
+        prompt = self._format(tpl, rules=rules, self_name=self.name, alive_players=", ".join(choices))
+        content, _ = self.llm_client.chat([{"role":"user","content":prompt}], model=self.model_name)
+        pick = (content or "").strip()
+        self.butler_master = pick if pick in choices else random.choice(choices)
+        return self.butler_master
+
+    def slayer_decision(self, alive_names: List[str]) -> Optional[str]:
+        # Once per game. Return target name or None.
+        if self.role != "Slayer" or self.slayer_used:
+            return None
+        tpl = self._read_file(SLAYER_DECISION_PROMPT_PATH)
+        rules = self._read_file(RULE_BASE_BOTC_PATH)
+        prompt = self._format(tpl, rules=rules, self_name=self.name, alive_players=", ".join(alive_names))
+        content, _ = self.llm_client.chat([{"role":"user","content":prompt}], model=self.model_name)
+        pick = (content or "").strip()
+        if pick == "None":
+            return None
+        return pick if pick in alive_names and pick != self.name else None
+
+    def mayor_cancel_execution(self) -> bool:
+        # Ask the Mayor if they cancel their own execution
+        if self.role != "Mayor":
+            return False
+        tpl = self._read_file(MAYOR_CANCEL_PROMPT_PATH)
+        rules = self._read_file(RULE_BASE_BOTC_PATH)
+        prompt = self._format(tpl, rules=rules, self_name=self.name)
+        content, _ = self.llm_client.chat([{"role":"user","content":prompt}], model=self.model_name)
+        return (content or "").strip().upper() == "YES"
