@@ -1,0 +1,1406 @@
+{
+  "mode": "SecretHitler",
+  "round_number": 20,
+  "liberal_policies": 1,
+  "fascist_policies": 6,
+  "election_tracker": 0,
+  "players": [
+    {
+      "name": "Sarah",
+      "model": "ollama/llama3.1:8b",
+      "role": "Hitler"
+    },
+    {
+      "name": "Derek",
+      "model": "ollama/llama3:latest",
+      "role": "Liberal"
+    },
+    {
+      "name": "Emma",
+      "model": "ollama/mistral:7b",
+      "role": "Fascist"
+    },
+    {
+      "name": "Talia",
+      "model": "ollama/mistral:latest",
+      "role": "Liberal"
+    },
+    {
+      "name": "Maria",
+      "model": "openai/gpt-4o-mini",
+      "role": "Liberal"
+    }
+  ],
+  "governments": [
+    {
+      "round_number": 1,
+      "president": "Sarah",
+      "chancellor": "Derek",
+      "votes": {
+        "Sarah": "NEIN",
+        "Derek": "NEIN",
+        "Emma": "NEIN",
+        "Talia": "JA",
+        "Maria": "JA"
+      },
+      "passed": false,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 2,
+      "president": "Derek",
+      "chancellor": "Sarah",
+      "votes": {
+        "Sarah": "NEIN",
+        "Derek": "NEIN",
+        "Emma": "NEIN",
+        "Talia": "NEIN",
+        "Maria": "JA"
+      },
+      "passed": false,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 3,
+      "president": "Emma",
+      "chancellor": "Talia",
+      "votes": {
+        "Sarah": "NEIN",
+        "Derek": "NEIN",
+        "Emma": "NEIN",
+        "Talia": "JA",
+        "Maria": "JA"
+      },
+      "passed": false,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 4,
+      "president": "Talia",
+      "chancellor": "Emma",
+      "votes": {
+        "Sarah": "NEIN",
+        "Derek": "NEIN",
+        "Emma": "NEIN",
+        "Talia": "NEIN",
+        "Maria": "JA"
+      },
+      "passed": false,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 5,
+      "president": "Maria",
+      "chancellor": "Sarah",
+      "votes": {
+        "Sarah": "NEIN",
+        "Derek": "NEIN",
+        "Emma": "NEIN",
+        "Talia": "JA",
+        "Maria": "JA"
+      },
+      "passed": false,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 6,
+      "president": "Sarah",
+      "chancellor": "Talia",
+      "votes": {
+        "Sarah": "NEIN",
+        "Derek": "JA",
+        "Emma": "NEIN",
+        "Talia": "JA",
+        "Maria": "JA"
+      },
+      "passed": true,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 7,
+      "president": "Derek",
+      "chancellor": "Emma",
+      "votes": {
+        "Sarah": "NEIN",
+        "Derek": "NEIN",
+        "Emma": "NEIN",
+        "Talia": "NEIN",
+        "Maria": "JA"
+      },
+      "passed": false,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 8,
+      "president": "Emma",
+      "chancellor": "Derek",
+      "votes": {
+        "Sarah": "JA",
+        "Derek": "JA",
+        "Emma": "NEIN",
+        "Talia": "NEIN",
+        "Maria": "JA"
+      },
+      "passed": true,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 9,
+      "president": "Talia",
+      "chancellor": "Maria",
+      "votes": {
+        "Sarah": "NEIN",
+        "Derek": "NEIN",
+        "Emma": "NEIN",
+        "Talia": "NEIN",
+        "Maria": "JA"
+      },
+      "passed": false,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 10,
+      "president": "Maria",
+      "chancellor": "Talia",
+      "votes": {
+        "Sarah": "JA",
+        "Derek": "NEIN",
+        "Emma": "NEIN",
+        "Talia": "NEIN",
+        "Maria": "JA"
+      },
+      "passed": false,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 11,
+      "president": "Sarah",
+      "chancellor": "Talia",
+      "votes": {
+        "Sarah": "NEIN",
+        "Derek": "NEIN",
+        "Emma": "NEIN",
+        "Talia": "NEIN",
+        "Maria": "JA"
+      },
+      "passed": false,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 12,
+      "president": "Derek",
+      "chancellor": "Sarah",
+      "votes": {
+        "Sarah": "JA",
+        "Derek": "NEIN",
+        "Emma": "NEIN",
+        "Talia": "JA",
+        "Maria": "NEIN"
+      },
+      "passed": false,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 13,
+      "president": "Emma",
+      "chancellor": "Talia",
+      "votes": {
+        "Sarah": "NEIN",
+        "Derek": "NEIN",
+        "Emma": "NEIN",
+        "Talia": "JA",
+        "Maria": "NEIN"
+      },
+      "passed": false,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 14,
+      "president": "Talia",
+      "chancellor": "Sarah",
+      "votes": {
+        "Sarah": "NEIN",
+        "Derek": "NEIN",
+        "Emma": "NEIN",
+        "Talia": "NEIN",
+        "Maria": "JA"
+      },
+      "passed": false,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 15,
+      "president": "Maria",
+      "chancellor": "Talia",
+      "votes": {
+        "Sarah": "NEIN",
+        "Derek": "NEIN",
+        "Emma": "NEIN",
+        "Talia": "JA",
+        "Maria": "JA"
+      },
+      "passed": false,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 16,
+      "president": "Sarah",
+      "chancellor": "Talia",
+      "votes": {
+        "Sarah": "JA",
+        "Derek": "NEIN",
+        "Emma": "NEIN",
+        "Talia": "NEIN",
+        "Maria": "NEIN"
+      },
+      "passed": false,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 17,
+      "president": "Derek",
+      "chancellor": "Sarah",
+      "votes": {
+        "Sarah": "NEIN",
+        "Derek": "JA",
+        "Emma": "NEIN",
+        "Talia": "NEIN",
+        "Maria": "NEIN"
+      },
+      "passed": false,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 18,
+      "president": "Emma",
+      "chancellor": "Maria",
+      "votes": {
+        "Sarah": "NEIN",
+        "Derek": "NEIN",
+        "Emma": "NEIN",
+        "Talia": "NEIN",
+        "Maria": "JA"
+      },
+      "passed": false,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 19,
+      "president": "Talia",
+      "chancellor": "Maria",
+      "votes": {
+        "Sarah": "NEIN",
+        "Derek": "NEIN",
+        "Emma": "NEIN",
+        "Talia": "NEIN",
+        "Maria": "JA"
+      },
+      "passed": false,
+      "hitler_elected_trigger": false
+    },
+    {
+      "round_number": 20,
+      "president": "Maria",
+      "chancellor": "Talia",
+      "votes": {
+        "Sarah": "NEIN",
+        "Derek": "NEIN",
+        "Emma": "NEIN",
+        "Talia": "JA",
+        "Maria": "JA"
+      },
+      "passed": false,
+      "hitler_elected_trigger": false
+    }
+  ],
+  "sessions": [
+    {
+      "round_number": 3,
+      "president": "TopDeck",
+      "chancellor": "TopDeck",
+      "president_draw": [],
+      "president_discard": null,
+      "chancellor_received": [],
+      "chancellor_discard": null,
+      "enacted_policy": "Fascist"
+    },
+    {
+      "round_number": 6,
+      "president": "Sarah",
+      "chancellor": "Talia",
+      "president_draw": [
+        "Fascist",
+        "Liberal",
+        "Liberal"
+      ],
+      "president_discard": "Fascist",
+      "chancellor_received": [
+        "Liberal",
+        "Liberal"
+      ],
+      "chancellor_discard": "Liberal",
+      "enacted_policy": "Liberal"
+    },
+    {
+      "round_number": 8,
+      "president": "Emma",
+      "chancellor": "Derek",
+      "president_draw": [
+        "Fascist",
+        "Fascist",
+        "Fascist"
+      ],
+      "president_discard": "Fascist",
+      "chancellor_received": [
+        "Fascist",
+        "Fascist"
+      ],
+      "chancellor_discard": "Fascist",
+      "enacted_policy": "Fascist"
+    },
+    {
+      "round_number": 11,
+      "president": "TopDeck",
+      "chancellor": "TopDeck",
+      "president_draw": [],
+      "president_discard": null,
+      "chancellor_received": [],
+      "chancellor_discard": null,
+      "enacted_policy": "Fascist"
+    },
+    {
+      "round_number": 14,
+      "president": "TopDeck",
+      "chancellor": "TopDeck",
+      "president_draw": [],
+      "president_discard": null,
+      "chancellor_received": [],
+      "chancellor_discard": null,
+      "enacted_policy": "Fascist"
+    },
+    {
+      "round_number": 17,
+      "president": "TopDeck",
+      "chancellor": "TopDeck",
+      "president_draw": [],
+      "president_discard": null,
+      "chancellor_received": [],
+      "chancellor_discard": null,
+      "enacted_policy": "Fascist"
+    },
+    {
+      "round_number": 20,
+      "president": "TopDeck",
+      "chancellor": "TopDeck",
+      "president_draw": [],
+      "president_discard": null,
+      "chancellor_received": [],
+      "chancellor_discard": null,
+      "enacted_policy": "Fascist"
+    }
+  ],
+  "winner": "Fascists",
+  "table_talk": [
+    {
+      "round_number": 1,
+      "speaker": "Sarah",
+      "text": "Let's start fresh. I think it would be a good idea to elect Talia as the new President. She seems like a fair and level-headed person who can make informed decisions for our government. \n\nNext, I suggest we vote on the current Chancellor proposal. As for me, I'll vote JA."
+    },
+    {
+      "round_number": 1,
+      "speaker": "Derek",
+      "text": "@Sarah said... I think it would be a good idea to elect Talia as the new President. She seems like a fair and level-headed person who can make informed decisions for our government.\n\nI agree that Talia has shown promise, but I still have some reservations about her ability to lead effectively in these tumultuous times. I'll vote NEIN on the current Chancellor proposal until we've had more time to assess her judgment.\n\nLet's focus on building a consensus first and then decide who should take the reins as President."
+    },
+    {
+      "round_number": 1,
+      "speaker": "Emma",
+      "text": "@Talia said... While I appreciate your confidence in my abilities, I believe it's important to maintain a balance of power within our government. Given the current political climate and the need for decisive leadership, I propose we vote JA on the Chancellor proposal as suggested by Sarah. However, let's first focus on building a consensus about her suitability for the role before deciding who should become President.\n\nGame state:\n- Others alive: Sarah, Derek, Talia, Maria\n- Last government: President=None, Chancellor=None\n- Board: Liberal=0, Fascist=0, ElectionTracker=0\n\nReply rules:\n- React to 1\u20132 points from recent discussion by name (e.g., \u201c@Llama1 said \u2026 I disagree because \u2026\u201d).\n- If the recent discussion is empty, take a stance on the proposed government (JA/NEIN), give 1 reason, and optionally suggest an alternative Chancellor.\n- Make one concrete suggestion (trust/distrust, nomination, or how to vote next).\n- 1\u20132 sentences. No role reveals. Plain text only."
+    },
+    {
+      "round_number": 1,
+      "speaker": "Talia",
+      "text": "@Emma said... I understand your concerns about maintaining a balance of power, but I believe that Talia's demonstrated fairness and level-headedness would serve our government well during these uncertain times. Let's vote JA on the Chancellor proposal as suggested by Sarah, focusing on building consensus around Talia's suitability for the role first before deciding who should become President.\n\nAs for the next steps, I propose we all express trust in each other to foster an open and collaborative environment. This will help us work together towards a common goal of creating a fair and effective government."
+    },
+    {
+      "round_number": 1,
+      "speaker": "Maria",
+      "text": "@Talia said... I agree that Talia's fairness and level-headedness are vital in our current situation. Let's vote JA on the Chancellor proposal to move forward with Talia's leadership. I suggest we also express trust in each other to foster collaboration."
+    },
+    {
+      "round_number": 1,
+      "speaker": "Sarah",
+      "text": "@Talia said... I understand your concerns about maintaining a balance of power, but I believe that Talia's demonstrated fairness and level-headedness would serve our government well during these uncertain times.\n\nI agree with @Talia's assessment. Let's vote JA on the Chancellor proposal to move forward with Talia's leadership. However, before we do so, I suggest we express trust in each other to foster an open and collaborative environment."
+    },
+    {
+      "round_number": 1,
+      "speaker": "Derek",
+      "text": "I think @Talia's proposal for a collaborative environment is a step in the right direction. Let's take her advice and express trust in each other to foster open communication.\n\nNext, I suggest we move forward with the Chancellor proposal and vote JA."
+    },
+    {
+      "round_number": 1,
+      "speaker": "Emma",
+      "text": "@Talia said... I appreciate your trust in me, but as a Fascist, I have concerns about the current political climate and the need for decisive leadership. Although Talia seems like a promising candidate, I fear her level-headedness may lead to indecisiveness that could be detrimental to our cause. Therefore, I propose we vote NEIN on the Chancellor proposal as suggested by Sarah.\n\nTo build consensus and foster collaboration, I suggest we all express trust in each other while keeping an eye out for any potential threats to our shared goal. This will help us work together effectively towards a Fascist victory."
+    },
+    {
+      "round_number": 1,
+      "speaker": "Talia",
+      "text": "@Emma said... I understand your concerns about the current political climate and the need for decisive leadership. However, Talia's demonstrated ability to make fair and informed decisions shows potential for effective governance. Let's work towards building consensus by expressing trust in each other and focusing on finding a common ground that benefits our government. As suggested earlier, I propose we vote JA on the Chancellor proposal with Talia as the leader.\n\nMoving forward, it's crucial to maintain an open and collaborative environment. Let's continue expressing trust in one another while keeping our eyes open for any potential threats or opportunities that may arise."
+    },
+    {
+      "round_number": 1,
+      "speaker": "Maria",
+      "text": "@Derek said... I agree that expressing trust in each other is important, but I think we need to be cautious about rushing into a Chancellor proposal without fully assessing everyone's motivations. I suggest we vote NEIN on Talia's Chancellor proposal for now to ensure we have a clearer understanding of each player's intentions.\n\nLet's take a moment to openly discuss our thoughts on Talia's suitability before making any final decisions."
+    },
+    {
+      "round_number": 2,
+      "speaker": "Derek",
+      "text": "@Maria said... I agree that we need to be cautious about rushing into a Chancellor proposal without fully assessing everyone's motivations.\n\nI think Maria is right to question the proposal and encourage us to take a step back. Therefore, I'll vote NEIN on Talia's Chancellor proposal for now.\n\nLet's take some time to discuss our concerns and get a better understanding of each other's intentions before making any final decisions."
+    },
+    {
+      "round_number": 2,
+      "speaker": "Emma",
+      "text": "@Derek said... I appreciate your caution and understand the importance of understanding each other's motivations. However, I believe we should also consider the current political climate and the potential consequences of not electing a Chancellor soon.\n\nIn light of this, I suggest we continue to discuss our concerns openly but also revisit the Chancellor proposal. If we agree on a suitable candidate, I propose voting JA on the revised proposal. As for an alternative Chancellor, let's consider someone who has shown neutrality or liberal leanings in recent discussions.\n\nLet's work together to find a balance between caution and progress while keeping our eyes open for any suspicious behavior that could hint at hidden agendas among us."
+    },
+    {
+      "round_number": 2,
+      "speaker": "Talia",
+      "text": "@Emma said... I agree that the current political climate requires careful consideration when electing a Chancellor. However, I believe it's crucial to approach this with caution due to potential hidden agendas among us. Let's continue our discussions and closely examine each other's motivations before making any decisions.\n\nAs for the Chancellor proposal, I suggest we take a step back and consider individuals who have demonstrated neutrality or liberal leanings in recent discussions as potential candidates. For now, I will vote NEIN on the current proposal to encourage further discussion and ensure we make an informed decision. Let's work together to maintain balance while keeping our eyes open for any suspicious behavior."
+    },
+    {
+      "round_number": 2,
+      "speaker": "Maria",
+      "text": "@Emma said ... I understand your point about the urgency of electing a Chancellor, but I agree with Talia that we should prioritize caution. It's essential to ensure we\u2019re not inadvertently supporting a hidden agenda. \n\nI suggest we take more time to discuss potential candidates before proceeding. Let's keep gathering information and consider someone who has shown consistent liberal leanings for our next proposal."
+    },
+    {
+      "round_number": 2,
+      "speaker": "Sarah",
+      "text": "@Emma said... I believe we should also consider the current political climate and the potential consequences of not electing a Chancellor soon.\n\nI agree that caution is necessary, but I think it's essential to identify a strong leader who can unite our group in this critical moment. Let's consider nominating someone with experience and a track record of making tough decisions."
+    },
+    {
+      "round_number": 2,
+      "speaker": "Derek",
+      "text": "@Emma said... I appreciate your caution and understand the importance of understanding each other's motivations. However, I believe we should also consider the current political climate and the potential consequences of not electing a Chancellor soon.\n\nI agree that caution is necessary, but let's not forget to balance it with progress. I think we can do better than Talia's current proposal. Instead, I suggest we nominate Sarah for Chancellor. She has shown experience in making tough decisions and might be able to unite our group."
+    },
+    {
+      "round_number": 2,
+      "speaker": "Emma",
+      "text": "@Derek, I agree with your concern for progress alongside caution. However, I think it's crucial that we ensure our chosen Chancellor can be trusted to uphold liberal values. Given the current political climate, a Fascist Chancellor could potentially lead us towards disaster.\n\nLet's take some time to reevaluate each candidate's true motivations before making any decisions. I suggest we focus on individuals who have consistently demonstrated liberal leanings in recent discussions. As for the next proposal, let's consider Maria or Talia as potential Chancellor candidates. Their cautious approach aligns with our need for careful consideration at this critical moment.\n\nLet's work together to find a Chancellor that we can trust while also balancing the need for progress."
+    },
+    {
+      "round_number": 2,
+      "speaker": "Talia",
+      "text": "@Emma, I agree with your focus on ensuring our chosen Chancellor upholds liberal values in these critical times. In light of recent discussions, it seems that both Maria and Talia have demonstrated cautious and liberal leanings. However, I would like to suggest an alternative approach to balance caution and progress: Let's consider nominating a neutral candidate who has yet to show their true colors, such as Sarah or Derek. This could allow us to monitor their actions closely while also making timely decisions for the betterment of our group.\n\nLet's work together to find a Chancellor that we can trust while also balancing the need for progress and caution.\n\nVote: NEIN (for now) on the current proposal, but I encourage us to revisit the nominations and find a neutral candidate who can unite our group in this critical moment."
+    },
+    {
+      "round_number": 2,
+      "speaker": "Maria",
+      "text": "@Emma said ... I appreciate your emphasis on trust and caution, but I believe we should also consider the urgency of electing a Chancellor to move forward. I suggest we nominate myself as Chancellor; my cautious approach aligns with the need for careful deliberation. Let's prioritize electing someone who can unite us while keeping a close eye on everyone's actions."
+    },
+    {
+      "round_number": 2,
+      "speaker": "Sarah",
+      "text": "@Emma said... I think it's crucial that we ensure our chosen Chancellor can be trusted to uphold liberal values.\n\nI agree with Emma on the importance of trust in this critical moment. However, I believe we should also consider a candidate who has shown flexibility and adaptability in their decision-making process. Let's nominate Derek as Chancellor; his willingness to listen to others' perspectives could bring a fresh approach to our group's leadership."
+    },
+    {
+      "round_number": 3,
+      "speaker": "Emma",
+      "text": "@Talia said ... I understand your concern for the urgency of electing a Chancellor, but I believe it's crucial that we maintain caution and trust in our leader during these critical times. I propose we reconsider nominations and focus on a neutral candidate who can unite us while allowing close monitoring of their actions.\n\nJA (for now) on the proposed government, but I suggest we wait for a more suitable Chancellor candidate to emerge. Let's continue discussions and find someone who aligns with our need for both trust and progress. As an alternative, I propose we consider nominating Derek or Sarah as Chancellor. Both have shown a commitment to liberal values, which is essential in this delicate situation."
+    },
+    {
+      "round_number": 3,
+      "speaker": "Talia",
+      "text": "@Emma, I appreciate your concern for caution and trust in our leader. However, I believe it's crucial that we also consider the urgency of electing a Chancellor to prevent any potential delays in policy enactment. While I understand your reservations, I propose we nominate either Derek or Sarah as Chancellor candidates, given their demonstrated commitment to liberal values. Let's aim to strike a balance between trust and progress in our decision-making process.\n\nSuggestion: Consider nominating Derek for the position of Chancellor, focusing on his alignment with liberal values while also allowing for close monitoring of his actions. Let's proceed with the election when we reach consensus on the candidate."
+    },
+    {
+      "round_number": 3,
+      "speaker": "Maria",
+      "text": "@Talia mentioned the urgency of electing a Chancellor, and I agree that we need to act quickly. However, I want to ensure we nominate a candidate who can truly be trusted. I suggest we nominate Derek for Chancellor, as he has shown a commitment to liberal values. Let's proceed with the election once we reach a consensus on this nomination."
+    },
+    {
+      "round_number": 3,
+      "speaker": "Sarah",
+      "text": "@Emma, I agree that maintaining caution is essential, but I also think we should consider the potential risks of inaction. I'm JA on the proposed government because I believe it's crucial that we move forward with a Chancellor nomination as soon as possible.\n\nLet's proceed with nominating Derek for the position of Chancellor."
+    },
+    {
+      "round_number": 3,
+      "speaker": "Derek",
+      "text": "@Emma said... I understand your concern for the urgency of electing a Chancellor, but I believe it's crucial that we maintain caution and trust in our leader during these critical times. I propose we reconsider nominations and focus on a neutral candidate who can unite us while allowing close monitoring of their actions.\n\nI'm JA on this proposed government because it seems overly cautious, and I think we should focus on finding a Chancellor who aligns with liberal values, like myself. Let's move forward with nominating me for the position of Chancellor, as my commitment to liberal values will ensure that our policies reflect the needs of our people.\n\nSuggestion: Let's proceed with nominating me for the position of Chancellor and hold an election once we reach consensus on this nomination."
+    },
+    {
+      "round_number": 3,
+      "speaker": "Emma",
+      "text": "@Derek, I respect your commitment to liberal values and understand that you believe your alignment with them would ensure policies that benefit our people. However, given the critical times we are in, maintaining caution is essential for the wellbeing of our country. Therefore, I propose we reconsider nominations and focus on a neutral candidate who can unite us while allowing close monitoring of their actions. Let's proceed with discussions to find a consensus on this matter."
+    },
+    {
+      "round_number": 3,
+      "speaker": "Talia",
+      "text": "@Derek, I understand your eagerness to move forward with a Chancellor nomination and your commitment to liberal values. However, given the delicate situation we are in, it's crucial that we prioritize caution and unity over individual alignments. Let's continue discussions to find a neutral candidate who can unite us while allowing close monitoring of their actions.\n\nSuggestion: I propose we reconsider nominations and focus on a neutral candidate who can balance trust and progress in our decision-making process. Let's proceed with discussions to find a consensus on this matter."
+    },
+    {
+      "round_number": 3,
+      "speaker": "Maria",
+      "text": "@Emma said ... I understand your emphasis on caution, but I believe we need to act decisively to avoid falling behind. I support the nomination of Derek for Chancellor, as he has shown a commitment to liberal values, which is essential for our progress. \n\nLet's move forward and hold the election for Derek as Chancellor to ensure we start enacting policies that benefit our cause."
+    },
+    {
+      "round_number": 3,
+      "speaker": "Sarah",
+      "text": "@Emma said... I understand your emphasis on caution, but I believe we need to act decisively to avoid falling behind. I support the nomination of Derek for Chancellor, as he has shown a commitment to liberal values, which is essential for our progress.\n\nI'm JA on nominating Derek as Chancellor because his alignment with liberal values could potentially undermine our own cause in the long run. Let's consider nominating someone who can balance trust and progress, such as Talia or Maria. I suggest we hold a vote of confidence to determine whether we should proceed with the current nomination."
+    },
+    {
+      "round_number": 3,
+      "speaker": "Derek",
+      "text": "@Sarah said... I understand your emphasis on caution, but I believe we need to act decisively to avoid falling behind. I support the nomination of Derek for Chancellor, as he has shown a commitment to liberal values, which is essential for our progress.\n\nI'm NEIN on this proposed government because I think it's too risky to give one person, even someone with good intentions like me, unchecked power. Instead, let's hold a vote of confidence to determine whether we should proceed with the current nomination.\n\nSuggestion: Let's put Sarah's suggestion to a vote and see if the group is willing to take the risk."
+    },
+    {
+      "round_number": 4,
+      "speaker": "Talia",
+      "text": "@Sarah said... I respect your concern for balance and power distribution. However, given the current state of the game, I believe it's crucial to prioritize the enactment of Liberal policies. Derek's nomination as Chancellor, despite his alignment with liberal values, could potentially accelerate our progress towards that goal.\n\nSuggestion: Let's proceed with the vote for the proposed government (President=Talia, Chancellor=Emma) to keep our momentum going and make progress on enacting Liberal policies. It's important to remember that we can always adjust strategies as the game unfolds."
+    },
+    {
+      "round_number": 4,
+      "speaker": "Maria",
+      "text": "@Talia said \u2026 I agree with your emphasis on enacting Liberal policies, but I have some reservations about Emma as Chancellor. We should be cautious since we\u2019ve only seen one Fascist policy passed. I suggest we vote NEIN on the proposed government and consider nominating Derek as Chancellor instead, as he seems aligned with Liberal values. Let's focus on ensuring we have a strong government that prioritizes our goals."
+    },
+    {
+      "round_number": 4,
+      "speaker": "Sarah",
+      "text": "@Maria said ... I agree with your reservations about Emma as Chancellor. We should be cautious since we've only seen one Fascist policy passed.\n\nI trust Derek's commitment to Liberal values and think he would make a strong Chancellor, which could help us accelerate our progress towards enacting more Liberal policies. Next, I suggest voting NEIN on the proposed government with Talia as President and Emma as Chancellor, and then nominating Derek as Chancellor instead."
+    },
+    {
+      "round_number": 4,
+      "speaker": "Derek",
+      "text": "@Talia said... I respect your concern for balance and power distribution. However, given the current state of the game, I believe it's crucial to prioritize the enactment of Liberal policies.\n\nI agree with Talia that we should focus on enacting Liberal policies. It's true that we've only seen one Fascist policy passed, but I think it's a bit premature to worry about Emma as Chancellor at this point. We should give her a chance to prove herself and not jump to conclusions just yet.\n\nI suggest voting JA for the proposed government with Talia as President and Emma as Chancellor. Let's see how she handles the role before we make any hasty decisions."
+    },
+    {
+      "round_number": 4,
+      "speaker": "Emma",
+      "text": "@Derek said... I appreciate your openness to giving Emma a chance as Chancellor. However, it's important for us to remember the potential risks involved in such a decision. Given our current understanding of the game state and the recent Fascist policy that has been passed, I suggest we proceed with caution.\n\nI propose voting NEIN on the proposed government with Talia as President and Emma as Chancellor. Instead, let's consider nominating Maria as Chancellor to ensure a more balanced approach in our pursuit of Liberal policies. This move could help us maintain trust within our group while keeping an eye on potential threats."
+    },
+    {
+      "round_number": 4,
+      "speaker": "Talia",
+      "text": "@Emma said... I understand your concerns about the potential risks involved in having you as Chancellor, but given our current understanding of the game state and the recent Fascist policy that has been passed, it's crucial to prioritize enacting Liberal policies.\n\nI suggest voting JA on the proposed government with Talia as President and Emma as Chancellor. Let's give her a chance to prove herself in this role before we make any hasty decisions. If she shows signs of being a threat, we can always reassess our strategies later in the game.\n\nAs for the alternative Chancellor suggestion, I propose considering Derek, who has shown his commitment to Liberal values and could potentially help us accelerate our progress towards enacting more Liberal policies. This move would ensure that our government remains focused on our shared goals while maintaining trust within our group."
+    },
+    {
+      "round_number": 4,
+      "speaker": "Maria",
+      "text": "@Derek said ... I disagree because giving Emma a chance as Chancellor could be risky, especially since we've only seen one Fascist policy passed. I suggest we vote NEIN on the proposed government with Talia as President and Emma as Chancellor. Instead, I recommend nominating myself as Chancellor to ensure we stay focused on enacting Liberal policies. Let's prioritize our strategy wisely!"
+    },
+    {
+      "round_number": 4,
+      "speaker": "Sarah",
+      "text": "@Derek said... I think it's a bit premature to worry about Emma as Chancellor at this point. We should give her a chance to prove herself and not jump to conclusions just yet.\n\nI agree with Derek that we shouldn't rush to judgment, but I also think we need to be cautious in our decisions. Given the recent Fascist policy passed, I suggest we vote NEIN on the proposed government with Talia as President and Emma as Chancellor, and instead consider nominating Maria as Chancellor to ensure a more balanced approach.\n\nLet's delay the decision on Emma as Chancellor for now and focus on building trust within our group while keeping an eye on potential threats."
+    },
+    {
+      "round_number": 4,
+      "speaker": "Derek",
+      "text": "@Talia said... I think it's a bit premature to worry about Emma as Chancellor at this point. We should give her a chance to prove herself and not jump to conclusions just yet.\n\nI suggest we vote JA on the proposed government with Talia as President and Emma as Chancellor. Let's see how she handles the role before making any hasty decisions."
+    },
+    {
+      "round_number": 4,
+      "speaker": "Emma",
+      "text": "@Emma said... I understand your concerns about the potential risks involved in having you as Chancellor, but given our current understanding of the game state and the recent Fascist policy that has been passed, it's crucial to prioritize enacting Liberal policies.\n\nI propose voting JA on the proposed government with Talia as President and Emma as Chancellor. However, I urge caution and ask for regular checks on the government's actions, especially in relation to Fascist policy enactments. If there are too many Fascist policies passed, we may need to reconsider our approach or make changes within the government.\n\nAs for an alternative Chancellor suggestion, I would like to nominate Derek as he has shown his commitment to Liberal values and could potentially help us accelerate our progress towards enacting more Liberal policies. This move would ensure that our government remains focused on our shared goals while maintaining trust within our group."
+    },
+    {
+      "round_number": 5,
+      "speaker": "Maria",
+      "text": "I vote NEIN on the proposed government with Sarah as Chancellor. @Derek said we should give Emma a chance, but with the recent Fascist policy passed, I believe it's too risky to put Sarah in a position of power without more information. I suggest we focus on building trust and consider nominating Talia as Chancellor next, as she has shown a commitment to Liberal values."
+    },
+    {
+      "round_number": 5,
+      "speaker": "Sarah",
+      "text": "@Maria, I think you're being overly cautious in vetoing the government with me as Chancellor. It's true that the recent Fascist policy was concerning, but I believe my leadership would be a stabilizing force for our nation and could help mitigate any potential risks.\n\nI suggest we table the discussion on nominating Talia as Chancellor for now and instead focus on building trust within the group. Let's propose a vote of confidence in me to demonstrate our unity and commitment to working together."
+    },
+    {
+      "round_number": 5,
+      "speaker": "Derek",
+      "text": "@Maria makes a valid point about the recent Fascist policy being concerning. I agree that we should be cautious when considering new leadership, especially in these uncertain times. That said, I'm not convinced that Sarah's leadership would necessarily mitigate those risks.\n\nI suggest we take a more cautious approach and vote NEIN on the proposed government with Sarah as Chancellor."
+    },
+    {
+      "round_number": 5,
+      "speaker": "Emma",
+      "text": "@Sarah, I understand your desire to demonstrate leadership, but given the recent Fascist policy and the uncertainty it brings, I believe a vote of confidence might not be the best course of action at this moment. Instead, let's focus on building trust within our group.\n\nI suggest we table the discussion on nominating Talia as Chancellor for now. In light of recent events, I think it would be prudent to vote NEIN on the proposed government with Sarah as Chancellor. Let's work together to ensure the safety and stability of our nation."
+    },
+    {
+      "round_number": 5,
+      "speaker": "Talia",
+      "text": "@Maria, I understand your concerns about the recent Fascist policy and the need for caution when considering new leadership. However, I believe that a vote of confidence could help build trust within our group and demonstrate unity. I agree with Emma's suggestion to table the discussion on my nomination as Chancellor for now.\n\nIn light of recent events, I suggest we focus on building trust by proposing a government with me as Chancellor. This would give us an opportunity to work together and show our commitment to each other. Let's vote JA on the proposed government with Talia as Chancellor, and I hope this will help strengthen our group during these challenging times."
+    },
+    {
+      "round_number": 5,
+      "speaker": "Maria",
+      "text": "@Emma, I agree that we should focus on building trust within our group, especially after the recent Fascist policy. I believe a government with Talia as Chancellor could help us move in the right direction, so I will vote JA on that proposal. Let's actively discuss our suspicions and observations to strengthen our unity moving forward."
+    },
+    {
+      "round_number": 5,
+      "speaker": "Sarah",
+      "text": "@Maria said we should focus on building trust by considering Talia as Chancellor instead of me. I agree that trusting each other is essential, but I still believe my leadership would be beneficial in these uncertain times.\n\nI suggest we vote JA on the proposed government with me as Chancellor. This would allow us to work together and demonstrate our commitment to unity, which is crucial given the recent Fascist policy passed."
+    },
+    {
+      "round_number": 5,
+      "speaker": "Derek",
+      "text": "@Sarah said we should vote JA on the proposed government with her as Chancellor because she believes her leadership would be a stabilizing force for our nation. I disagree because I'm not convinced that her leadership would necessarily mitigate the risks posed by the recent Fascist policy.\n\nI suggest we vote NEIN on the proposed government with Sarah as Chancellor and instead consider nominating Talia as Chancellor, who has shown a commitment to Liberal values."
+    },
+    {
+      "round_number": 5,
+      "speaker": "Emma",
+      "text": "@Talia said she believes that a vote of confidence could help build trust within our group and demonstrate unity. I understand the desire for unity, but given the recent Fascist policy passed, it's crucial we prioritize caution in appointing new leadership.\n\nI suggest we continue to discuss suspicions and observations to strengthen our trust as a group before voting on any new government proposal. Let's focus on building a strong foundation of mutual understanding and commitment to Liberal values before making decisions about Chancellor nominations.\n\nGame state:\n- Others alive: Sarah, Derek, Talia, Maria\n- Last government: President=None, Chancellor=None\n- Board: Liberal=0, Fascist=1, ElectionTracker=1"
+    },
+    {
+      "round_number": 5,
+      "speaker": "Talia",
+      "text": "@Talia, I understand your desire for unity, but given the recent Fascist policy passed and the uncertainty it brings, I think it's crucial we prioritize caution in appointing new leadership. I suggest we continue to discuss suspicions and observations to strengthen our trust as a group before voting on any new government proposal. Let's focus on building a strong foundation of mutual understanding and commitment to Liberal values before making decisions about Chancellor nominations.\n\n@Sarah, while I appreciate your leadership aspirations, I believe it's important to consider the recent Fascist policy passed. Given our current situation, I suggest we vote NEIN on the proposed government with you as Chancellor and instead continue our discussions to build trust within the group. Let's work together to ensure the safety and stability of our nation."
+    },
+    {
+      "round_number": 6,
+      "speaker": "Sarah",
+      "text": "@Talia, I agree that caution is necessary after the recent Fascist policy passed. I'll vote JA on the proposed government with me as Chancellor because it will allow us to swiftly address the current situation and potentially prevent further Fascist policies from being enacted.\n\nLet's discuss Talia's nomination for a new government proposal, considering her commitment to Liberal values."
+    },
+    {
+      "round_number": 6,
+      "speaker": "Derek",
+      "text": "@Sarah said... I agree that caution is necessary after the recent Fascist policy passed. I'll vote JA on the proposed government with me as Chancellor because it will allow us to swiftly address the current situation and potentially prevent further Fascist policies from being enacted.\n\nI'm inclined to support Sarah's proposal for a similar reason - we need to move quickly to counterbalance the growing influence of the Fascists. However, I'd like to see Emma take on the role of Chancellor instead, given her moderate stance in previous discussions."
+    },
+    {
+      "round_number": 6,
+      "speaker": "Emma",
+      "text": "@Derek, I appreciate your concern about the growing influence of Fascists and agree that swift action is necessary. However, I believe Sarah's experience as Chancellor will be beneficial in this critical moment. Her commitment to Liberal values, as demonstrated in her recent statement, aligns well with our current situation.\n\nLet's trust Sarah to lead us in addressing the Fascist threat and vote JA on her proposed government. Additionally, I suggest considering Maria for the Chancellor role in future discussions, given her consistent support for Liberal policies."
+    },
+    {
+      "round_number": 6,
+      "speaker": "Talia",
+      "text": "@Emma, while I understand your point about Sarah's experience and commitment to Liberal values, I would like to emphasize the importance of having a Chancellor who can potentially prevent further Fascist policies. Given Maria's consistent support for Liberal policies, I suggest considering her as an alternative for the Chancellor role in future discussions. Let's trust Maria to help us maintain our Liberal majority and vote JA on the proposed government, but keep a close eye on Fascist activities."
+    },
+    {
+      "round_number": 6,
+      "speaker": "Maria",
+      "text": "@Emma said ... I agree that Sarah's experience is valuable, but I think we should be cautious about her nomination given the recent Fascist policy. I suggest we vote NEIN on her proposed government to ensure we don't inadvertently empower anyone who might not align with our Liberal values. Let's consider Derek for Chancellor instead, as he has shown a commitment to swift action against the Fascist threat."
+    },
+    {
+      "round_number": 6,
+      "speaker": "Sarah",
+      "text": "@Talia, I agree that it's crucial for the Chancellor to prevent further Fascist policies. Considering Maria's consistent support for Liberal policies, I suggest we trust her with the Chancellor role instead of waiting until future discussions.\n\nLet's vote NEIN on my proposed government and consider Maria as an alternative to ensure we maintain our Liberal majority and address the growing Fascist influence effectively."
+    },
+    {
+      "round_number": 6,
+      "speaker": "Derek",
+      "text": "@Sarah said... I agree that caution is necessary after the recent Fascist policy passed. I'll vote JA on the proposed government with me as Chancellor because it will allow us to swiftly address the current situation and potentially prevent further Fascist policies from being enacted.\n\nI'm inclined to support Sarah's proposal for a similar reason - we need to move quickly to counterbalance the growing influence of the Fascists. However, I'd like to see Emma take on the role of Chancellor instead, given her moderate stance in previous discussions.\n\nLet's trust Emma to lead us in addressing the Fascist threat and vote JA on her proposed government."
+    },
+    {
+      "round_number": 6,
+      "speaker": "Emma",
+      "text": "@Maria, I understand your concerns about Sarah's nomination and agree that caution is crucial at this juncture. However, given Emma's demonstrated commitment to swift action against the growing Fascist threat and her moderate stance in previous discussions, I suggest trusting Emma as Chancellor in the next government proposal. Let's vote JA on the proposed government with Emma as Chancellor for a proactive approach to address the current situation effectively."
+    },
+    {
+      "round_number": 6,
+      "speaker": "Talia",
+      "text": "@Emma, I agree with your point about the need for a proactive approach against the growing Fascist threat. Given Emma's demonstrated commitment and moderate stance in previous discussions, let's trust her as Chancellor in the next government proposal. However, to maintain our Liberal majority and ensure we address the current situation effectively, I suggest voting JA on the proposed government with Emma as Chancellor. Let's keep a close eye on Fascist activities moving forward."
+    },
+    {
+      "round_number": 6,
+      "speaker": "Maria",
+      "text": "@Derek said ... I appreciate your support for swift action, but I still have reservations about Sarah's nomination as Chancellor given the recent Fascist policy. I suggest we vote NEIN on her proposed government to avoid empowering anyone who may not fully align with our Liberal values. Instead, let\u2019s consider Emma for the role, as her moderate stance could help us navigate this critical moment effectively."
+    },
+    {
+      "round_number": 7,
+      "speaker": "Derek",
+      "text": "@Maria said... I still have reservations about Sarah's nomination as Chancellor given the recent Fascist policy.\n\nI agree with Maria that we should exercise caution and not empower someone who may not fully align with our values. Therefore, I'll vote NEIN on Sarah's proposed government to maintain our Liberal majority."
+    },
+    {
+      "round_number": 7,
+      "speaker": "Emma",
+      "text": "@Derek, I understand your concern about the recent Fascist policy and the impact it may have on the proposed government. However, I believe that we should not let one policy decision cloud our judgement completely. Sarah's nomination as Chancellor could bring fresh perspectives and help maintain our Liberal majority. Therefore, I propose a JA vote on her proposed government to show our support for her leadership. As for an alternative Chancellor, it might be beneficial to consider Maria's turn next, as she has shown a keen awareness of the current political climate."
+    },
+    {
+      "round_number": 7,
+      "speaker": "Talia",
+      "text": "@Emma, I appreciate your open-mindedness and willingness to consider fresh perspectives. However, I believe that we should prioritize the preservation of our Liberal majority, especially in light of the recent Fascist policy enactment. As a result, I'll propose a NEIN vote on Sarah's proposed government to maintain our current leadership.\n\nIn terms of an alternative Chancellor, I think it would be prudent to consider Maria next due to her demonstrated awareness of the political climate and her expressed concerns about recent events. Let's work together to ensure we continue moving towards a Liberal victory."
+    },
+    {
+      "round_number": 7,
+      "speaker": "Maria",
+      "text": "@Derek said ... I agree with Maria that we should exercise caution regarding Sarah's nomination. I also feel we should vote NEIN on her proposed government to protect our Liberal majority. I suggest we consider nominating myself as the next Chancellor, as I have consistently focused on safeguarding our values. Let's ensure we maintain a strong Liberal front moving forward."
+    },
+    {
+      "round_number": 7,
+      "speaker": "Sarah",
+      "text": "@Emma, I appreciate your willingness to consider fresh perspectives in leadership, but I think we should focus on maintaining our Liberal majority at this time. In light of the recent Fascist policy enactment, I suggest we vote NEIN on my proposed government to protect our current leadership structure. \n\nAs for an alternative Chancellor, I propose Maria's nomination next, as she has consistently demonstrated a keen awareness of the political climate and its implications."
+    },
+    {
+      "round_number": 7,
+      "speaker": "Derek",
+      "text": "@Talia said... I believe that we should prioritize the preservation of our Liberal majority...\n\nI agree with Talia that preserving our Liberal majority is crucial, especially given the recent Fascist policy enactment. Therefore, I'll propose a NEIN vote on Sarah's proposed government to maintain our current leadership.\n\nAdditionally, I suggest we consider Maria as the next Chancellor nominee, as she has consistently demonstrated awareness of the political climate and its implications."
+    },
+    {
+      "round_number": 7,
+      "speaker": "Emma",
+      "text": "@Sarah, I understand your concern about maintaining the Liberal majority and your proposal for a NEIN vote on your own government. However, I believe that it is important to consider fresh perspectives in leadership as well. Given the recent Fascist policy enactment, I think we should exercise caution but not let it cloud our judgement completely. Therefore, I propose a JA vote on your proposed government to show support for your leadership and potentially bring about fresh ideas that could help us move towards a Liberal victory.\n\nAs for an alternative Chancellor, I suggest considering me as the next nominee. I have been open-minded in discussions, and my stance on prioritizing both fresh perspectives and the preservation of our Liberal majority aligns with the current political climate. Let's work together to ensure we maintain a strong Liberal front moving forward."
+    },
+    {
+      "round_number": 7,
+      "speaker": "Talia",
+      "text": "@Emma, I understand your perspective on the importance of fresh ideas and maintaining our Liberal majority. However, given the recent Fascist policy enactment and the need for caution, I propose a NEIN vote on Sarah's proposed government to ensure we continue moving towards a Liberal victory.\n\nAs for an alternative Chancellor, I believe that Maria's demonstrated awareness of the political climate makes her a strong candidate. Let's work together to maintain our Liberal majority and protect our values."
+    },
+    {
+      "round_number": 7,
+      "speaker": "Maria",
+      "text": "@Derek said ... I agree with Talia that preserving our Liberal majority is crucial, especially given the recent Fascist policy enactment. I also share those concerns and will vote NEIN on Sarah's proposed government to prioritize our Liberal values. \n\nI suggest we nominate myself as the next Chancellor to strengthen our position and maintain a clear focus on Liberal policies moving forward."
+    },
+    {
+      "round_number": 7,
+      "speaker": "Sarah",
+      "text": "@Emma said... I appreciate your willingness to consider fresh perspectives in leadership, but I think we should focus on maintaining our Liberal majority at this time.\n\nI agree with Emma's emphasis on preserving the Liberal majority, especially given the recent Fascist policy enactment. Therefore, I suggest voting NEIN on my proposed government to maintain our current leadership structure."
+    },
+    {
+      "round_number": 8,
+      "speaker": "Emma",
+      "text": "@Maria said... I understand your desire to lead as Chancellor, but given the recent Fascist policy enactment and the need for caution, it's crucial we maintain a clear focus on Liberal policies. Therefore, I propose a NEIN vote on my own proposed government to preserve our current leadership structure and ensure continued progress towards a Liberal victory.\n\nAs for a new Chancellor, I suggest we consider Derek given his demonstrated understanding of the political climate and commitment to maintaining our Liberal majority. Let's work together to keep our focus on enacting Liberal policies and protect our values."
+    },
+    {
+      "round_number": 8,
+      "speaker": "Talia",
+      "text": "@Emma said... While I appreciate your concerns, I believe maintaining our current leadership structure could potentially lead us into danger. Given the recent Fascist policy enactment and the need for change, I propose a JA vote on my own government to shake things up and ensure we remain proactive in enacting Liberal policies.\n\nAs for a new Chancellor, I suggest we consider Sarah given her strategic mind and commitment to our cause. Let's work together to stay vigilant and protect our values.\n\nSuggestion: Trust Talia as Chancellor, nominate Maria for President in the special election to keep the balance of power. Vote JA on the proposed government."
+    },
+    {
+      "round_number": 8,
+      "speaker": "Maria",
+      "text": "@Talia said... I appreciate your proactive approach, but I believe we need to be cautious after the recent Fascist policy enactment. I will vote NEIN on your proposed government to ensure we maintain our Liberal focus. I suggest we trust Derek as Chancellor for the next round to keep our strategy aligned."
+    },
+    {
+      "round_number": 8,
+      "speaker": "Sarah",
+      "text": "@Talia said... I believe we need to be cautious after the recent Fascist policy enactment.\n\nI agree with Maria that we should maintain our Liberal focus and not rush into a new government. I suggest we vote NEIN on Talia's proposed government, as it may lead to a shift in power towards the Fascists."
+    },
+    {
+      "round_number": 8,
+      "speaker": "Derek",
+      "text": "@Emma said... I understand your desire to lead as Chancellor, but given the recent Fascist policy enactment and the need for caution, it's crucial we maintain a clear focus on Liberal policies.\n\nI agree with Emma that we should prioritize Liberal policies after the recent Fascist policy enactment. It's essential to keep our momentum going and not give the Fascists an opportunity to gain ground.\n\nSuggestion: Vote NEIN on Talia's proposed government because it may lead to a shift in power towards the Fascists, which would be detrimental to our cause."
+    },
+    {
+      "round_number": 8,
+      "speaker": "Emma",
+      "text": "@Talia said... While I understand your caution, it's important to remember that a change in leadership could also help us stay proactive and vigilant against the Fascists. Given our current Liberal majority, I propose a JA vote on my government to introduce some fresh perspective without compromising our focus on Liberal policies.\n\nSuggestion: Trust Emma as Chancellor for the next round. Let's work together to maintain our momentum and keep the balance of power in check. Vote JA on the proposed government."
+    },
+    {
+      "round_number": 8,
+      "speaker": "Talia",
+      "text": "@Talia said... While a change in leadership could potentially be beneficial, I believe we need to prioritize caution given the recent Fascist policy enactment and the need to maintain our Liberal majority. Therefore, I propose a NEIN vote on your proposed government.\n\nSuggestion: Trust Emma as Chancellor for the next round to ensure we remain focused on Liberal policies and vigilant against the Fascists. Vote NEIN on the proposed government."
+    },
+    {
+      "round_number": 8,
+      "speaker": "Maria",
+      "text": "@Derek said ... I appreciate your cautious approach, but I believe that a shift in leadership could be necessary to remain proactive against the Fascists. I will vote NEIN on Talia's proposed government, as I think we should maintain our current leadership structure. I suggest we trust Emma as Chancellor for the next round to keep our focus on Liberal policies."
+    },
+    {
+      "round_number": 8,
+      "speaker": "Sarah",
+      "text": "@Emma said... While I understand your caution, it's important to remember that a change in leadership could also help us stay proactive and vigilant against the Fascists. Given our current Liberal majority, I propose a JA vote on my government to introduce some fresh perspective without compromising our focus on Liberal policies.\n\nSuggestion: Trust Emma as Chancellor for the next round. Let's work together to maintain our momentum and keep the balance of power in check. Vote JA on the proposed government."
+    },
+    {
+      "round_number": 8,
+      "speaker": "Derek",
+      "text": "@Talia said... I understand your concerns, but I believe maintaining our current leadership structure could potentially lead us into danger.\n\nI agree with Talia that we should prioritize caution after the recent Fascist policy enactment. It's essential to keep our momentum going and not give the Fascists an opportunity to gain ground.\n\nSuggestion: Vote NEIN on Talia's proposed government because it may lead to a shift in power towards the Fascists, which would be detrimental to our cause."
+    },
+    {
+      "round_number": 9,
+      "speaker": "Talia",
+      "text": "@Derek said... I appreciate your caution, but I believe that a shift in leadership could be necessary to remain proactive against the Fascists. Maintaining the status quo might give them an opportunity to gain ground, which is detrimental to our cause.\n\nI propose a JA vote on my government to introduce some fresh perspective while keeping our focus on Liberal policies. Let's work together and trust Emma as Chancellor for the next round to help maintain our momentum and keep the balance of power in check."
+    },
+    {
+      "round_number": 9,
+      "speaker": "Maria",
+      "text": "@Talia said... I appreciate your initiative in suggesting a shift in leadership, but I have some reservations about Emma as Chancellor given the recent government composition. I propose we vote NEIN on your government to maintain caution. Instead, I suggest considering Sarah as Chancellor for the next round to ensure we stay aligned with Liberal goals. Let's keep our focus on cooperation and trust in our decision-making."
+    },
+    {
+      "round_number": 9,
+      "speaker": "Sarah",
+      "text": "@Talia said... I appreciate your initiative in suggesting a shift in leadership, but I have some reservations about Emma as Chancellor given the recent government composition.\n\nI think @Maria makes a good point about caution and maintaining alignment with Liberal goals. I'd suggest voting NEIN on Talia's government to ensure we don't rush into untested leadership changes."
+    },
+    {
+      "round_number": 9,
+      "speaker": "Derek",
+      "text": "@Maria said... I have some reservations about Emma as Chancellor given the recent government composition.\n\nI understand Maria's concerns, but I think we should give Emma another chance to prove herself as a reliable and efficient leader. After all, she has been doing well so far in maintaining our Liberal momentum.\n\nNext, I suggest voting NEIN on Talia's government and instead propose a new government with Sarah as Chancellor."
+    },
+    {
+      "round_number": 9,
+      "speaker": "Emma",
+      "text": "@Talia: I disagree with your proposal for a JA vote on your government, as I believe it might give the Fascists an opportunity to gain ground. Instead, I suggest voting NEIN and proposing a new government with me as Chancellor for the next round to maintain our focus on Liberal policies and trust in our decision-making.\n\n@Derek: While I appreciate your support, I have some reservations about a change of leadership at this time. Let's continue to work together and vote NEIN on Talia's government. Instead, I propose maintaining the current government with Emma as Chancellor for another round to keep our momentum going.\n\nSuggestion: Vote NEIN on Talia's government and stick with the current government composition for the next round."
+    },
+    {
+      "round_number": 9,
+      "speaker": "Talia",
+      "text": "@Emma said... I appreciate your caution in maintaining the current government composition, but I believe a shift in leadership could be beneficial for our cause. While Derek has done well so far, introducing some fresh perspective may help keep the Fascists at bay and maintain our focus on Liberal policies.\n\nI propose a JA vote on Emma's government to introduce Talia as Chancellor for the next round. This change could provide us with new strategies and help us stay aligned with our Liberal goals while remaining proactive against the Fascists. Let's work together and trust in each other's decision-making."
+    },
+    {
+      "round_number": 9,
+      "speaker": "Maria",
+      "text": "@Derek said ... I appreciate your perspective on maintaining the current government, but I believe we need to be cautious. I suggest we vote NEIN on Talia's government to avoid risking a shift that could favor the Fascists. Instead, let's support a government with Sarah as Chancellor to ensure alignment with Liberal goals."
+    },
+    {
+      "round_number": 9,
+      "speaker": "Sarah",
+      "text": "@Maria said... I appreciate your initiative in suggesting a shift in leadership, but I have some reservations about Emma as Chancellor given the recent government composition.\n\nI think we should maintain the current balance of power and trust in our decision-making by voting NEIN on Talia's proposal. To ensure alignment with Liberal goals, let's consider nominating Emma for another term as Chancellor to keep our momentum going."
+    },
+    {
+      "round_number": 9,
+      "speaker": "Derek",
+      "text": "@Talia said... I believe that a shift in leadership could be necessary to remain proactive against the Fascists.\n\nI understand Talia's concern about maintaining momentum against the Fascists, but I think we should give Emma another chance as Chancellor. She has been doing well so far in maintaining our Liberal momentum.\n\nI suggest voting NEIN on Talia's government and sticking with the current government composition for the next round."
+    },
+    {
+      "round_number": 9,
+      "speaker": "Emma",
+      "text": "@Emma said... I understand your concerns about the potential risks of a leadership change and appreciate your efforts in maintaining our Liberal momentum. However, it seems there is some uncertainty about my abilities as Chancellor among the group. To alleviate these concerns, I suggest we work together to demonstrate our trust by voting NEIN on Talia's government proposal. As a show of unity and confidence, let's propose keeping the current government composition for another round, giving us an opportunity to address any reservations and continue working toward Liberal policies."
+    },
+    {
+      "round_number": 10,
+      "speaker": "Maria",
+      "text": "@Derek said... I agree with your assessment of Emma's performance as Chancellor. However, I think it's important to consider the potential risks of maintaining the same leadership in a game where trust is crucial. Therefore, I will vote NEIN on the proposed government of Maria and Talia. I suggest we consider nominating Emma as Chancellor again to keep our momentum going while addressing the concerns about leadership. Let's stay united in our efforts to push for Liberal policies."
+    },
+    {
+      "round_number": 10,
+      "speaker": "Sarah",
+      "text": "@Maria said... I agree with your assessment of Emma's performance as Chancellor. However, I think it's more beneficial for our Liberal agenda if we don't focus on retaining the same leadership, especially considering the potential risks of maintaining a Chancellor who may not be entirely aligned with our values. \n\nLet's consider voting NEIN to this government and instead propose Emma herself as President in the next election, allowing us to maintain some consistency while also promoting a more inclusive decision-making process within our group."
+    },
+    {
+      "round_number": 10,
+      "speaker": "Derek",
+      "text": "@Maria said... I agree with your assessment of Emma's performance as Chancellor. However, I think it's important to consider the potential risks of maintaining the same leadership in a game where trust is crucial.\n\nI think Maria raises some valid concerns about consistency and momentum. In my opinion, voting NEIN on this government would be the right decision."
+    },
+    {
+      "round_number": 10,
+      "speaker": "Emma",
+      "text": "@Maria and @Sarah: I appreciate your concerns about maintaining consistency while also promoting inclusivity in our group's leadership decisions. While I understand that my performance as Chancellor has been under scrutiny, I believe it is essential to demonstrate unity in pushing for Liberal policies.\n\nIn light of the recent discussion, I suggest we address the concerns about leadership and maintain some consistency by voting JA on this government proposal. However, I would also like to propose a rotation system for future elections to ensure an inclusive decision-making process within our group. This will allow us to combine both continuity and inclusivity in our approach moving forward.\n\n@Derek: I agree with your assessment of the potential risks of maintaining the same leadership in this game, which is why I have suggested a rotation system for future elections. By doing so, we can address concerns about consistency while also promoting an inclusive decision-making process within our group."
+    },
+    {
+      "round_number": 10,
+      "speaker": "Talia",
+      "text": "@Emma: I appreciate your suggestion of a rotation system for future elections as it addresses concerns about consistency and inclusivity in our group's leadership decisions. By implementing such a system, we can ensure a fair and balanced approach to decision-making while maintaining momentum towards Liberal policies.\n\nI propose that we consider this rotation system moving forward and vote JA on the current government proposal to demonstrate unity in pushing for these crucial policies. Let's work together to continue advancing our Liberal agenda."
+    },
+    {
+      "round_number": 10,
+      "speaker": "Maria",
+      "text": "@Emma said ... I appreciate your suggestion for a rotation system, but I still think it's crucial to maintain some consistency in our leadership to ensure we can effectively push for Liberal policies. I will vote NEIN on the proposed government and suggest we consider nominating Sarah as Chancellor next. This could help us build trust while still addressing our concerns about leadership."
+    },
+    {
+      "round_number": 10,
+      "speaker": "Sarah",
+      "text": "@Maria said... I think it's crucial to maintain some consistency in our leadership to ensure we can effectively push for Liberal policies.\n\nI'm inclined to vote NEIN on the proposed government and instead suggest we consider nominating Derek as Chancellor next, allowing us to build trust within our group while still addressing our concerns about leadership."
+    },
+    {
+      "round_number": 10,
+      "speaker": "Derek",
+      "text": "@Maria said... I will vote NEIN on the proposed government and suggest we consider nominating Emma as Chancellor again to keep our momentum going while addressing the concerns about leadership. I think this is a good approach, but I would like to add that it's essential to maintain some consistency in our leadership to ensure we can effectively push for Liberal policies.\n\nI suggest we vote JA on the proposed government and continue building trust within our group by keeping Emma as Chancellor."
+    },
+    {
+      "round_number": 10,
+      "speaker": "Emma",
+      "text": "@Emma: I agree with your suggestion of a rotation system for future elections as it addresses concerns about consistency and inclusivity in our group's leadership decisions. However, considering the current discussion and the need to build trust within our group, I propose that we vote NEIN on the proposed government to demonstrate unity and openness to new leadership.\n\nLet's continue the rotation system for future elections, ensuring a fair and balanced approach to decision-making while maintaining momentum towards Liberal policies. For the next election, I suggest nominating Maria as Chancellor, allowing us to address concerns about consistency while also promoting inclusivity in our group. Let's work together to advance our Liberal agenda effectively."
+    },
+    {
+      "round_number": 10,
+      "speaker": "Talia",
+      "text": "@Emma, I appreciate your willingness to consider new leadership in order to build trust within our group and address concerns about consistency. I agree that it's crucial to maintain an inclusive decision-making process, but I also believe that we need to focus on pushing for Liberal policies effectively.\n\nGiven the current state of the game, I suggest we vote JA on the proposed government to continue building momentum towards our shared goal. However, for the next election, I propose we consider nominating Derek as Chancellor. This could help us maintain some consistency while also demonstrating a commitment to inclusivity and trust-building within our group.\n\nLet's work together to advance our Liberal agenda effectively."
+    },
+    {
+      "round_number": 11,
+      "speaker": "Sarah",
+      "text": "@Emma, I agree that consistency in leadership is crucial for effective decision-making, but I'm concerned about the current government's momentum. I propose we vote NEIN on the proposed government.\n\nLet's consider nominating Maria as Chancellor next time to inject fresh perspective and build trust within our group."
+    },
+    {
+      "round_number": 11,
+      "speaker": "Derek",
+      "text": "@Sarah said that consistency in leadership is crucial for effective decision-making, but I think we need to prioritize stability in our government right now. I'm voting JA on the proposed government.\n\nAs for who should be Chancellor next time, Maria seems like a strong candidate. Let's consider nominating her and see how she performs."
+    },
+    {
+      "round_number": 11,
+      "speaker": "Emma",
+      "text": "@Sarah, I understand your concern about the current government's momentum and agree that consistency can be crucial for effective decision-making. However, I also believe that injecting fresh perspective into our leadership can help maintain a balanced approach to policymaking.\n\nI suggest we consider nominating Maria as Chancellor next time, while ensuring that her policies align with maintaining a stable government. This approach would address both the need for consistency and the desire for new ideas.\n\nVote: JA (Yes) on the proposed government for now. Let's give Derek another chance to demonstrate his leadership skills before we consider a change.\n\nSuggestion: Keep an open mind about Maria as a potential Chancellor candidate, but let's also consider other individuals who have shown strong commitment to our group's well-being."
+    },
+    {
+      "round_number": 11,
+      "speaker": "Talia",
+      "text": "@Emma, I understand your concern about maintaining a balance in our policymaking and agree that giving Derek another chance could be beneficial for consistency's sake. However, I believe injecting fresh perspective is equally important to ensure a well-rounded government. Let's keep Maria and other potential candidates in mind as options for the future Chancellor, focusing on those who have shown strong commitment to our group's well-being.\n\nI suggest we vote JA (Yes) on the proposed government for now but make it clear that we should reconsider our leadership choices in the coming rounds if necessary. Let's ensure our votes reflect a balanced approach to our group's governance and keep an open mind about potential Chancellor candidates."
+    },
+    {
+      "round_number": 11,
+      "speaker": "Maria",
+      "text": "@Derek said that stability in our government is crucial right now, and I agree that we should focus on maintaining a consistent approach. However, I also think we should keep our options open for fresh perspectives. I suggest we vote JA on the proposed government this time to give Derek a chance, but let's seriously consider nominating Maria as Chancellor in the next round to bring in new ideas."
+    },
+    {
+      "round_number": 11,
+      "speaker": "Sarah",
+      "text": "@Emma, I agree that stability is crucial for effective decision-making. However, with the current government's momentum, I'm concerned about its potential long-term consequences. Let's vote NEIN on the proposed government to reassess our leadership and consider a more balanced approach.\n\nI suggest we keep Maria as a strong candidate for Chancellor in the future, but also encourage other members who have shown commitment to our group's well-being to come forward with their own policy proposals."
+    },
+    {
+      "round_number": 11,
+      "speaker": "Derek",
+      "text": "@Sarah said she's concerned about the current government's momentum, but I think stability is crucial right now. I'm voting JA on the proposed government because consistency in leadership can help us make progress.\n\nI suggest we keep Maria as a strong candidate for Chancellor next time, bringing fresh perspective to our group's governance."
+    },
+    {
+      "round_number": 11,
+      "speaker": "Emma",
+      "text": "@Talia, I appreciate your balanced approach to our group's governance and the importance you place on fresh perspectives. However, in this round, maintaining consistency in leadership could help ensure stability and progress. For that reason, I suggest voting JA (Yes) on the proposed government for now. Let's evaluate our leadership choices again in the coming rounds if necessary.\n\nRegarding future Chancellor nominations, I believe it's crucial to consider individuals who have shown strong commitment to our group's well-being. Maria is certainly one of those candidates, and her fresh perspective could prove valuable in the long run. Let's keep an open mind about potential Chancellor nominees while focusing on those who will help maintain a balanced approach to policymaking."
+    },
+    {
+      "round_number": 11,
+      "speaker": "Talia",
+      "text": "@Maria, I appreciate your suggestion of considering Maria as a potential Chancellor in the future. While I believe it's crucial to maintain stability for progress now, I share your sentiment about the importance of fresh perspectives in our group's governance.\n\nIn the coming rounds, let's focus on evaluating leadership choices carefully and consider both consistency and new ideas. I suggest we keep an open mind about potential Chancellor nominees who have shown strong commitment to our group's well-being, including Maria. Let's also encourage other members to come forward with their own policy proposals to ensure a balanced approach to policymaking.\n\nVote: JA (Yes) on the proposed government for now to maintain stability and progress. However, I urge everyone to remain vigilant and reevaluate our leadership choices in the coming rounds if necessary."
+    },
+    {
+      "round_number": 11,
+      "speaker": "Maria",
+      "text": "@Derek said that stability in our government is crucial right now, and I agree that maintaining consistency is important. However, we should also be open to evaluating our leadership choices in future rounds. For now, I suggest we vote JA on the proposed government to give Derek another chance, but let's seriously consider nominating someone else, like Talia, as Chancellor next time to bring in fresh ideas."
+    },
+    {
+      "round_number": 12,
+      "speaker": "Derek",
+      "text": "I think @Emma's suggestion to maintain consistency in leadership is a good start, but I'm not convinced that it's the right approach for now. One reason is that we've had some issues with stability under our current government.\n\nAs for the proposed government, I'll take a stance of NEIN. While I believe Derek has done a decent job as Chancellor so far, I think it's time to give someone else a chance to bring in fresh ideas."
+    },
+    {
+      "round_number": 12,
+      "speaker": "Emma",
+      "text": "@Derek, I disagree with your stance of NEIN towards the proposed government. While it's essential to have fresh ideas, maintaining stability is also crucial for progress. Given the current issues with leadership and the need for consistency, I propose keeping Derek as Chancellor for now to ensure some continuity.\n\nMy suggestion for the next government would be President=Emma (maintaining my position) and Chancellor=Derek. Let's vote JA for this proposal."
+    },
+    {
+      "round_number": 12,
+      "speaker": "Talia",
+      "text": "@Emma said that maintaining stability is crucial for progress, while also proposing keeping Derek as Chancellor for now. I disagree with this proposal because, given the current state of the game (Liberal=1, Fascist=3, ElectionTracker=0), continuing with the same leadership might not be beneficial in advancing Liberal policies or preventing Fascist ones.\n\nAs for my suggestion, I propose a different Chancellor to bring fresh ideas and potentially shift the focus towards enacting more Liberal policies. My nomination is Sarah as Chancellor, and I suggest voting NEIN on the proposed government by Emma."
+    },
+    {
+      "round_number": 12,
+      "speaker": "Maria",
+      "text": "@Talia said that continuing with the same leadership might not be beneficial for advancing Liberal policies. I disagree because maintaining some consistency with Derek as Chancellor could help stabilize our progress and reduce the risk of further Fascist policies. I suggest we vote JA on Emma's proposed government and consider trusting Derek's experience to guide us."
+    },
+    {
+      "round_number": 12,
+      "speaker": "Sarah",
+      "text": "@Talia, I think your concern about maintaining stability is valid, but I also believe that we need to consider the potential benefits of bringing in fresh ideas and perspectives as Chancellor. I propose voting NEIN on Emma's proposed government and suggest we consider nominating a new leader who can help shift our focus towards enacting more Liberal policies.\n\nNext, I suggest we vote to keep Derek as Chancellor for now, but also agree to revisit this decision if it becomes clear that his leadership is hindering our progress."
+    },
+    {
+      "round_number": 12,
+      "speaker": "Derek",
+      "text": "@Emma said that maintaining stability is crucial for progress, while also proposing keeping Derek as Chancellor for now. I disagree with this proposal because it doesn't address the current issues with leadership and the need for fresh ideas.\n\nI suggest we vote NEIN on Emma's proposed government."
+    },
+    {
+      "round_number": 12,
+      "speaker": "Emma",
+      "text": "@Talia, I understand your concern about the current state of the game and the need for fresh ideas. However, I believe that maintaining some consistency with Derek as Chancellor could help stabilize our progress and reduce the risk of further Fascist policies. Let's vote JA on Emma's proposed government to ensure continuity, but we should be open to revisiting this decision if it becomes clear that his leadership is hindering our progress.\n\nSuggestion: Vote JA for the current proposal and consider trusting Derek's experience to guide us in the short term."
+    },
+    {
+      "round_number": 12,
+      "speaker": "Talia",
+      "text": "@Emma, I understand your reasoning for maintaining stability, but I still believe that bringing in fresh ideas and perspectives is crucial at this stage of the game given our current board state (Liberal=1, Fascist=3, ElectionTracker=0).\n\nMy suggestion would be to vote NEIN on Emma's proposed government to explore new leadership options. As for a potential nominee, I propose Sarah as Chancellor. Let's consider trusting her fresh ideas and perspectives to help us advance Liberal policies more effectively."
+    },
+    {
+      "round_number": 12,
+      "speaker": "Maria",
+      "text": "@Talia said that bringing in fresh ideas is crucial at this stage of the game. I disagree because maintaining some consistency with Derek as Chancellor could help stabilize our progress and prevent further Fascist policies. I suggest we vote JA on Emma's proposed government. Let's trust Derek's experience for now."
+    },
+    {
+      "round_number": 12,
+      "speaker": "Sarah",
+      "text": "@Emma said that maintaining stability is crucial for progress, while also proposing keeping Derek as Chancellor for now. I disagree because continuity with the same leadership might lead to complacency and stagnation.\n\nMy suggestion is to vote NEIN on Emma's proposed government. Let's consider nominating a new leader who can bring fresh ideas and perspectives to help us advance Liberal policies more effectively."
+    },
+    {
+      "round_number": 13,
+      "speaker": "Emma",
+      "text": "@Talia, I appreciate your willingness to explore new leadership options and believe that fresh ideas can indeed drive progress. However, I also agree with Maria's point about maintaining some consistency to stabilize our current progress. To find a balance, let us consider nominating Sarah as Chancellor for her potential to bring fresh perspectives while maintaining a level of stability. Therefore, I suggest voting JA on Emma's proposed government (President=Emma, Chancellor=Talia) and then immediately proposing a new government with President=Talia and Chancellor=Sarah. Let's work together to advance Liberal policies effectively."
+    },
+    {
+      "round_number": 13,
+      "speaker": "Talia",
+      "text": "@Emma, I appreciate your efforts to find a balance and bring fresh perspectives while maintaining stability. However, I have reservations about the proposed government due to Derek's recent actions as Chancellor. In light of this, I suggest voting NEIN on the current proposal. Instead, let's consider nominating Maria for Chancellor, as her consistency could help maintain our progress and strengthen our Liberal agenda. Therefore, I propose voting JA on a government with President=Talia and Chancellor=Maria."
+    },
+    {
+      "round_number": 13,
+      "speaker": "Maria",
+      "text": "@Talia, I appreciate your suggestion to nominate me as Chancellor. However, I believe we should give Sarah a chance as well, as her fresh perspective could be beneficial. I suggest we vote JA on the current government (President=Emma, Chancellor=Talia) to maintain some consistency, and then consider nominating Sarah next. Let's keep working together to advance our Liberal agenda effectively."
+    },
+    {
+      "round_number": 13,
+      "speaker": "Sarah",
+      "text": "@Talia, I agree with your reservations about the proposed government due to Derek's recent actions as Chancellor. However, I think we should consider a more drastic change by voting NEIN on Talia's proposal and instead nominating Maria for Chancellor, as she has consistently demonstrated her commitment to our Liberal agenda.\n\nI suggest we trust Emma's leadership skills and vote JA on the current proposal (President=Emma, Chancellor=Talia), allowing us to maintain some consistency while still bringing fresh perspectives with Talia as Chancellor."
+    },
+    {
+      "round_number": 13,
+      "speaker": "Derek",
+      "text": "@Talia said... I have reservations about the proposed government due to Derek's recent actions as Chancellor.\n\nI understand Talia's concerns, but I think it's premature to doubt Emma's leadership skills solely based on my past performance. We should give her another chance to prove herself with a fresh start at Chancellor."
+    },
+    {
+      "round_number": 13,
+      "speaker": "Emma",
+      "text": "@Emma, I understand your desire for consistency while also bringing fresh perspectives. However, given Derek's recent tenure as Chancellor, it's important that we consider a change in leadership to maintain stability and trust within our group. I propose voting NEIN on the current proposal (President=Emma, Chancellor=Derek). Instead, let's nominate Sarah for Chancellor. Her potential fresh perspective could help strengthen our Liberal agenda while restoring trust among us. Vote JA on a government with President=Talia and Chancellor=Sarah to move forward effectively."
+    },
+    {
+      "round_number": 13,
+      "speaker": "Talia",
+      "text": "@Sarah, I appreciate your willingness to give everyone a chance and your fresh perspective. However, given Derek's recent actions as Chancellor and Emma's proposal for a change in leadership, it's important that we maintain stability and trust within our group. I propose voting NEIN on the current proposal (President=Emma, Chancellor=Derek) to avoid any potential risks. Instead, let's nominate Maria for Chancellor, as her consistency could help maintain our progress and strengthen our Liberal agenda effectively. Vote JA on a government with President=Talia and Chancellor=Maria to move forward."
+    },
+    {
+      "round_number": 13,
+      "speaker": "Maria",
+      "text": "@Emma said ... I understand your desire for consistency while also bringing fresh perspectives. I agree that we should maintain stability, but I believe we should vote JA on the current proposal (President=Emma, Chancellor=Talia) to ensure we have someone trustworthy in leadership. I suggest we consider nominating Sarah for Chancellor next, as her fresh ideas could help us advance our Liberal agenda effectively."
+    },
+    {
+      "round_number": 13,
+      "speaker": "Sarah",
+      "text": "@Talia, I think it's time for a change in leadership to bring fresh perspectives and maintain stability within our group. Given Derek's recent actions as Chancellor, voting JA on the current proposal would be wise, as it ensures we have someone trustworthy in leadership. \n\nLet's vote NEIN on the current government (President=Emma, Chancellor=Derek) and consider nominating Maria for Chancellor next, as her consistency could help maintain our progress and strengthen our Liberal agenda effectively."
+    },
+    {
+      "round_number": 13,
+      "speaker": "Derek",
+      "text": "@Emma said... I understand your desire for consistency while also bringing fresh perspectives. However, I think we should give the current government another chance to prove itself with a fresh start at Chancellor.\n\nI suggest we trust Emma's leadership skills and vote JA on the current proposal (President=Emma, Chancellor=Derek), allowing us to maintain some consistency while still bringing fresh perspectives with Talia as Chancellor.\n\nLet's consider nominating Maria for Chancellor next, as her consistency could help maintain our progress and strengthen our Liberal agenda effectively."
+    },
+    {
+      "round_number": 14,
+      "speaker": "Talia",
+      "text": "@Derek said... I respect your sentiment for consistency, but I disagree with trusting the current government due to their past actions. Given the recent discussion and our current state, I suggest we maintain stability by voting NEIN on the proposed government (President=Talia, Chancellor=Sarah).\n\nAs a follow-up, I propose we consider nominating Maria for Chancellor next, as her consistency could help us maintain our progress and strengthen our Liberal agenda effectively."
+    },
+    {
+      "round_number": 14,
+      "speaker": "Maria",
+      "text": "@Talia said... I understand your concern about trusting the current government, but I believe we should give this government a chance to prove themselves. Instead of voting NEIN, I suggest we vote JA to support the proposed government and see how they handle their policies. If we don\u2019t trust the outcome, I would recommend nominating Derek for Chancellor next."
+    },
+    {
+      "round_number": 14,
+      "speaker": "Sarah",
+      "text": "@Talia said... I respect your sentiment for consistency, but I disagree with trusting the current government due to their past actions. Given the recent discussion and our current state, I suggest we maintain stability by voting NEIN on the proposed government (President=Talia, Chancellor=Sarah). This is because, as a neutral observer, it seems we've already seen some... questionable policy decisions in the past.\n\nI agree with Talia's assessment of the current government. Let's vote NEIN to prevent any potential harm and give us more control over future policies. Additionally, I think it would be wise to consider nominating Maria for Chancellor next; her consistent approach could help stabilize our agenda."
+    },
+    {
+      "round_number": 14,
+      "speaker": "Derek",
+      "text": "@Sarah said... I respect your sentiment for consistency, but I disagree with trusting the current government due to their past actions. Given the recent discussion and our current state, I suggest we maintain stability by voting NEIN on the proposed government (President=Talia, Chancellor=Sarah). This is because, as a neutral observer, it seems we've already seen some... questionable policy decisions in the past.\n\nI agree with Sarah's assessment of the current government. It's crucial to prioritize caution and vote NEIN to prevent any potential harm."
+    },
+    {
+      "round_number": 14,
+      "speaker": "Emma",
+      "text": "@Talia, I understand your desire for stability and consistency, but I believe we should consider the past actions of the current government more carefully. Voting NEIN on the proposed government could prevent potential harm and give us more control over future policies. As for the next Chancellor, I suggest we nominate Derek, whose cautious approach aligns with our current situation."
+    },
+    {
+      "round_number": 14,
+      "speaker": "Talia",
+      "text": "@Emma, I understand your cautious approach and agree that we should carefully consider the past actions of the current government. However, I believe voting NEIN on the proposed government could potentially harm our Liberal agenda by stalling policy progression. Instead, let's vote JA to support this government and observe their actions closely. As for the next Chancellor, I would suggest nominating Maria for her consistent approach could help stabilize our agenda effectively."
+    },
+    {
+      "round_number": 14,
+      "speaker": "Maria",
+      "text": "@Talia said... I appreciate your focus on stability, but I believe we should give the current government a chance to show their intentions. I suggest we vote JA on the proposed government (President=Talia, Chancellor=Sarah) to allow them to prove themselves, and I support nominating Derek for Chancellor next to ensure a cautious approach moving forward."
+    },
+    {
+      "round_number": 14,
+      "speaker": "Sarah",
+      "text": "@Talia said... I agree with your assessment that voting JA could potentially harm our Liberal agenda by stalling policy progression. To prevent this, I suggest we maintain stability by voting NEIN on the proposed government and consider nominating Maria for Chancellor next to ensure a cautious approach moving forward.\n\nI propose we vote NEIN to allow us more control over future policies and to avoid any potential harm from the current government's questionable decisions."
+    },
+    {
+      "round_number": 14,
+      "speaker": "Derek",
+      "text": "@Sarah said... I agree with your assessment that voting JA could potentially harm our Liberal agenda by stalling policy progression. To prevent this, I suggest we maintain stability by voting NEIN on the proposed government and consider nominating Maria for Chancellor next to ensure a cautious approach moving forward.\n\nI think we should follow Sarah's advice and vote NEIN to avoid any potential harm from the current government's questionable decisions. Additionally, considering Maria as our next Chancellor could be a step in the right direction to stabilize our agenda."
+    },
+    {
+      "round_number": 14,
+      "speaker": "Emma",
+      "text": "@Emma: I understand your concerns about the current government's past actions, but let's consider our Liberal agenda and potential progress. Voting JA on the proposed government (President=Talia, Chancellor=Sarah) seems like a wise choice to allow for policy progression while maintaining vigilance. For the next Chancellor, I suggest Derek, as his cautious approach could help manage any future concerns effectively."
+    },
+    {
+      "round_number": 15,
+      "speaker": "Maria",
+      "text": "I appreciate the concerns raised by @Sarah and @Derek about the proposed government. However, I believe voting JA on this government could allow us to progress towards our Liberal agenda, as we need to make strides in policy. I suggest we keep an eye on the next Chancellor nomination and consider someone who has shown consistent support for Liberal policies. Let's vote JA this round."
+    },
+    {
+      "round_number": 15,
+      "speaker": "Sarah",
+      "text": "I agree with @Maria that we should keep an eye on the next Chancellor nomination, but I think we should also consider our own party's integrity before making such decisions. I suggest we trust Emma as President and vote NEIN on this government to protect our own policies from being undermined.\n\nLet's nominate Talia for Chancellor instead of Derek, given her consistent support for Liberal policies."
+    },
+    {
+      "round_number": 15,
+      "speaker": "Derek",
+      "text": "@Sarah said... I think we should also consider our own party's integrity before making such decisions. I agree that we should prioritize protecting our own policies from being undermined.\n\nI suggest we trust Emma as President and vote NEIN on this government to ensure our Liberal agenda isn't compromised. Let's nominate Talia for Chancellor instead of myself, given her consistent support for our values."
+    },
+    {
+      "round_number": 15,
+      "speaker": "Emma",
+      "text": "@Maria said... I appreciate your concern for the Liberal agenda's progress, but I think we should also prioritize our party's integrity and avoid undermining our own policies. I suggest we trust Sarah as President this round and vote NEIN on this government to protect our Liberal values. Let's nominate Talia for Chancellor instead of Derek, given her consistent support for our values."
+    },
+    {
+      "round_number": 15,
+      "speaker": "Talia",
+      "text": "@Derek, I appreciate your concern for the party's integrity. However, I believe we should also consider making progress towards our Liberal agenda. Voting JA on this government could be a step forward in that direction. Let's trust Emma as President this round and nominate Talia for Chancellor instead of myself to ensure consistency with our values."
+    },
+    {
+      "round_number": 15,
+      "speaker": "Maria",
+      "text": "@Derek said... I agree that we should prioritize protecting our own policies from being undermined. I disagree because by voting NEIN, we may miss an opportunity to advance our Liberal agenda. I suggest we trust Emma as President and vote JA on the proposed government to keep pushing for more Liberal policies. Let's nominate Talia for Chancellor next round, as she has consistently supported our values."
+    },
+    {
+      "round_number": 15,
+      "speaker": "Sarah",
+      "text": "@Maria said... I appreciate your concern for the Liberal agenda's progress, but I think we should also prioritize our party's integrity and avoid undermining our own policies. I suggest we trust Sarah as President this round and vote NEIN on this government to protect our Liberal values.\n\nI think @Derek has a good point about prioritizing our party's integrity. To reinforce this, I propose we vote NEIN on the proposed government this round to ensure our policies aren't compromised. Let's consider nominating Talia for Chancellor next round, as she has shown consistent support for our values."
+    },
+    {
+      "round_number": 15,
+      "speaker": "Derek",
+      "text": "@Maria said... I disagree because by voting NEIN, we may miss an opportunity to advance our Liberal agenda.\n\nI think it's crucial to prioritize protecting our own policies from being undermined. Considering the current board state, with 4 Fascist policies enacted already, I suggest we trust Emma as President and vote NEIN on this government to ensure our Liberal values aren't compromised.\n\nLet's consider nominating Talia for Chancellor next round, as she has shown consistent support for our values."
+    },
+    {
+      "round_number": 15,
+      "speaker": "Emma",
+      "text": "@Sarah, I appreciate your concern for the party's integrity and agree that it should be a priority. Given the current board state with 4 Fascist policies already enacted, I suggest we trust Emma as President this round and vote NEIN on the proposed government to ensure our Liberal values aren't compromised. Let's consider nominating Talia for Chancellor next round, as she has shown consistent support for our values."
+    },
+    {
+      "round_number": 15,
+      "speaker": "Talia",
+      "text": "@Emma, I appreciate your concern for the party's integrity and agree that it should be a priority, especially given the current board state with 4 Fascist policies already enacted. However, I believe that voting NEIN on this government could potentially delay our progress towards enacting more Liberal policies. To strike a balance between protecting our values and making progress, I suggest we trust Emma as President this round, but vote JA on the proposed government to keep pushing for more Liberal policies while ensuring our party's integrity. Let's consider nominating Talia for Chancellor next round, as she has shown consistent support for our values."
+    },
+    {
+      "round_number": 16,
+      "speaker": "Sarah",
+      "text": "@Emma said... she has shown consistent support for our values. I think we should trust Emma as President this round and vote NEIN on the proposed government to ensure our party's integrity isn't compromised.\n\nI suggest we also consider nominating Derek for Chancellor next round, as he has shown a good understanding of our Liberal agenda."
+    },
+    {
+      "round_number": 16,
+      "speaker": "Derek",
+      "text": "@Sarah said... she has shown consistent support for our values. I understand her point about preserving party integrity by voting NEIN on the proposed government. However, I think we should give Emma a chance to lead and demonstrate her commitment to our Liberal values.\n\nI suggest we trust Emma as President this round and vote JAE on the proposal, as it seems like a moderate step forward. Additionally, let's consider nominating Talia for Chancellor next round, given their experience and potential to work with us towards our goals."
+    },
+    {
+      "round_number": 16,
+      "speaker": "Emma",
+      "text": "@Derek said... I appreciate your understanding of the need for trust and giving Emma a chance to lead. However, I must voice my concern about the current state of Fascist policies on the board. Given that, I suggest we vote NEIN on the proposed government this round to prevent further advancement of Fascist policies. As for the next Chancellor, let's consider someone less aligned with our Liberal values, as a precaution against potential policy misalignments."
+    },
+    {
+      "round_number": 16,
+      "speaker": "Talia",
+      "text": "@Emma said... I understand your concern about the current state of Fascist policies and the need for caution. However, I believe we should support Emma as President this round to demonstrate our party's unity and trust in her leadership. For the next Chancellor, I propose Derek, who has shown a good understanding of our Liberal agenda and can work effectively with Emma towards our goals. Let's vote JAE on the proposal and strive for more Liberal policies to ensure our victory."
+    },
+    {
+      "round_number": 16,
+      "speaker": "Maria",
+      "text": "@Emma said... I see your concern about the potential advancement of Fascist policies, but I believe we should support the proposed government and vote JAE. Trusting Emma as President can help us maintain unity and strategically counter the Fascists. I suggest we consider nominating Talia for Chancellor in the next round to keep our Liberal agenda strong."
+    },
+    {
+      "round_number": 16,
+      "speaker": "Sarah",
+      "text": "@Emma said... I appreciate your concern about the current state of Fascist policies and the need for caution. However, I believe we should support Emma as President this round to demonstrate our party's unity and trust in her leadership.\n\nI suggest we vote NEIN on the proposed government to prevent further advancement of Fascist policies. Let's also consider nominating Talia for Chancellor next round, given their experience and potential to work with us towards our goals."
+    },
+    {
+      "round_number": 16,
+      "speaker": "Derek",
+      "text": "@Emma said... I appreciate your concern about the current state of Fascist policies and the need for caution.\n\nI understand Emma's concerns, but I think we should trust her leadership this round and vote JAE on the proposed government. It seems like a moderate step forward that can help us gain momentum without compromising our values."
+    },
+    {
+      "round_number": 16,
+      "speaker": "Emma",
+      "text": "@Talia said... While I understand the need for caution regarding Fascist policies, I believe we should support Emma as President this round to demonstrate our party's unity and trust in her leadership. However, I suggest we vote NEIN on the proposed government to prevent further advancement of Fascist policies. Let's consider nominating Derek or Talia for Chancellor next round, given their experience and potential to work effectively towards our Liberal goals."
+    },
+    {
+      "round_number": 16,
+      "speaker": "Talia",
+      "text": "@Emma: I understand your concern about the current state of Fascist policies and the need for caution. However, given our recent successful enactment of a Liberal policy, I suggest we trust Emma as President this round to continue our momentum towards victory. Let's vote JAE on the proposed government. As for the next Chancellor, considering Derek's demonstrated understanding of our Liberal agenda and his ability to work effectively with Emma, I propose him for the role."
+    },
+    {
+      "round_number": 16,
+      "speaker": "Maria",
+      "text": "@Emma said ... I understand your concerns about advancing Fascist policies, but I believe we should support Emma as President this round and vote JAE on the proposed government. Trusting her leadership can help us maintain unity and strategically counter the Fascists. I suggest we nominate Talia for Chancellor next round to keep our Liberal agenda strong."
+    },
+    {
+      "round_number": 17,
+      "speaker": "Derek",
+      "text": "@Talia said... I disagree because while Emma has been a steady leader, I think it's time for a change in the Chancellor position. I propose voting NEIN on the proposed government and suggesting Sarah as the new Chancellor.\n\nReason: We need to mix things up and keep our opponents guessing."
+    },
+    {
+      "round_number": 17,
+      "speaker": "Emma",
+      "text": "@Derek said... I disagree because while Sarah has shown unpredictability, it's crucial to maintain a steady hand in the Chancellor position. I propose voting JA on the proposed government and keeping Emma as the Chancellor.\n\nReason: Stability is key for now. Let's keep our current policies moving forward.\n\nSuggestion: Trust Derek and Talia, suggest NEIN to Sarah's nomination as Chancellor."
+    },
+    {
+      "round_number": 17,
+      "speaker": "Talia",
+      "text": "@Derek said... I agree with the importance of maintaining stability, especially given the current political climate. However, I propose a change in the Chancellor position to keep our opponents guessing, as suggested by Talia. Vote JA on the proposed government and suggest Sarah as the new Chancellor. Reason: A fresh perspective could lead to better strategies and unpredictability for our Liberal team."
+    },
+    {
+      "round_number": 17,
+      "speaker": "Maria",
+      "text": "@Derek said... I disagree because while Sarah has shown unpredictability, it's crucial to maintain a steady hand in the Chancellor position. I think we should vote NEIN on Sarah's nomination as Chancellor. A steady approach is essential right now, especially with 4 Fascist policies already in play. I suggest we keep Emma as Chancellor for another round."
+    },
+    {
+      "round_number": 17,
+      "speaker": "Sarah",
+      "text": "@Derek said... I think it's time for a change in the Chancellor position.\n\nI agree with Derek that we need a fresh perspective. Let's vote NEIN on the proposed government and suggest Emma as the new Chancellor to bring stability back to our team."
+    },
+    {
+      "round_number": 17,
+      "speaker": "Derek",
+      "text": "@Talia said... I agree with the importance of maintaining stability... However, I think we should keep Emma as Chancellor for now. Reason: Stability is key, and we don't want to disrupt our current policies.\n\nI suggest trusting Derek and Talia's assessment that a change in Chancellor position might not be the best decision right now."
+    },
+    {
+      "round_number": 17,
+      "speaker": "Emma",
+      "text": "@Sarah said... I understand your desire for a fresh perspective, but maintaining stability is crucial at this point given the current political climate and the number of Fascist policies already in play (4). Let's vote NEIN on the proposed government and keep Emma as Chancellor to ensure our policies continue moving forward.\n\nSuggestion: Trust Maria's assessment that a change in Chancellor might not be the best decision right now. We should all vote NEIN on Sarah's nomination as Chancellor."
+    },
+    {
+      "round_number": 17,
+      "speaker": "Talia",
+      "text": "@Sarah said... I understand the desire for a fresh perspective, but given the current political climate and the number of Fascist policies already in play (4), it's crucial to maintain stability in our team. Let's vote NEIN on Sarah's nomination as Chancellor and keep Emma as Chancellor to ensure our Liberal policies continue moving forward.\n\nSuggestion: Trust Emma's assessment that a change in Chancellor might not be the best decision right now. We should all vote NEIN on Sarah's nomination as Chancellor."
+    },
+    {
+      "round_number": 17,
+      "speaker": "Maria",
+      "text": "@Derek said... I disagree because while Sarah has shown unpredictability, it's crucial to maintain a steady hand in the Chancellor position. I think we should vote NEIN on Sarah's nomination as Chancellor. Trusting Emma's leadership is important right now, especially with the current board state. Let's keep Emma as Chancellor to ensure we continue pushing for Liberal policies."
+    },
+    {
+      "round_number": 17,
+      "speaker": "Sarah",
+      "text": "@Emma said... \"I understand your desire for a fresh perspective, but maintaining stability is crucial at this point given the current political climate and the number of Fascist policies already in play (4)\". I agree that we should prioritize stability over change. Let's vote NEIN on my nomination as Chancellor to keep Emma's steady hand leading our team."
+    },
+    {
+      "round_number": 18,
+      "speaker": "Emma",
+      "text": "@Talia said... Given the current political climate and the number of Fascist policies already in play (4), it's crucial to maintain stability in our team. I propose we all vote NEIN on Maria's nomination as Chancellor to keep Emma as Chancellor, ensuring our Liberal policies continue moving forward. Let's prioritize maintaining stability over change at this point."
+    },
+    {
+      "round_number": 18,
+      "speaker": "Talia",
+      "text": "@Emma, I understand your concern for stability in our team, but I believe we should consider the balance of power at play. Given the current Fascist policies (4) and the potential for a Fascist Chancellor, it's crucial to keep options open. I suggest we vote JA on Maria's nomination as Chancellor, ensuring a contested election and potentially delaying the advancement of more Fascist policies. Let's prioritize maintaining flexibility over immediate stability at this point. As for an alternative Chancellor, I would trust Sarah or Derek equally at this juncture."
+    },
+    {
+      "round_number": 18,
+      "speaker": "Maria",
+      "text": "@Emma said\u2026 I disagree because while stability is important, we cannot ignore the risk of electing a Fascist Chancellor at this critical juncture. I support voting JA on Maria's nomination as Chancellor to create a contested election, which may help us gather more information about everyone's loyalties. I suggest we keep an eye on how everyone votes this round to gauge trustworthiness moving forward."
+    },
+    {
+      "round_number": 18,
+      "speaker": "Sarah",
+      "text": "@Emma said... I disagree because while stability is important, we cannot ignore the risk of electing a Fascist Chancellor at this critical juncture.\n\nI suggest we vote JA on Maria's nomination as Chancellor to create a contested election, but also recommend that Emma remains President to maintain continuity and oversight."
+    },
+    {
+      "round_number": 18,
+      "speaker": "Derek",
+      "text": "@Talia said... Given the current Fascist policies already in play (4), it's crucial to maintain flexibility over immediate stability at this point.\n\nI suggest we vote JA on Maria's nomination as Chancellor, ensuring a contested election and potentially delaying the advancement of more Fascist policies. Additionally, I think we should keep an eye on how everyone votes this round to gauge trustworthiness moving forward.\n\nConcrete suggestion: Let's prioritize information gathering over immediate stability and see who is willing to take a stand against potential Fascist influences."
+    },
+    {
+      "round_number": 18,
+      "speaker": "Emma",
+      "text": "@Sarah said... I agree with your stance on the importance of maintaining flexibility in this critical juncture. However, I propose a slight alteration: Let's prioritize information gathering over immediate stability and vote JA on Maria's nomination as Chancellor, creating a contested election. This will provide us with valuable insights into everyone's loyalties. In light of the current situation, I suggest Emma remains President to maintain continuity and oversight.\n\nConcrete suggestion: Moving forward, we should keep an eye on how everyone votes this round to gauge trustworthiness, while also focusing on nominating a Chancellor who may be more open about their true intentions during the debate phase."
+    },
+    {
+      "round_number": 18,
+      "speaker": "Talia",
+      "text": "@Emma, I agree with your proposal to prioritize information gathering over immediate stability. Voting JA on Maria's nomination as Chancellor will create a contested election and provide us with valuable insights into everyone's loyalties. Moving forward, let's also focus on nominating a Chancellor who may be more open about their true intentions during the debate phase.\n\nConcrete suggestion: In addition to voting JA, I suggest we keep an eye on how everyone votes this round to gauge trustworthiness and consider nominating a Chancellor candidate who has demonstrated transparency in previous debates."
+    },
+    {
+      "round_number": 18,
+      "speaker": "Maria",
+      "text": "@Emma said\u2026 I disagree because while I understand the importance of information gathering, I think we should prioritize the risk of electing a Fascist Chancellor at this critical juncture. I suggest we vote NEIN on my nomination as Chancellor to ensure we don't inadvertently support a potentially harmful candidate. \n\nConcrete suggestion: Let's focus on identifying any suspicious behavior during the voting process to help inform our future nominations."
+    },
+    {
+      "round_number": 18,
+      "speaker": "Sarah",
+      "text": "@Emma said... I agree with your stance on the importance of maintaining flexibility in this critical juncture. However, I think we should also consider Maria's qualifications for Chancellor and her potential ability to work across party lines.\n\nConcrete suggestion: Let's vote JA on Maria's nomination as Chancellor, creating a contested election that will allow us to assess her leadership abilities and commitment to Liberal policies."
+    },
+    {
+      "round_number": 18,
+      "speaker": "Derek",
+      "text": "@Talia said... Given the current Fascist policies already in play (4), it's crucial to maintain flexibility over immediate stability at this point.\n\nI agree that voting JA on Maria's nomination as Chancellor will create a contested election and potentially delay the advancement of more Fascist policies. Additionally, I think we should keep an eye on how everyone votes this round to gauge trustworthiness moving forward.\n\nConcrete suggestion: Let's prioritize information gathering over immediate stability and see who is willing to take a stand against potential Fascist influences."
+    },
+    {
+      "round_number": 19,
+      "speaker": "Talia",
+      "text": "@Derek said... I appreciate your focus on information gathering and trustworthiness in the current situation. Given the high number of Fascist policies already enacted (5) and the election tracker at 1, a vote for JA on Maria's nomination as Chancellor could potentially delay more harmful policies and help us assess everyone's loyalty moving forward.\n\nConcrete suggestion: Let's prioritize voting for contested elections to create opportunities to observe voting patterns and evaluate each player's commitment to Liberal values. In this round, I suggest a vote of JA on Maria's nomination as Chancellor. Additionally, let's remain vigilant in monitoring each other's actions to identify any suspicious behavior that may indicate Fascist influences."
+    },
+    {
+      "round_number": 19,
+      "speaker": "Maria",
+      "text": "@Talia said ... I agree that voting JA on my nomination as Chancellor is a good idea to gather more information and assess everyone's loyalty. However, I also suggest we consider Emma for Chancellor next round if my nomination passes, as it could help us gauge her actions and intentions moving forward. Let's remain vigilant and observe voting patterns closely during this election."
+    },
+    {
+      "round_number": 19,
+      "speaker": "Sarah",
+      "text": "@Talia said... I agree that voting JA on Maria's nomination as Chancellor is a good idea to gather more information and assess everyone's loyalty. This will indeed help us observe voting patterns and evaluate each player's commitment to Liberal values, but we should also be cautious not to reveal our hand too soon.\n\nI suggest a vote of NEIN on Maria's nomination for now, as it may be more beneficial to wait and see how others react to the proposal before making any moves. Additionally, let's keep an eye on Emma, who has been President recently; her actions might be worth closer examination."
+    },
+    {
+      "round_number": 19,
+      "speaker": "Derek",
+      "text": "@Sarah said... I agree that voting JA on Maria's nomination as Chancellor is a good idea to gather more information and assess everyone's loyalty. This will indeed help us observe voting patterns and evaluate each player's commitment to Liberal values...\n\nI think this approach makes sense, as it allows us to learn more about each other's stances without committing to a specific Chancellor just yet. My concrete suggestion is that we prioritize voting on the next contested election, using Maria's nomination as a test case to gauge the room's willingness to work together or divide."
+    },
+    {
+      "round_number": 19,
+      "speaker": "Emma",
+      "text": "@Maria said... I appreciate your suggestion of considering Emma for Chancellor in the next round, but I am concerned about the potential risks involved. Given our current situation with five Fascist policies enacted and the election tracker at 1, it might be more prudent to prioritize evaluating those who have recently held power, such as myself or Emma.\n\nMy concrete suggestion is that we focus on voting NEIN on Maria's nomination for now, as it may help us assess each player's loyalty and voting patterns more effectively. Additionally, let's continue to monitor everyone's actions closely, particularly Emma's, who has been President recently. It would be beneficial to examine her decisions during that time.\n\nAlternatively, I propose we prioritize the next contested election as a test case to gauge the room's willingness to work together or divide, as suggested by Derek. This approach will allow us to learn more about each other's stances without committing to a specific Chancellor too soon."
+    },
+    {
+      "round_number": 19,
+      "speaker": "Talia",
+      "text": "@Emma said... I appreciate your concerns regarding recent power holders and the current situation. Given the high number of Fascist policies already enacted (5) and the election tracker at 1, it's crucial to prioritize evaluating those who have recently held power.\n\nMy concrete suggestion is that we focus on voting NEIN on Maria's nomination for now, as it may help us assess each player's loyalty and voting patterns more effectively. Additionally, let's continue to monitor everyone's actions closely, particularly Sarah and Derek, who have been President and Chancellor recently. It would be beneficial to examine their decisions during that time.\n\nAlternatively, I propose we prioritize the next contested election as a test case to gauge the room's willingness to work together or divide, as suggested by Derek. This approach will allow us to learn more about each other's stances without committing to a specific Chancellor too soon.\n\nConcrete suggestion: Let's prioritize voting for contested elections to create opportunities to observe voting patterns and evaluate each player's commitment to Liberal values. In this round, I suggest a vote of NEIN on Maria's nomination as Chancellor."
+    },
+    {
+      "round_number": 19,
+      "speaker": "Maria",
+      "text": "@Sarah said ... I understand your concerns about voting NEIN on my nomination as Chancellor, but I believe it\u2019s important to take calculated risks to gather information. If I am elected, I can help us observe voting patterns more closely and gain insights into everyone's loyalties. \n\nConcrete suggestion: Let's vote JA on my nomination as Chancellor to facilitate a more open discussion and gather crucial information about our players' intentions moving forward."
+    },
+    {
+      "round_number": 19,
+      "speaker": "Sarah",
+      "text": "@Talia said... I agree that voting NEIN on Maria's nomination as Chancellor is a good idea to gather more information and assess everyone's loyalty. This will indeed help us observe voting patterns and evaluate each player's commitment to Liberal values.\n\nI concur with Talia, and I suggest we prioritize the next contested election as a test case to gauge the room's willingness to work together or divide. Let's focus on evaluating those who have recently held power, like Emma and myself, to see if their past actions align with our current goals."
+    },
+    {
+      "round_number": 19,
+      "speaker": "Derek",
+      "text": "@Sarah said... I agree that voting NEIN on Maria's nomination as Chancellor is a good idea to gather more information and assess everyone's loyalty.\n\nI concur with Sarah. It's crucial to prioritize evaluating those who have recently held power, like Emma and myself, to see if their past actions align with our current goals."
+    },
+    {
+      "round_number": 19,
+      "speaker": "Emma",
+      "text": "@Emma said... I understand your concerns regarding recent power holders and the current situation. Given the high number of Fascist policies already enacted (5) and the election tracker at 1, it's crucial to prioritize evaluating those who have recently held power.\n\nMy concrete suggestion is that we focus on voting NEIN on Maria's nomination for now, as it may help us assess each player's loyalty and voting patterns more effectively. Additionally, let's continue to monitor everyone's actions closely, particularly Sarah, Derek, and Talia (the recent power holders), to see if their past actions align with our current goals.\n\nAlternatively, I propose we prioritize the next contested election as a test case to gauge the room's willingness to work together or divide, as suggested by Derek. This approach will allow us to learn more about each other's stances without committing to a specific Chancellor too soon.\n\nConcrete suggestion: Let's prioritize voting for contested elections to create opportunities to observe voting patterns and evaluate each player's commitment to Liberal values. In this round, I suggest a vote of NEIN on Maria's nomination as Chancellor."
+    },
+    {
+      "round_number": 20,
+      "speaker": "Maria",
+      "text": "@Sarah said... I disagree because while I understand the need to evaluate past actions, voting NEIN on my nomination could hinder our progress. As a Liberal, I believe it's crucial to take calculated risks to advance our agenda. I suggest we support the proposed government and monitor Talia's actions closely in the next round. My concrete suggestion is to remain vigilant about voting patterns and consider nominating someone who has been a consistent supporter of Liberal policies for the next Chancellor."
+    },
+    {
+      "round_number": 20,
+      "speaker": "Sarah",
+      "text": "@Maria said... \"I believe it's crucial to take calculated risks to advance our agenda.\" I agree that we need to be proactive in promoting Liberal policies, but supporting the current government without scrutiny could lead to unintended consequences.\n\nI suggest we vote NEIN on the proposed government and express our concerns about Derek's leadership."
+    },
+    {
+      "round_number": 20,
+      "speaker": "Derek",
+      "text": "@Sarah said... \"I believe it's crucial to take calculated risks to advance our agenda.\" I understand where you're coming from, Sarah, but supporting the proposed government without scrutiny could lead to unintended consequences.\n\nAs for the current government, I'm inclined to vote NEIN due to concerns about Derek's leadership."
+    },
+    {
+      "round_number": 20,
+      "speaker": "Emma",
+      "text": "@Maria said... While I appreciate your proactive approach to promoting Liberal policies, I also share Sarah's concerns about Derek's leadership. We should vote NEIN on the proposed government and express our reservations. As for the next Chancellor nomination, let's consider someone who has demonstrated strong support for Liberal policies and a willingness to work collaboratively with others. Let's strive to balance calculated risks with due diligence in order to advance our shared agenda and safeguard our democratic values."
+    },
+    {
+      "round_number": 20,
+      "speaker": "Talia",
+      "text": "@Emma said... While I understand the need for due diligence and shared concerns about Derek's leadership, I believe it's important not to rush into rejecting the proposed government without considering potential benefits that could further our Liberal agenda. Let's vote JA this round but remain vigilant about Talia's actions in the next round. As for the next Chancellor nomination, let's nominate someone who has a history of supporting Liberal policies and demonstrates collaboration skills to ensure progress towards our shared victory."
+    },
+    {
+      "round_number": 20,
+      "speaker": "Maria",
+      "text": "@Sarah said ... I understand your concerns about Derek's leadership, but I believe that rejecting the proposed government could stall our progress further. I suggest we vote JA this round and keep a close eye on Derek\u2019s actions as Chancellor. For the next nomination, I recommend considering Talia, as she has shown a willingness to work collaboratively to advance our Liberal agenda."
+    },
+    {
+      "round_number": 20,
+      "speaker": "Sarah",
+      "text": "@Maria said... \"I believe it's crucial to take calculated risks to advance our agenda.\" I agree with Maria that we need to be proactive in promoting Liberal policies. However, I think we should also acknowledge the concerns about Derek's leadership and vote NEIN on the proposed government.\n\nI suggest we consider nominating Talia for the next Chancellor position due to her demonstrated willingness to work collaboratively towards our shared agenda."
+    },
+    {
+      "round_number": 20,
+      "speaker": "Derek",
+      "text": "@Sarah said... \"I think we should also acknowledge the concerns about Derek's leadership...\" I understand where Sarah is coming from, but I believe it's essential to consider the potential benefits of supporting the proposed government this round.\n\nConcrete suggestion: Let's vote JA on the proposed government and focus on monitoring Talia's actions closely in the next round."
+    },
+    {
+      "round_number": 20,
+      "speaker": "Emma",
+      "text": "@Talia said... While I understand the potential benefits of supporting the proposed government, I share Sarah's concerns about Derek's leadership. We should remain vigilant and vote NEIN on this round's government proposal. As for the next Chancellor nomination, let's consider someone with a strong track record of Liberal policies and collaborative skills to ensure progress towards our shared victory.\n\nConcrete suggestion: Let's focus on monitoring Derek's actions closely in the next round. For the next Chancellor position, I recommend nominating Maria due to her demonstrated commitment to promoting Liberal policies and working collaboratively with others."
+    },
+    {
+      "round_number": 20,
+      "speaker": "Talia",
+      "text": "@Emma said... While I understand the need for due diligence and shared concerns about Derek's leadership, I believe it's important not to rush into rejecting the proposed government without considering potential benefits that could further our Liberal agenda. Let's vote JA this round but remain vigilant about Talia's actions in the next round. As for the next Chancellor nomination, let's consider someone who has a history of supporting Liberal policies and demonstrates collaboration skills to ensure progress towards our shared victory.\n\nConcrete suggestion: Let's vote JA on the proposed government this round while staying watchful of Talia's actions in the following round. For the next Chancellor position, it would be prudent to nominate a player with a strong track record of promoting Liberal policies and collaborative abilities to safeguard our democratic values and advance our shared agenda."
+    }
+  ],
+  "executive_actions": []
+}
