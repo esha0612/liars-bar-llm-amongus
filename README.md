@@ -70,8 +70,7 @@ Run multiple games:
 ```
 python multi_game_runner.py -n 3
 ```
-Specify the number of games you want to run after `-n`, where multiple rounds will occur until all models have participated in the game the number of times specified
-
+Specify the number of games you want to run after `-n`. Each model will continue playing until it has participated in the specified number of rounds.”
 ### Analysis
 
 The game records will be saved in the `game_records` folder in the directory in json format
