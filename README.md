@@ -86,7 +86,7 @@ Run multiple games:
 ```
 python multi_game_runner.py -n 10
 ```
-Specify the number of games you want to run after `-n`, the default is 10
+Use `-n` to specify the number of games to run. Each model will continue playing until it has participated in the specified number of rounds.
 
 ### Analysis
 
