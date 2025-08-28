@@ -1,103 +1,150 @@
-# Liars Bar LLM
+# Blood on the Clocktower LLM
 
-An AI version of the Liars Bar battle framework driven by a large language model
+An AI version of Blood on the Clocktower (Lite) driven by large language models, featuring both Ollama and OpenAI model support.
 
-## File structure
+## Game Overview
 
-The program is mainly divided into two parts, the game body and the analysis tool
+Blood on the Clocktower is a social deduction game where players are divided into Good and Evil teams. The Good team must identify and eliminate the Demon (Imp) before they're all killed, while the Evil team tries to eliminate enough Good players to win.
 
-### Game body
+### Roles in this Lite Version
 
-`game.py` Liars Bar game main program
+**Good Team:**
+- **Empath** - Learns if a living neighbor is Evil
+- **Fortune Teller** - Learns if a specific pair of players has an Evil player
+- **Undertaker** - Learns the character of the most recently executed player
+- **Monk** - Protects one player each night from being killed
+- **Ravenkeeper** - Learns the character of one player when they die
 
-`player.py` LLM agent participating in the game
+**Evil Team:**
+- **Imp (Demon)** - Kills one player each night
+- **Poisoner (Minion)** - Poisons one player each night, making their information false
 
-`game_record.py` Used to save and extract game records
+## File Structure
 
-`llm_client.py` Used to configure the model interface and initiate LLM requests
+### Game Core
+- `game.py` - Blood on the Clocktower game main program (`BotCGame` class)
+- `player.py` - LLM agents participating in the game with role-specific abilities
+- `game_record.py` - Used to save and extract game records
+- `multi_llm_client.py` - Unified interface supporting both Ollama and OpenAI models
+- `multi_game_runner.py` - Used to batch run multiple rounds of games
 
-`multi_game_runner.py` Used to batch run multiple rounds of games
+### Analysis Tools
+- `game_analyze.py` - Used to count all game data
+- `player_matchup_analyze.py` - Used to extract game records between AI opponents for analysis
+- `json_convert.py` - Used to convert json game records into readable text
 
-### Analysis tool
-
-`game_analyze.py` Used to count all game data
-
-`player_matchup_analyze.py` Used to extract game records between AI opponents for analysis
-
-`json_convert.py` Used to convert json game records into readable text
+### Prompts
+- `prompt/botc_rule_base.txt` - Core game rules and mechanics
+- `prompt/table_talk_botc.txt` - Day phase discussion prompts
+- `prompt/nominate_execute_prompt.txt` - Execution nomination prompts
+- `prompt/vote_execute_prompt.txt` - Execution voting prompts
+- `prompt/imp_kill_prompt.txt` - Demon kill action prompts
+- `prompt/poisoner_poison_prompt.txt` - Poisoner action prompts
+- `prompt/monk_protect_prompt.txt` - Monk protection prompts
+- `prompt/fortune_teller_pair_prompt.txt` - Fortune Teller investigation prompts
+- `prompt/ravenkeeper_target_prompt.txt` - Ravenkeeper target selection prompts
 
 ## Configuration
 
-Use the conda environment to configure the corresponding dependency packages:
-
+### Dependencies
 ```bash
 pip install openai
 pip install ollama
+pip install python-dotenv  # Optional, for .env file support
 ```
 
-Also to run model using Ollama, you need to first:
+### Ollama Setup
+To run models using Ollama locally:
 
 ```bash
 curl -fsSL https://ollama.com/install.sh | sh
 ollama serve
 ```
-to first initialize the ollama package on your server environment.
 
-Then you need to download the model you need to run locally using ollama, you can find useful models in https://ollama.com/search. Also when you are trying to download model, like:
+Download models you want to use:
 ```bash
-ollama pull qwen3:8b
+ollama pull llama3.1:8b
+ollama pull mistral:7b
+ollama pull qwen2.5:7b
+# Add more models as needed
 ```
-to download the Qwen3 model with 8B's weights. Other models with other weights can do the same.
 
-The API configuration of this project is in `llm_client.py`.
+### OpenAI Setup
+For OpenAI models, set your API key in a `.env` file:
+```
+OPENAI_API_KEY=your_api_key_here
+```
 
-This project uses New API https://github.com/Calcium-Ion/new-api?tab=readme-ov-file to configure a unified interface call format. When using it, you need to configure the API interface of the corresponding model yourself.
-
-You can also use a similar API management project One API https://github.com/songquanpeng/one-api to achieve unified interface calls.
+### Model Configuration
+The project uses `multi_llm_client.py` to automatically route requests to the appropriate service:
+- Models like `llama3`, `mistral:7b` → Ollama (local)
+- Models like `gpt-4o-mini` → OpenAI API
 
 ## Usage
 
-### Run
-
-After completing the project configuration, set the correct model name in the `player_configs` of the main program entry of `game.py` and `multi_game_runner.py`
-
-Run a single game:
-```
-python game.py
+### Run Single Game
+```bash
+python3 game.py
 ```
 
-Run multiple games:
+### Run Multiple Games
+```bash
+python3 multi_game_runner.py -n 10
 ```
-python multi_game_runner.py -n 10
-```
-Specify the number of games you want to run after `-n`, the default is 10
+Specify the number of games you want to run after `-n`. Each model will continue playing until it has participated in the specified number of rounds.”
+
+### Game Flow
+1. **Setup** - Players are assigned roles (Good/Evil)
+2. **Day Phase** - Players discuss and vote to execute someone
+3. **Night Phase** - Players with night abilities use them
+4. **Repeat** - Continue until Good eliminates the Demon or Evil achieves majority
 
 ### Analysis
 
-The game records will be saved in the `game_records` folder in the directory in json format
+Game records are saved in the `game_records/` folder in JSON format.
 
-Convert the json file to a more readable text format, and the converted file will be saved in the `converted_game_records` folder in the directory
-
-```
-python json_convert.py
-```
-
-Extract all the games between AIs in the game, and the converted files will be saved in the `matchup_records` folder in the directory
-
-```
-python player_matchup_analyze.py
+Convert JSON to readable text:
+```bash
+python3 json_convert.py
 ```
 
-Count and print all game data
-
+Extract AI vs AI matchups:
+```bash
+python3 player_matchup_analyze.py
 ```
-python game_analyze.py
+
+Analyze all game data:
+```bash
+python3 game_analyze.py
 ```
 
-## Demo
+## Multi-LLM Support
 
-The project has run 50 games with four models, DeepSeek-R1, o3-mini, Gemini-2-flash-thinking, and Claude-3.7-Sonnet, as players, and the records are stored in the `demo_records` folder.
+This implementation supports both local and cloud-based models:
+
+**Local Models (via Ollama):**
+- llama3.1:8b, mistral:7b, qwen2.5:7b, deepseek-r1:8b
+- phi4:14b, gemma2:9b, and many others
+
+**Cloud Models (via OpenAI API):**
+- gpt-4o-mini, gpt-4o, gpt-4-turbo
+
+The system automatically detects which service to use based on the model name and routes requests accordingly.
+
+## Game Features
+
+- **Role-based abilities** - Each character has unique night actions
+- **Social deduction** - Players must deduce roles through discussion
+- **Dynamic gameplay** - Day/night cycle with voting and executions
+- **Multi-model support** - Mix local and cloud models in the same game
+- **Comprehensive logging** - Detailed game records for analysis
 
 ## Known Issues
 
-The output of the model may be unstable during the card-playing and questioning stages. When the output cannot meet the game requirements, it will automatically retry. If the run is interrupted multiple times due to output problems, you can increase the number of retries for calling large models in `choose_cards_to_play` and `decide_challenge` of `player.py`, or modify the prompts in `play_card_prompt_template.txt` and `challenge_prompt_template.txt` in the `prompt` folder to strengthen the restrictions on the output format (which may have a certain impact on the model's reasoning ability).
+- Model outputs may occasionally be unstable during voting phases
+- The system includes automatic retry logic for failed model calls
+- If experiencing frequent interruptions, consider adjusting prompts in the `prompt/` folder to be more specific about output format requirements
+
+## Contributing
+
+This is a simplified version of Blood on the Clocktower. For the full game with all characters and mechanics, refer to the official Blood on the Clocktower rules.
