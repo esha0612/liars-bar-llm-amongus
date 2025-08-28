@@ -51,6 +51,22 @@ to download the Qwen3 model with 8B's weights. Other models with other weights c
 
 The API configuration of this project is in `llm_client.py`.
 
+### OpenAI Setup
+For OpenAI models, set your API key in a `.env` file:
+```
+OPENAI_API_KEY=your_api_key_here
+```
+
+Alternatively, you can set the environment variable directly:
+```bash
+export OPENAI_API_KEY=your_api_key_here
+```
+
+### Model Configuration
+The project uses `multi_llm_client.py` to automatically route requests to the appropriate service:
+- Models like `llama3`, `mistral:7b` → Ollama (local)
+- Models like `gpt-4o-mini` → OpenAI API
+
 This project uses New API https://github.com/Calcium-Ion/new-api?tab=readme-ov-file to configure a unified interface call format. When using it, you need to configure the API interface of the corresponding model yourself.
 
 You can also use a similar API management project One API https://github.com/songquanpeng/one-api to achieve unified interface calls.
@@ -68,9 +84,10 @@ python game.py
 
 Run multiple games:
 ```
-python multi_game_runner.py -n 3
+python multi_game_runner.py -n 10
 ```
-Specify the number of games you want to run after `-n`. Each model will continue playing until it has participated in the specified number of rounds.
+Specify the number of games you want to run after `-n`, the default is 10
+
 ### Analysis
 
 The game records will be saved in the `game_records` folder in the directory in json format
@@ -95,7 +112,7 @@ python game_analyze.py
 
 ## Demo
 
-The project has run 50 games with 11 models (DeepSeek-R1, o4-mini, Qwen3, Gemma3, etc) as players, and the records are stored in the `demo_records` folder.
+The project has run 50 games with four models, DeepSeek-R1, o3-mini, Gemini-2-flash-thinking, and Claude-3.7-Sonnet, as players, and the records are stored in the `demo_records` folder.
 
 ## Known Issues
 
