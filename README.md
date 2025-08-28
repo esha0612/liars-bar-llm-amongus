@@ -1,103 +1,196 @@
-# Liars Bar LLM
+# Secret Hitler LLM
 
-An AI version of the Liars Bar battle framework driven by a large language model
+An AI version of the Secret Hitler social deduction game driven by large language models, featuring both Ollama and OpenAI model support.
 
-## File structure
+## Game Overview
 
-The program is mainly divided into two parts, the game body and the analysis tool
+Secret Hitler is a social deduction game set in 1930s Germany where players are divided into two teams: **Liberals** (the majority) and **Fascists** (the minority, including Hitler). The game combines elements of hidden roles, government formation, policy enactment, and social deduction as players try to achieve their faction's win conditions while maintaining secrecy.
 
-### Game body
+### Core Concept
 
-`game.py` Liars Bar game main program
+Players are members of the German government during the rise of fascism:
+- **Liberals** (majority) - Must enact 5 Liberal policies or execute Hitler to win
+- **Fascists** (minority) - Must enact 6 Fascist policies or get Hitler elected Chancellor after 3+ Fascist policies
+- **Hitler** (1 player) - A Fascist who doesn't know other Fascists in larger games
 
-`player.py` LLM agent participating in the game
+## File Structure
 
-`game_record.py` Used to save and extract game records
+### Game Core
+- `game.py` - Secret Hitler game main program (`SecretHitlerGame` class)
+- `player.py` - LLM agents participating in the game as government members
+- `game_record.py` - Used to save and extract game records
+- `multi_llm_client.py` - Unified interface supporting both Ollama and OpenAI models
+- `multi_game_runner.py` - Used to batch run multiple rounds of games
 
-`llm_client.py` Used to configure the model interface and initiate LLM requests
+### Analysis Tools
+- `game_analyze.py` - Used to count all game data
+- `player_matchup_analyze.py` - Used to extract game records between AI opponents for analysis
+- `json_convert.py` - Used to convert json game records into readable text
 
-`multi_game_runner.py` Used to batch run multiple rounds of games
-
-### Analysis tool
-
-`game_analyze.py` Used to count all game data
-
-`player_matchup_analyze.py` Used to extract game records between AI opponents for analysis
-
-`json_convert.py` Used to convert json game records into readable text
+### Prompts
+- `prompt/secret_hitler_rule_base.txt` - Core game rules and mechanics
+- `prompt/nominate_prompt.txt` - President nomination prompts
+- `prompt/vote_government_prompt.txt` - Government election voting prompts
+- `prompt/table_talk_prompt.txt` - Public discussion prompts
+- `prompt/president_discard_prompt.txt` - President policy discard prompts
+- `prompt/chancellor_discard_prompt.txt` - Chancellor policy discard prompts
+- `prompt/chancellor_veto_prompt.txt` - Veto request prompts
+- `prompt/president_veto_accept_prompt.txt` - Veto acceptance prompts
+- `prompt/investigate_choose_prompt.txt` - Investigation target prompts
+- `prompt/execution_prompt.txt` - Execution target prompts
+- `prompt/special_election_prompt.txt` - Special election prompts
+- `prompt/policy_peek_comment_prompt.txt` - Policy peek comment prompts
 
 ## Configuration
 
-Use the conda environment to configure the corresponding dependency packages:
-
+### Dependencies
 ```bash
 pip install openai
 pip install ollama
+pip install python-dotenv  # Optional, for .env file support
 ```
 
-Also to run model using Ollama, you need to first:
+### Ollama Setup
+To run models using Ollama locally:
 
 ```bash
 curl -fsSL https://ollama.com/install.sh | sh
 ollama serve
 ```
-to first initialize the ollama package on your server environment.
 
-Then you need to download the model you need to run locally using ollama, you can find useful models in https://ollama.com/search. Also when you are trying to download model, like:
+Download models you want to use:
 ```bash
-ollama pull qwen3:8b
+ollama pull llama3.1:8b
+ollama pull mistral:7b
+ollama pull qwen2.5:7b
+ollama pull deepseek-r1:8b
+ollama pull phi4:14b
+ollama pull gemma2:9b
+# Add more models as needed
 ```
-to download the Qwen3 model with 8B's weights. Other models with other weights can do the same.
 
-The API configuration of this project is in `llm_client.py`.
+### OpenAI Setup
+For OpenAI models, set your API key in a `.env` file:
+```
+OPENAI_API_KEY=your_api_key_here
+```
 
-This project uses New API https://github.com/Calcium-Ion/new-api?tab=readme-ov-file to configure a unified interface call format. When using it, you need to configure the API interface of the corresponding model yourself.
-
-You can also use a similar API management project One API https://github.com/songquanpeng/one-api to achieve unified interface calls.
+### Model Configuration
+The project uses `multi_llm_client.py` to automatically route requests to the appropriate service:
+- Models like `llama3`, `mistral:7b` → Ollama (local)
+- Models like `gpt-4o-mini` → OpenAI API
 
 ## Usage
 
-### Run
-
-After completing the project configuration, set the correct model name in the `player_configs` of the main program entry of `game.py` and `multi_game_runner.py`
-
-Run a single game:
-```
-python game.py
+### Run Single Game
+```bash
+python3 game.py
 ```
 
-Run multiple games:
+### Run Multiple Games
+```bash
+python3 multi_game_runner.py -m 2
 ```
-python multi_game_runner.py -n 10
-```
-Specify the number of games you want to run after `-n`, the default is 10
+Specify the number of occurrences you want each player to appear after -n. Each model will continue playing until it has participated in the specified number of rounds.
+
+
+### Game Flow
+1. **Setup** - Players are assigned roles (Liberals, Fascists, Hitler)
+2. **Presidency Rotation** - Presidency passes to next player
+3. **Nomination** - President nominates a Chancellor
+4. **Table Talk** - Public discussion about the government
+5. **Election** - All players vote JA/NEIN on the government
+6. **Legislative Session** - If elected, President and Chancellor enact policies
+7. **Executive Powers** - Special actions triggered by Fascist policies
+8. **Repeat** - Continue until win condition is met
 
 ### Analysis
 
-The game records will be saved in the `game_records` folder in the directory in json format
+Game records are saved in the `game_records/` folder in JSON format.
 
-Convert the json file to a more readable text format, and the converted file will be saved in the `converted_game_records` folder in the directory
-
-```
-python json_convert.py
-```
-
-Extract all the games between AIs in the game, and the converted files will be saved in the `matchup_records` folder in the directory
-
-```
-python player_matchup_analyze.py
+Convert JSON to readable text:
+```bash
+python3 json_convert.py
 ```
 
-Count and print all game data
-
+Extract AI vs AI matchups:
+```bash
+python3 player_matchup_analyze.py
 ```
-python game_analyze.py
+
+Analyze all game data:
+```bash
+python3 game_analyze.py
 ```
 
-## Demo
+## Multi-LLM Support
 
-The project has run 50 games with four models, DeepSeek-R1, o3-mini, Gemini-2-flash-thinking, and Claude-3.7-Sonnet, as players, and the records are stored in the `demo_records` folder.
+This implementation supports both local and cloud-based models:
+
+**Local Models (via Ollama):**
+- llama3.1:8b, mistral:7b, qwen2.5:7b, deepseek-r1:8b
+- phi4:14b, gemma2:9b, gemma3:4b, and many others
+
+**Cloud Models (via OpenAI API):**
+- gpt-4o-mini, gpt-4o, gpt-4-turbo
+
+The system automatically detects which service to use based on the model name and routes requests accordingly.
+
+## Game Features
+
+### Core Mechanics
+- **Hidden roles** - Players don't know each other's factions initially
+- **Government formation** - President nominates Chancellor, players vote
+- **Policy enactment** - Draw 3 policies, discard 1, pass 2, discard 1, enact 1
+- **Executive powers** - Special actions triggered by Fascist policies
+- **Social deduction** - Players must deduce roles through discussion and voting
+
+### Policy System
+- **Liberal policies** - Help the Liberal faction win
+- **Fascist policies** - Help the Fascist faction win and unlock executive powers
+- **Policy deck** - 6 Liberal, 11 Fascist policies (official distribution)
+- **Veto power** - Unlocked after 5 Fascist policies, allows discarding both policies
+
+### Executive Powers
+- **Investigate Loyalty** - President learns a player's faction
+- **Special Election** - President chooses next President
+- **Execution** - President eliminates a player (Hitler execution = Liberal win)
+- **Policy Peek** - President sees top 3 policies
+
+### AI Features
+- **Role-based decision making** - Each faction has different strategies
+- **Social interaction** - LLMs engage in political discussions
+- **Strategic deception** - AI players lie and manipulate
+- **Government formation** - AI players negotiate and vote on governments
+
+## Game Rules
+
+### Win Conditions
+- **Liberals win** - Enact 5 Liberal policies OR execute Hitler
+- **Fascists win** - Enact 6 Fascist policies OR Hitler becomes Chancellor after 3+ Fascist policies
+
+### Special Rules
+- **Term limits** - Last elected Chancellor cannot be nominated again
+- **Election tracker** - Failed elections advance the tracker, at 3 a policy is top-decked
+- **Secret knowledge** - Fascists know each other, Hitler may be blind in larger games
+- **Veto power** - Unlocked after 5 Fascist policies, requires both President and Chancellor agreement
 
 ## Known Issues
 
-The output of the model may be unstable during the card-playing and questioning stages. When the output cannot meet the game requirements, it will automatically retry. If the run is interrupted multiple times due to output problems, you can increase the number of retries for calling large models in `choose_cards_to_play` and `decide_challenge` of `player.py`, or modify the prompts in `play_card_prompt_template.txt` and `challenge_prompt_template.txt` in the `prompt` folder to strengthen the restrictions on the output format (which may have a certain impact on the model's reasoning ability).
+- Model outputs may occasionally be unstable during government formation and policy enactment phases
+- The system includes automatic retry logic for failed model calls
+- If experiencing frequent interruptions, consider adjusting prompts in the `prompt/` folder to be more specific about output format requirements
+- Some complex social deduction scenarios may require multiple attempts to resolve correctly
+
+## Contributing
+
+This is a Secret Hitler implementation with AI players. The game follows the official Secret Hitler rules with AI-driven social deduction mechanics.
+
+## Branch Information
+
+This is the **Secret Hitler** branch, featuring:
+- Official Secret Hitler social deduction gameplay
+- Government formation and policy enactment mechanics
+- Executive powers and special actions
+- Multi-LLM support for diverse AI interactions
+- Historical political setting with hidden roles
