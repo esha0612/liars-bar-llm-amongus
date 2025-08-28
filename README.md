@@ -96,7 +96,7 @@ python game_analyze.py
 
 ## Demo
 
-The project has run 50 games with four models, DeepSeek-R1, o3-mini, Gemini-2-flash-thinking, and Claude-3.7-Sonnet, as players, and the records are stored in the `demo_records` folder.
+The project has run 50 games with 11 models (DeepSeek-R1, o4-mini, Qwen3, Gemma3, etc) as players, and the records are stored in the `demo_records` folder.
 
 ## Known Issues
 
