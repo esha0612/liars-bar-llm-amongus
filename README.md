@@ -85,9 +85,7 @@ python3 game.py
 
 ### Run Multiple Games
 ```bash
-python3 multi_game_runner.py -n 10
-```
-Specify the number of occurrences you want each player to appear after -n. Each model will continue playing until it has participated in the specified number of rounds.
+python3 multi_game_runner.py 
 
 ### Game Flow
 1. **Setup** - Players are assigned as Troubleshooters with secret roles
