@@ -89,7 +89,9 @@ python3 game.py
 
 ### Run Multiple Games
 ```bash
-python3 multi_game_runner.py 
+python3 multi_game_runner.py -n
+
+Specify the number of games that you want to run after `n`
 
 ### Game Flow
 1. **Setup** - Players are assigned roles (Good/Evil)
