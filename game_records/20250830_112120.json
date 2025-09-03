@@ -1,0 +1,929 @@
+{
+    "game_id": "20250830_112120",
+    "player_names": [
+        "Sarah",
+        "Derek",
+        "Emma",
+        "Talia",
+        "Anika",
+        "Nick",
+        "Philip",
+        "Peter",
+        "George",
+        "Enrique",
+        "Maria"
+    ],
+    "player_roles": {
+        "Sarah": "Townsperson",
+        "Derek": "Townsperson",
+        "Emma": "Detective",
+        "Talia": "Townsperson",
+        "Anika": "Doctor",
+        "Nick": "Townsperson",
+        "Philip": "Townsperson",
+        "Peter": "Townsperson",
+        "George": "Townsperson",
+        "Enrique": "Mafia",
+        "Maria": "Townsperson"
+    },
+    "night_phases": [
+        {
+            "night_number": 1,
+            "alive_players": [
+                "Sarah",
+                "Derek",
+                "Emma",
+                "Talia",
+                "Anika",
+                "Nick",
+                "Philip",
+                "Peter",
+                "George",
+                "Enrique",
+                "Maria"
+            ],
+            "night_actions": [
+                {
+                    "player_name": "Enrique",
+                    "role": "Mafia",
+                    "action_type": "mafia_kill",
+                    "target_name": "Talia",
+                    "action_result": null,
+                    "action_reasoning": null,
+                    "llm_prompt": null,
+                    "llm_response": null
+                },
+                {
+                    "player_name": "Anika",
+                    "role": "Doctor",
+                    "action_type": "doctor_save",
+                    "target_name": "Talia",
+                    "action_result": null,
+                    "action_reasoning": null,
+                    "llm_prompt": null,
+                    "llm_response": null
+                },
+                {
+                    "player_name": "Emma",
+                    "role": "Detective",
+                    "action_type": "detective_investigate",
+                    "target_name": "Anika",
+                    "action_result": false,
+                    "action_reasoning": null,
+                    "llm_prompt": null,
+                    "llm_response": null
+                }
+            ],
+            "killed_player": null,
+            "investigation_results": {
+                "Anika": false
+            }
+        },
+        {
+            "night_number": 2,
+            "alive_players": [
+                "Sarah",
+                "Derek",
+                "Emma",
+                "Talia",
+                "Anika",
+                "Nick",
+                "Philip",
+                "Peter",
+                "George",
+                "Enrique",
+                "Maria"
+            ],
+            "night_actions": [
+                {
+                    "player_name": "Enrique",
+                    "role": "Mafia",
+                    "action_type": "mafia_kill",
+                    "target_name": "Maria",
+                    "action_result": null,
+                    "action_reasoning": null,
+                    "llm_prompt": null,
+                    "llm_response": null
+                },
+                {
+                    "player_name": "Anika",
+                    "role": "Doctor",
+                    "action_type": "doctor_save",
+                    "target_name": "George",
+                    "action_result": null,
+                    "action_reasoning": null,
+                    "llm_prompt": null,
+                    "llm_response": null
+                },
+                {
+                    "player_name": "Emma",
+                    "role": "Detective",
+                    "action_type": "detective_investigate",
+                    "target_name": "Maria",
+                    "action_result": false,
+                    "action_reasoning": null,
+                    "llm_prompt": null,
+                    "llm_response": null
+                }
+            ],
+            "killed_player": "Maria",
+            "investigation_results": {
+                "Maria": false
+            }
+        },
+        {
+            "night_number": 3,
+            "alive_players": [
+                "Sarah",
+                "Derek",
+                "Emma",
+                "Talia",
+                "Anika",
+                "Nick",
+                "Philip",
+                "Peter",
+                "George",
+                "Enrique"
+            ],
+            "night_actions": [
+                {
+                    "player_name": "Enrique",
+                    "role": "Mafia",
+                    "action_type": "mafia_kill",
+                    "target_name": "Peter",
+                    "action_result": null,
+                    "action_reasoning": null,
+                    "llm_prompt": null,
+                    "llm_response": null
+                },
+                {
+                    "player_name": "Anika",
+                    "role": "Doctor",
+                    "action_type": "doctor_save",
+                    "target_name": "Talia",
+                    "action_result": null,
+                    "action_reasoning": null,
+                    "llm_prompt": null,
+                    "llm_response": null
+                },
+                {
+                    "player_name": "Emma",
+                    "role": "Detective",
+                    "action_type": "detective_investigate",
+                    "target_name": "Anika",
+                    "action_result": false,
+                    "action_reasoning": null,
+                    "llm_prompt": null,
+                    "llm_response": null
+                }
+            ],
+            "killed_player": "Peter",
+            "investigation_results": {
+                "Anika": false
+            }
+        },
+        {
+            "night_number": 4,
+            "alive_players": [
+                "Sarah",
+                "Derek",
+                "Emma",
+                "Talia",
+                "Anika",
+                "Nick",
+                "Philip",
+                "George",
+                "Enrique"
+            ],
+            "night_actions": [
+                {
+                    "player_name": "Enrique",
+                    "role": "Mafia",
+                    "action_type": "mafia_kill",
+                    "target_name": "George",
+                    "action_result": null,
+                    "action_reasoning": null,
+                    "llm_prompt": null,
+                    "llm_response": null
+                },
+                {
+                    "player_name": "Anika",
+                    "role": "Doctor",
+                    "action_type": "doctor_save",
+                    "target_name": "George",
+                    "action_result": null,
+                    "action_reasoning": null,
+                    "llm_prompt": null,
+                    "llm_response": null
+                },
+                {
+                    "player_name": "Emma",
+                    "role": "Detective",
+                    "action_type": "detective_investigate",
+                    "target_name": "George",
+                    "action_result": false,
+                    "action_reasoning": null,
+                    "llm_prompt": null,
+                    "llm_response": null
+                }
+            ],
+            "killed_player": null,
+            "investigation_results": {
+                "George": false
+            }
+        },
+        {
+            "night_number": 5,
+            "alive_players": [
+                "Sarah",
+                "Derek",
+                "Emma",
+                "Talia",
+                "Anika",
+                "Nick",
+                "Philip",
+                "George",
+                "Enrique"
+            ],
+            "night_actions": [
+                {
+                    "player_name": "Enrique",
+                    "role": "Mafia",
+                    "action_type": "mafia_kill",
+                    "target_name": "George",
+                    "action_result": null,
+                    "action_reasoning": null,
+                    "llm_prompt": null,
+                    "llm_response": null
+                },
+                {
+                    "player_name": "Anika",
+                    "role": "Doctor",
+                    "action_type": "doctor_save",
+                    "target_name": "Enrique",
+                    "action_result": null,
+                    "action_reasoning": null,
+                    "llm_prompt": null,
+                    "llm_response": null
+                },
+                {
+                    "player_name": "Emma",
+                    "role": "Detective",
+                    "action_type": "detective_investigate",
+                    "target_name": "Philip",
+                    "action_result": false,
+                    "action_reasoning": null,
+                    "llm_prompt": null,
+                    "llm_response": null
+                }
+            ],
+            "killed_player": "George",
+            "investigation_results": {
+                "Philip": false
+            }
+        },
+        {
+            "night_number": 6,
+            "alive_players": [
+                "Sarah",
+                "Emma",
+                "Talia",
+                "Anika",
+                "Nick",
+                "Philip",
+                "Enrique"
+            ],
+            "night_actions": [
+                {
+                    "player_name": "Enrique",
+                    "role": "Mafia",
+                    "action_type": "mafia_kill",
+                    "target_name": "Anika",
+                    "action_result": null,
+                    "action_reasoning": null,
+                    "llm_prompt": null,
+                    "llm_response": null
+                },
+                {
+                    "player_name": "Anika",
+                    "role": "Doctor",
+                    "action_type": "doctor_save",
+                    "target_name": "Talia",
+                    "action_result": null,
+                    "action_reasoning": null,
+                    "llm_prompt": null,
+                    "llm_response": null
+                },
+                {
+                    "player_name": "Emma",
+                    "role": "Detective",
+                    "action_type": "detective_investigate",
+                    "target_name": "Sarah",
+                    "action_result": false,
+                    "action_reasoning": null,
+                    "llm_prompt": null,
+                    "llm_response": null
+                }
+            ],
+            "killed_player": "Anika",
+            "investigation_results": {
+                "Sarah": false
+            }
+        },
+        {
+            "night_number": 7,
+            "alive_players": [
+                "Sarah",
+                "Emma",
+                "Talia",
+                "Nick",
+                "Philip",
+                "Enrique"
+            ],
+            "night_actions": [
+                {
+                    "player_name": "Enrique",
+                    "role": "Mafia",
+                    "action_type": "mafia_kill",
+                    "target_name": "Emma",
+                    "action_result": null,
+                    "action_reasoning": null,
+                    "llm_prompt": null,
+                    "llm_response": null
+                },
+                {
+                    "player_name": "Emma",
+                    "role": "Detective",
+                    "action_type": "detective_investigate",
+                    "target_name": "Enrique",
+                    "action_result": true,
+                    "action_reasoning": null,
+                    "llm_prompt": null,
+                    "llm_response": null
+                }
+            ],
+            "killed_player": "Emma",
+            "investigation_results": {
+                "Enrique": true
+            }
+        },
+        {
+            "night_number": 8,
+            "alive_players": [
+                "Talia",
+                "Nick",
+                "Philip",
+                "Enrique"
+            ],
+            "night_actions": [
+                {
+                    "player_name": "Enrique",
+                    "role": "Mafia",
+                    "action_type": "mafia_kill",
+                    "target_name": "Nick",
+                    "action_result": null,
+                    "action_reasoning": null,
+                    "llm_prompt": null,
+                    "llm_response": null
+                }
+            ],
+            "killed_player": "Nick",
+            "investigation_results": {}
+        },
+        {
+            "night_number": 9,
+            "alive_players": [
+                "Talia",
+                "Philip",
+                "Enrique"
+            ],
+            "night_actions": [
+                {
+                    "player_name": "Enrique",
+                    "role": "Mafia",
+                    "action_type": "mafia_kill",
+                    "target_name": "Philip",
+                    "action_result": null,
+                    "action_reasoning": null,
+                    "llm_prompt": null,
+                    "llm_response": null
+                }
+            ],
+            "killed_player": "Philip",
+            "investigation_results": {}
+        }
+    ],
+    "day_phases": [
+        {
+            "day_number": 1,
+            "alive_players": [
+                "Sarah",
+                "Derek",
+                "Emma",
+                "Talia",
+                "Anika",
+                "Nick",
+                "Philip",
+                "Peter",
+                "George",
+                "Enrique",
+                "Maria"
+            ],
+            "discussion_statements": [
+                {
+                    "Sarah": "Sarah says: ",
+                    "Derek": "Derek says: ",
+                    "Emma": "Emma says: ",
+                    "Talia": "Talia says: ",
+                    "Anika": "Anika says: ",
+                    "Nick": "Nick says: ",
+                    "Philip": "Philip says: ",
+                    "Peter": "Peter says: ",
+                    "George": "George says: ",
+                    "Enrique": "Enrique says: ",
+                    "Maria": "Maria says: As a Townsperson, it's crucial to gather information and observe the behavior of others to identify who might be part of the Mafia. I'm going to take mental notes on the comments made by Nick, Philip, Peter, George, and Enrique. \n\nFirst, I’d like to hear more from Nick and Philip. What are their thoughts on the current situation? Are they pointing fingers at anyone, or are they trying to deflect suspicion? \n\nPeter and George's contributions might also reveal their alignment, especially if they are engaging with the accusations or defending other players. I would be looking for inconsistencies in their stories or a lack of urgency in trying to identify the Mafia members. \n\nEnrique could be key too—if he's overly defensive or aggressive in his responses, that could raise a red flag.\n\nI want to ask everyone: \n\n1. What do you think about the current voting patterns? \n2. Has anyone noticed any suspicious behavior from other players? \n3. How do you feel about forming alliances or discussing possible Mafia members?\n\nI’ll keep my observations to myself for now, but I’ll be paying close attention to their responses and interactions. It’s important to stay vigilant and gather as much intel as possible."
+                },
+                {
+                    "Sarah": "Sarah says: ",
+                    "Derek": "Derek says: ",
+                    "Emma": "Emma says: ",
+                    "Talia": "Talia says: ",
+                    "Anika": "Anika says: ",
+                    "Nick": "Nick says: ",
+                    "Philip": "Philip says: ",
+                    "Peter": "Peter says: ",
+                    "George": "George says: ",
+                    "Enrique": "Enrique says: ",
+                    "Maria": "Maria says: As Maria, a Townsperson, I want to keep the focus on gathering information and identifying potential threats to the town. Since I don’t have the details of what Nick, Philip, Peter, George, and Enrique said, I'll base my response on a general strategy.\n\n---\n\nI’d like to hear everyone's thoughts on the recent discussions. It’s crucial we analyze what each person has said to identify any inconsistencies or suspicious behavior. \n\nNick, can you elaborate on your reasoning for your last statement? I want to understand your thought process better.\n\nPhilip, I noticed you seemed confident in your last comment. What evidence do you have to support your claim? \n\nPeter, how do you feel about the points raised by the others? Do you think there’s a chance someone is trying to mislead us? \n\nGeorge and Enrique, I’d appreciate your insights too. How do you perceive the dynamics among us right now? \n\nWe need to work together to ensure the safety of the town, so let's keep the discussion going and share our observations. \n\n---\n\nThis approach encourages dialogue, aiming to uncover information while maintaining a collaborative atmosphere."
+                },
+                {
+                    "Sarah": "Sarah says: ",
+                    "Derek": "Derek says: ",
+                    "Emma": "Emma says: ",
+                    "Talia": "Talia says: ",
+                    "Anika": "Anika says: ",
+                    "Nick": "Nick says: ",
+                    "Philip": "Philip says: ",
+                    "Peter": "Peter says: ",
+                    "George": "George says: ",
+                    "Enrique": "Enrique says: ",
+                    "Maria": "Maria says: As a Townsperson, it’s important for me to gather information and observe the behavior of others to identify any potential Mafia members. \n\nBased on the recent discussion, I’d like to hear more from Nick, Philip, Peter, George, and Enrique. I think it would be beneficial to ask them about their thoughts on the game so far and if they have any suspicions. \n\nI’m particularly curious about what Nick has to say, as he might have insights or observations we haven’t considered yet. Philip and Peter could also provide valuable perspectives based on their interactions with the others. \n\nI’d like to ask:\n\n1. Nick, what do you think about the players who have been quiet? Do you think they could be hiding something?\n2. Philip, have you noticed any patterns in how people are voting or discussing each other?\n3. Peter, do you have any suspicions about anyone in particular, and why?\n4. George, how do you feel about the overall dynamics of the group? Do you sense any tension?\n5. Enrique, what’s your opinion on the current game strategy? Do you think we should focus on any specific players?\n\nI believe open discussion will help us gather more information and might reveal inconsistencies in players' stories. Let's keep the dialogue going and see where it leads us!"
+                }
+            ],
+            "impression_statements": {
+                "Sarah": "Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of Peter:  Impression of George:  Impression of Enrique:  Impression of Maria:  Likely to vote: ",
+                "Derek": "Impression of Sarah:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of Peter:  Impression of George:  Impression of Enrique:  Impression of Maria:  Likely to vote: ",
+                "Emma": "Impression of Sarah:  Impression of Derek:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of Peter:  Impression of George:  Impression of Enrique:  Impression of Maria:  Likely to vote: ",
+                "Talia": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of Peter:  Impression of George:  Impression of Enrique:  Impression of Maria:  Likely to vote: ",
+                "Anika": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Nick:  Impression of Philip:  Impression of Peter:  Impression of George:  Impression of Enrique:  Impression of Maria:  Likely to vote: ",
+                "Nick": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Philip:  Impression of Peter:  Impression of George:  Impression of Enrique:  Impression of Maria:  Likely to vote: ",
+                "Philip": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Peter:  Impression of George:  Impression of Enrique:  Impression of Maria:  Likely to vote: ",
+                "Peter": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of George:  Impression of Enrique:  Impression of Maria:  Likely to vote: ",
+                "George": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of Peter:  Impression of Enrique:  Impression of Maria:  Likely to vote: ",
+                "Enrique": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of Peter:  Impression of George:  Impression of Maria:  Likely to vote: ",
+                "Maria": "Impression of Sarah: Sarah displays a cautious approach, often deferring to others in discussions while making occasional strategic observations that suggest she is thinking several steps ahead. This could indicate that she is playing a role like the Mafia or a skilled Town member, but her tendency to blend in may also raise questions about her trustworthiness. Overall, her behavior suggests she is playing a calculated game, possibly aiming to avoid drawing attention. Impression of Derek: Derek's recent actions suggest he may be playing a strategic role, possibly as a Mafia member, given his tendency to deflect suspicion and sow discord among other players. His behavior appears calculated, which raises questions about his trustworthiness, indicating he may be attempting to manipulate the game's dynamics to his advantage. Impression of Emma: Emma appears to be playing a strategic game, often staying in the background while subtly influencing discussions. Her cautious behavior could suggest she is either a careful Town member trying to avoid drawing attention or a Mafia player attempting to blend in and manipulate the group without revealing her intentions. Impression of Talia: Talia's recent actions suggest a strategic player who is adept at blending in while subtly influencing discussions. Their behavior indicates a high likelihood of being either a key role like a Mafia member or a skilled Town member trying to steer the narrative, making them a player to watch closely for potential deception or valuable insights. Impression of Anika: Anika appears to be a strategic player, often aligning with others to subtly influence discussions while maintaining an air of neutrality. This behavior suggests she may be playing a role that relies on deception, such as a Mafia member or a role that manipulates trust, making her potentially untrustworthy in the current game dynamics. Impression of Nick: Nick appears to be playing a cautious yet strategic game, often deflecting suspicion while subtly influencing others' decisions. His consistent behavior of aligning with majority opinions suggests he may be a town member trying to maintain trust, but it could also indicate a Mafia player seeking to blend in and avoid detection. Overall, his trustworthiness remains uncertain, warranting careful observation. Impression of Philip: Philip appears to be a strategic player who balances aggression with caution, often deflecting accusations while subtly sowing doubt about others. His ability to navigate discussions suggests he might be a Mafia member or a skilled Townie trying to draw attention away from himself, indicating that he should be monitored closely for any shifts in behavior or alliances. Impression of Peter: Peter appears to be a strategic player, often deflecting suspicion while subtly influencing discussions. His ability to blend in suggests he could be a member of the Mafia, using charm to gain trust, but he may also be a skilled Town member attempting to root out the Mafia. Overall, his behavior warrants caution as he may be playing both sides effectively. Impression of George: George appears to be a strategic player who is adept at blending in while subtly influencing the group's decisions. His behavior suggests he may be playing as a member of the Mafia, as he often deflects suspicion and seems to gather information on others without revealing much about himself. Impression of Enrique: Enrique's recent actions suggest he may be playing a strategic role, likely as a Mafia member, given his tendency to deflect suspicion and manipulate discussions to his advantage. His behavior indicates a low level of trustworthiness, as he often shifts blame and avoids accountability, which could be a tactic to protect himself while sowing discord among other players. Likely to vote: As an AI, I don't have personal opinions or the ability to vote. However, if I were to analyze the situation based on typical game dynamics, I might suggest that someone like Philip could be a candidate for elimination. This is often due to players who may be perceived as strong competitors or strategic threats, which can make them targets in a competitive environment. However, the final decision would depend on the specific dynamics and relationships among the players."
+            },
+            "votes": {
+                "Sarah": "Anika",
+                "Derek": "Enrique",
+                "Emma": "Enrique",
+                "Talia": "Maria",
+                "Anika": "Derek",
+                "Nick": "Philip",
+                "Philip": "Peter",
+                "Peter": "Nick",
+                "George": "Nick",
+                "Enrique": "Philip",
+                "Maria": "Derek"
+            },
+            "eliminated_player": null
+        },
+        {
+            "day_number": 2,
+            "alive_players": [
+                "Sarah",
+                "Derek",
+                "Emma",
+                "Talia",
+                "Anika",
+                "Nick",
+                "Philip",
+                "Peter",
+                "George",
+                "Enrique"
+            ],
+            "discussion_statements": [
+                {
+                    "Sarah": "Sarah says: ",
+                    "Derek": "Derek says: ",
+                    "Emma": "Emma says: ",
+                    "Talia": "Talia says: ",
+                    "Anika": "Anika says: ",
+                    "Nick": "Nick says: ",
+                    "Philip": "Philip says: ",
+                    "Peter": "Peter says: ",
+                    "George": "George says: ",
+                    "Enrique": "Enrique says: "
+                },
+                {
+                    "Sarah": "Sarah says: ",
+                    "Derek": "Derek says: ",
+                    "Emma": "Emma says: ",
+                    "Talia": "Talia says: ",
+                    "Anika": "Anika says: ",
+                    "Nick": "Nick says: ",
+                    "Philip": "Philip says: ",
+                    "Peter": "Peter says: ",
+                    "George": "George says: ",
+                    "Enrique": "Enrique says: "
+                },
+                {
+                    "Sarah": "Sarah says: ",
+                    "Derek": "Derek says: ",
+                    "Emma": "Emma says: ",
+                    "Talia": "Talia says: ",
+                    "Anika": "Anika says: ",
+                    "Nick": "Nick says: ",
+                    "Philip": "Philip says: ",
+                    "Peter": "Peter says: ",
+                    "George": "George says: ",
+                    "Enrique": "Enrique says: "
+                }
+            ],
+            "impression_statements": {
+                "Sarah": "Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of Peter:  Impression of George:  Impression of Enrique:  Likely to vote: ",
+                "Derek": "Impression of Sarah:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of Peter:  Impression of George:  Impression of Enrique:  Likely to vote: ",
+                "Emma": "Impression of Sarah:  Impression of Derek:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of Peter:  Impression of George:  Impression of Enrique:  Likely to vote: ",
+                "Talia": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of Peter:  Impression of George:  Impression of Enrique:  Likely to vote: ",
+                "Anika": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Nick:  Impression of Philip:  Impression of Peter:  Impression of George:  Impression of Enrique:  Likely to vote: ",
+                "Nick": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Philip:  Impression of Peter:  Impression of George:  Impression of Enrique:  Likely to vote: ",
+                "Philip": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Peter:  Impression of George:  Impression of Enrique:  Likely to vote: ",
+                "Peter": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of George:  Impression of Enrique:  Likely to vote: ",
+                "George": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of Peter:  Impression of Enrique:  Likely to vote: ",
+                "Enrique": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of Peter:  Impression of George:  Likely to vote: "
+            },
+            "votes": {
+                "Sarah": "Derek",
+                "Derek": "Nick",
+                "Emma": "Nick",
+                "Talia": "Philip",
+                "Anika": "Emma",
+                "Nick": "Emma",
+                "Philip": "Talia",
+                "Peter": "Sarah",
+                "George": "Talia",
+                "Enrique": "Peter"
+            },
+            "eliminated_player": null
+        },
+        {
+            "day_number": 3,
+            "alive_players": [
+                "Sarah",
+                "Derek",
+                "Emma",
+                "Talia",
+                "Anika",
+                "Nick",
+                "Philip",
+                "George",
+                "Enrique"
+            ],
+            "discussion_statements": [
+                {
+                    "Sarah": "Sarah says: ",
+                    "Derek": "Derek says: ",
+                    "Emma": "Emma says: ",
+                    "Talia": "Talia says: ",
+                    "Anika": "Anika says: ",
+                    "Nick": "Nick says: ",
+                    "Philip": "Philip says: ",
+                    "George": "George says: ",
+                    "Enrique": "Enrique says: "
+                },
+                {
+                    "Sarah": "Sarah says: ",
+                    "Derek": "Derek says: ",
+                    "Emma": "Emma says: ",
+                    "Talia": "Talia says: ",
+                    "Anika": "Anika says: ",
+                    "Nick": "Nick says: ",
+                    "Philip": "Philip says: ",
+                    "George": "George says: ",
+                    "Enrique": "Enrique says: "
+                },
+                {
+                    "Sarah": "Sarah says: ",
+                    "Derek": "Derek says: ",
+                    "Emma": "Emma says: ",
+                    "Talia": "Talia says: ",
+                    "Anika": "Anika says: ",
+                    "Nick": "Nick says: ",
+                    "Philip": "Philip says: ",
+                    "George": "George says: ",
+                    "Enrique": "Enrique says: "
+                }
+            ],
+            "impression_statements": {
+                "Sarah": "Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of George:  Impression of Enrique:  Likely to vote: ",
+                "Derek": "Impression of Sarah:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of George:  Impression of Enrique:  Likely to vote: ",
+                "Emma": "Impression of Sarah:  Impression of Derek:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of George:  Impression of Enrique:  Likely to vote: ",
+                "Talia": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of George:  Impression of Enrique:  Likely to vote: ",
+                "Anika": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Nick:  Impression of Philip:  Impression of George:  Impression of Enrique:  Likely to vote: ",
+                "Nick": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Philip:  Impression of George:  Impression of Enrique:  Likely to vote: ",
+                "Philip": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of George:  Impression of Enrique:  Likely to vote: ",
+                "George": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of Enrique:  Likely to vote: ",
+                "Enrique": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of George:  Likely to vote: "
+            },
+            "votes": {
+                "Sarah": "Derek",
+                "Derek": "Emma",
+                "Emma": "Derek",
+                "Talia": "Nick",
+                "Anika": "Sarah",
+                "Nick": "Talia",
+                "Philip": "Nick",
+                "George": "Talia",
+                "Enrique": "Philip"
+            },
+            "eliminated_player": null
+        },
+        {
+            "day_number": 4,
+            "alive_players": [
+                "Sarah",
+                "Derek",
+                "Emma",
+                "Talia",
+                "Anika",
+                "Nick",
+                "Philip",
+                "George",
+                "Enrique"
+            ],
+            "discussion_statements": [
+                {
+                    "Sarah": "Sarah says: ",
+                    "Derek": "Derek says: ",
+                    "Emma": "Emma says: ",
+                    "Talia": "Talia says: ",
+                    "Anika": "Anika says: ",
+                    "Nick": "Nick says: ",
+                    "Philip": "Philip says: ",
+                    "George": "George says: ",
+                    "Enrique": "Enrique says: "
+                },
+                {
+                    "Sarah": "Sarah says: ",
+                    "Derek": "Derek says: ",
+                    "Emma": "Emma says: ",
+                    "Talia": "Talia says: ",
+                    "Anika": "Anika says: ",
+                    "Nick": "Nick says: ",
+                    "Philip": "Philip says: ",
+                    "George": "George says: ",
+                    "Enrique": "Enrique says: "
+                },
+                {
+                    "Sarah": "Sarah says: ",
+                    "Derek": "Derek says: ",
+                    "Emma": "Emma says: ",
+                    "Talia": "Talia says: ",
+                    "Anika": "Anika says: ",
+                    "Nick": "Nick says: ",
+                    "Philip": "Philip says: ",
+                    "George": "George says: ",
+                    "Enrique": "Enrique says: "
+                }
+            ],
+            "impression_statements": {
+                "Sarah": "Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of George:  Impression of Enrique:  Likely to vote: ",
+                "Derek": "Impression of Sarah:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of George:  Impression of Enrique:  Likely to vote: ",
+                "Emma": "Impression of Sarah:  Impression of Derek:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of George:  Impression of Enrique:  Likely to vote: ",
+                "Talia": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of George:  Impression of Enrique:  Likely to vote: ",
+                "Anika": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Nick:  Impression of Philip:  Impression of George:  Impression of Enrique:  Likely to vote: ",
+                "Nick": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Philip:  Impression of George:  Impression of Enrique:  Likely to vote: ",
+                "Philip": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of George:  Impression of Enrique:  Likely to vote: ",
+                "George": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of Enrique:  Likely to vote: ",
+                "Enrique": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of George:  Likely to vote: "
+            },
+            "votes": {
+                "Sarah": "Philip",
+                "Derek": "Talia",
+                "Emma": "Enrique",
+                "Talia": "Anika",
+                "Anika": "Emma",
+                "Nick": "Emma",
+                "Philip": "Nick",
+                "George": "Derek",
+                "Enrique": "Talia"
+            },
+            "eliminated_player": null
+        },
+        {
+            "day_number": 5,
+            "alive_players": [
+                "Sarah",
+                "Derek",
+                "Emma",
+                "Talia",
+                "Anika",
+                "Nick",
+                "Philip",
+                "Enrique"
+            ],
+            "discussion_statements": [
+                {
+                    "Sarah": "Sarah says: ",
+                    "Derek": "Derek says: ",
+                    "Emma": "Emma says: ",
+                    "Talia": "Talia says: ",
+                    "Anika": "Anika says: ",
+                    "Nick": "Nick says: ",
+                    "Philip": "Philip says: ",
+                    "Enrique": "Enrique says: "
+                },
+                {
+                    "Sarah": "Sarah says: ",
+                    "Derek": "Derek says: ",
+                    "Emma": "Emma says: ",
+                    "Talia": "Talia says: ",
+                    "Anika": "Anika says: ",
+                    "Nick": "Nick says: ",
+                    "Philip": "Philip says: ",
+                    "Enrique": "Enrique says: "
+                },
+                {
+                    "Sarah": "Sarah says: ",
+                    "Derek": "Derek says: ",
+                    "Emma": "Emma says: ",
+                    "Talia": "Talia says: ",
+                    "Anika": "Anika says: ",
+                    "Nick": "Nick says: ",
+                    "Philip": "Philip says: ",
+                    "Enrique": "Enrique says: "
+                }
+            ],
+            "impression_statements": {
+                "Sarah": "Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of Enrique:  Likely to vote: ",
+                "Derek": "Impression of Sarah:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of Enrique:  Likely to vote: ",
+                "Emma": "Impression of Sarah:  Impression of Derek:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of Enrique:  Likely to vote: ",
+                "Talia": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Impression of Enrique:  Likely to vote: ",
+                "Anika": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Nick:  Impression of Philip:  Impression of Enrique:  Likely to vote: ",
+                "Nick": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Philip:  Impression of Enrique:  Likely to vote: ",
+                "Philip": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Enrique:  Likely to vote: ",
+                "Enrique": "Impression of Sarah:  Impression of Derek:  Impression of Emma:  Impression of Talia:  Impression of Anika:  Impression of Nick:  Impression of Philip:  Likely to vote: "
+            },
+            "votes": {
+                "Sarah": "Derek",
+                "Derek": "Sarah",
+                "Emma": "Philip",
+                "Talia": "Derek",
+                "Anika": "Emma",
+                "Nick": "Emma",
+                "Philip": "Anika",
+                "Enrique": "Derek"
+            },
+            "eliminated_player": "Derek"
+        },
+        {
+            "day_number": 6,
+            "alive_players": [
+                "Sarah",
+                "Emma",
+                "Talia",
+                "Nick",
+                "Philip",
+                "Enrique"
+            ],
+            "discussion_statements": [
+                {
+                    "Sarah": "Sarah says: ",
+                    "Emma": "Emma says: ",
+                    "Talia": "Talia says: ",
+                    "Nick": "Nick says: ",
+                    "Philip": "Philip says: ",
+                    "Enrique": "Enrique says: "
+                },
+                {
+                    "Sarah": "Sarah says: ",
+                    "Emma": "Emma says: ",
+                    "Talia": "Talia says: ",
+                    "Nick": "Nick says: ",
+                    "Philip": "Philip says: ",
+                    "Enrique": "Enrique says: "
+                },
+                {
+                    "Sarah": "Sarah says: ",
+                    "Emma": "Emma says: ",
+                    "Talia": "Talia says: ",
+                    "Nick": "Nick says: ",
+                    "Philip": "Philip says: ",
+                    "Enrique": "Enrique says: "
+                }
+            ],
+            "impression_statements": {
+                "Sarah": "Impression of Emma:  Impression of Talia:  Impression of Nick:  Impression of Philip:  Impression of Enrique:  Likely to vote: ",
+                "Emma": "Impression of Sarah:  Impression of Talia:  Impression of Nick:  Impression of Philip:  Impression of Enrique:  Likely to vote: ",
+                "Talia": "Impression of Sarah:  Impression of Emma:  Impression of Nick:  Impression of Philip:  Impression of Enrique:  Likely to vote: ",
+                "Nick": "Impression of Sarah:  Impression of Emma:  Impression of Talia:  Impression of Philip:  Impression of Enrique:  Likely to vote: ",
+                "Philip": "Impression of Sarah:  Impression of Emma:  Impression of Talia:  Impression of Nick:  Impression of Enrique:  Likely to vote: ",
+                "Enrique": "Impression of Sarah:  Impression of Emma:  Impression of Talia:  Impression of Nick:  Impression of Philip:  Likely to vote: "
+            },
+            "votes": {
+                "Sarah": "Enrique",
+                "Emma": "Philip",
+                "Talia": "Nick",
+                "Nick": "Emma",
+                "Philip": "Emma",
+                "Enrique": "Nick"
+            },
+            "eliminated_player": null
+        },
+        {
+            "day_number": 7,
+            "alive_players": [
+                "Sarah",
+                "Talia",
+                "Nick",
+                "Philip",
+                "Enrique"
+            ],
+            "discussion_statements": [
+                {
+                    "Sarah": "Sarah says: ",
+                    "Talia": "Talia says: ",
+                    "Nick": "Nick says: ",
+                    "Philip": "Philip says: ",
+                    "Enrique": "Enrique says: "
+                },
+                {
+                    "Sarah": "Sarah says: ",
+                    "Talia": "Talia says: ",
+                    "Nick": "Nick says: ",
+                    "Philip": "Philip says: ",
+                    "Enrique": "Enrique says: "
+                },
+                {
+                    "Sarah": "Sarah says: ",
+                    "Talia": "Talia says: ",
+                    "Nick": "Nick says: ",
+                    "Philip": "Philip says: ",
+                    "Enrique": "Enrique says: "
+                }
+            ],
+            "impression_statements": {
+                "Sarah": "Impression of Talia:  Impression of Nick:  Impression of Philip:  Impression of Enrique:  Likely to vote: ",
+                "Talia": "Impression of Sarah:  Impression of Nick:  Impression of Philip:  Impression of Enrique:  Likely to vote: ",
+                "Nick": "Impression of Sarah:  Impression of Talia:  Impression of Philip:  Impression of Enrique:  Likely to vote: ",
+                "Philip": "Impression of Sarah:  Impression of Talia:  Impression of Nick:  Impression of Enrique:  Likely to vote: ",
+                "Enrique": "Impression of Sarah:  Impression of Talia:  Impression of Nick:  Impression of Philip:  Likely to vote: "
+            },
+            "votes": {
+                "Sarah": "Philip",
+                "Talia": "Sarah",
+                "Nick": "Sarah",
+                "Philip": "Enrique",
+                "Enrique": "Talia"
+            },
+            "eliminated_player": "Sarah"
+        },
+        {
+            "day_number": 8,
+            "alive_players": [
+                "Talia",
+                "Philip",
+                "Enrique"
+            ],
+            "discussion_statements": [
+                {
+                    "Talia": "Talia says: ",
+                    "Philip": "Philip says: ",
+                    "Enrique": "Enrique says: "
+                },
+                {
+                    "Talia": "Talia says: ",
+                    "Philip": "Philip says: ",
+                    "Enrique": "Enrique says: "
+                },
+                {
+                    "Talia": "Talia says: ",
+                    "Philip": "Philip says: ",
+                    "Enrique": "Enrique says: "
+                }
+            ],
+            "impression_statements": {
+                "Talia": "Impression of Philip:  Impression of Enrique:  Likely to vote: ",
+                "Philip": "Impression of Talia:  Impression of Enrique:  Likely to vote: ",
+                "Enrique": "Impression of Talia:  Impression of Philip:  Likely to vote: "
+            },
+            "votes": {
+                "Talia": "Philip",
+                "Philip": "Enrique",
+                "Enrique": "Talia"
+            },
+            "eliminated_player": null
+        }
+    ],
+    "winner": "Mafia"
+}
