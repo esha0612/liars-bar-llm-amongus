@@ -135,6 +135,12 @@ class MafiaGame:
                     target_name=detective_investigation,
                     action_result=investigation_result
                 )
+                # Privately inform the detective's LLM of the result (no one else sees this)
+                if hasattr(detective, "inform_detective_result"):
+                    detective.inform_detective_result(detective_investigation, investigation_result)
+                else:
+                    verdict = "MAFIA" if investigation_result else "NOT Mafia"
+                    detective.add_private_note(f"Night investigation: {detective_investigation} is {verdict}.")
 
         # Resolve night actions
         killed_player = None
@@ -266,22 +272,22 @@ class MafiaGame:
 if __name__ == '__main__':
     # Configure player information, where model is the name of the model you call through API
     player_configs = [
-        {"name": "Sarah", "model": "ollama/llama3.1:8b"},
-        {"name": "Derek", "model": "ollama/llama3:latest"},
-        {"name": "Emma", "model": "ollama/mistral:7b"},
+        # {"name": "Sarah", "model": "ollama/llama3.1:8b"},
+        # {"name": "Derek", "model": "ollama/llama3:latest"},
+        # {"name": "Emma", "model": "ollama/mistral:7b"},
 
        
-        # {"name": "Sarah", "model": "ollama/llama3.1:8b"},
-        # {"name": "Derek", "model": "ollama/deepseek-r1:7b"},
-        # {"name": "Emma", "model": "ollama/dolphin3:8b"},
-        # {"name": "Talia", "model": "ollama/qwen2.5:7b"},
-        # {"name": "Anika", "model": "ollama/mistral:7b"},
-        # {"name": "Nick", "model": "ollama/mistral-nemo:12b"},
-        # {"name": "Philip", "model": "ollama/phi4:14b"},
-        # {"name": "Peter", "model": "ollama/phi3.5:3.8b"},
-        # {"name": "George", "model": "ollama/llava:7b"},
-        # {"name": "Enrique", "model": "ollama/gemma2:9b"},
-        {"name": "Maria", "model": "openai/gpt-4o-mini"},
+        {"name": "Sarah", "model": "ollama/llama3.1:8b"},
+        {"name": "Derek", "model": "ollama/deepseek-r1:7b"},
+        {"name": "Emma", "model": "ollama/qwen3:8b"},
+        {"name": "Talia", "model": "ollama/qwen2.5:7b"},
+        {"name": "Anika", "model": "ollama/mistral:7b"},
+        {"name": "Nick", "model": "ollama/mistral-nemo:12b"},
+        {"name": "Philip", "model": "ollama/phi4:14b"},
+        {"name": "Peter", "model": "ollama/phi3.5:3.8b"},
+        {"name": "George", "model": "ollama/gemma3:4b"},
+        {"name": "Enrique", "model": "ollama/gemma2:9b"},
+        {"name": "Maria", "model": "ollama/gpt-oss:20b"},
     ]
 
     print("Game starts! Player configurations are as follows:")

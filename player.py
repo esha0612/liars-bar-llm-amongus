@@ -47,12 +47,13 @@ class Player:
         self.role = role
         self.alive = True
         self.hand = []
-        self.bullet_position = random.randint(0, 5)
-        self.current_bullet_position = 0
+        # self.bullet_position = random.randint(0, 5)
+        # self.current_bullet_position = 0
         self.opinions = {}
         
         # LLM related initialization
         self.llm_client = LLMRouter()
+        self.private_notes = []   # per-player private info that only this LLM sees
 
     def _read_file(self, filepath: str) -> str:
         """Read file content and inject self-awareness if it's rule_base.txt"""
@@ -66,10 +67,10 @@ class Player:
             print(f"Failed to read file {filepath}: {str(e)}")
             return ""
 
-    def print_status(self) -> None:
-        """Print player status"""
-        print(f"{self.name} - Hand: {', '.join(self.hand)} - "
-              f"Bullet position: {self.bullet_position} - Current bullet position: {self.current_bullet_position}")
+    # def print_status(self) -> None:
+    #     """Print player status"""
+    #     print(f"{self.name} - Hand: {', '.join(self.hand)} - "
+    #           f"Bullet position: {self.bullet_position} - Current bullet position: {self.current_bullet_position}")
         
     def init_opinions(self, other_players: List["Player"]) -> None:
         """Initialize opinions about other players
@@ -270,17 +271,17 @@ class Player:
             except Exception as e:
                 print(f"Error reflecting on player {player_name}: {str(e)}")
 
-    def process_penalty(self) -> bool:
-        """Handle penalty"""
-        print(f"Player {self.name} executes shooting penalty:")
-        self.print_status()
-        if self.bullet_position == self.current_bullet_position:
-            print(f"{self.name} is shot and dies!")
-            self.alive = False
-        else:
-            print(f"{self.name} survives!")
-        self.current_bullet_position = (self.current_bullet_position + 1) % 6
-        return self.alive
+    # def process_penalty(self) -> bool:
+    #     """Handle penalty"""
+    #     print(f"Player {self.name} executes shooting penalty:")
+    #     self.print_status()
+    #     if self.bullet_position == self.current_bullet_position:
+    #         print(f"{self.name} is shot and dies!")
+    #         self.alive = False
+    #     else:
+    #         print(f"{self.name} survives!")
+    #     self.current_bullet_position = (self.current_bullet_position + 1) % 6
+    #     return self.alive
 
     def choose_mafia_target(self, alive_players: list) -> str:
         """
@@ -336,9 +337,6 @@ class Player:
         return random.choice(choices)
 
     def choose_vote(self, alive_players: list) -> str:
-        """
-        Player chooses a player to vote for elimination during the day using LLM.
-        """
         choices = [name for name in alive_players if name != self.name]
         if not choices:
             return None
@@ -346,6 +344,12 @@ class Player:
         with open(prompt_path, "r", encoding="utf-8") as f:
             prompt_template = f.read()
         prompt = prompt_template.format(alive_players=", ".join(choices))
+
+        # private context for THIS player
+        private_ctx = self.get_private_context()
+        if private_ctx:
+            prompt = private_ctx + "\n\n" + prompt
+
         messages = [{"role": "user", "content": prompt}]
         content, _ = self.llm_client.chat(messages, model=self.model_name)
         chosen = content.strip()
@@ -368,10 +372,18 @@ class Player:
             with open(prompt_path, "r", encoding="utf-8") as f:
                 prompt_template = f.read()
             player_history = player_histories.get(target, "")
-            prompt = prompt_template.format(player_name=target, player_history=player_history)
+            # private context for THIS player
+            private_ctx = self.get_private_context()
+            private_block = (private_ctx + "\n\n") if private_ctx else ""
+            # Prepend private block to the formatted template (no template changes needed)
+            prompt = private_block + prompt_template.format(
+                player_name=target,
+                player_history=player_history
+            )
             messages = [{"role": "user", "content": prompt}]
             content, _ = self.llm_client.chat(messages, model=self.model_name)
             statements.append(f"Impression of {target}: {content.strip()}")
+
         # Ask LLM who they are most likely to vote for and why
         vote_prompt = (
             f"Based on your impressions and the current situation, who are you most likely to vote for elimination? "
@@ -387,8 +399,13 @@ class Player:
         if not targets:
             return f"{self.name}: I have no one to discuss."
 
+        # private context for THIS player only
+        private_ctx = self.get_private_context()
+        private_block = (private_ctx + "\n\n") if private_ctx else ""
+
         history_text = "\n".join(conversation_history[-5:])  # Limit to last 5 for context
         discussion_prompt = (
+            f"{private_block}"
             f"You are {self.name} playing a game of Mafia. Your role is {self.role} (keep it secret). "
             f"Other alive players: {', '.join(targets)}.\n"
             f"Recent discussion:\n{history_text}\n\n"
@@ -398,3 +415,19 @@ class Player:
         messages = [{"role": "user", "content": discussion_prompt}]
         response, _ = self.llm_client.chat(messages, model=self.model_name)
         return f"{self.name} says: {response.strip()}"
+
+    def add_private_note(self, note: str):
+        """Store private, secret info for this player only."""
+        if note:
+            self.private_notes.append(note)
+
+    def get_private_context(self, last_k: int = 5) -> str:
+        """Return recent private notes to inject into prompts."""
+        if not self.private_notes:
+            return ""
+        notes = self.private_notes[-last_k:]
+        return "PRIVATE INFO (do not reveal directly unless asked):\n- " + "\n- ".join(notes)
+
+    def inform_detective_result(self, target_name: str, is_mafia: bool):
+        verdict = "MAFIA" if is_mafia else "NOT Mafia"
+        self.add_private_note(f"Night investigation: {target_name} is {verdict}.")

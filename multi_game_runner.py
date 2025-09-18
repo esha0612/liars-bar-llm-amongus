@@ -58,7 +58,7 @@ if __name__ == '__main__':
 
 
         {"name": "Sarah", "model": "ollama/llama3.1:8b"},
-        {"name": "Derek", "model": "ollama/deepseek-r1:8b"},
+        {"name": "Derek", "model": "ollama/deepseek-r1:7b"},
         {"name": "Emma", "model": "ollama/qwen3:8b"},
         {"name": "Talia", "model": "ollama/qwen2.5:7b"},
         {"name": "Anika", "model": "ollama/mistral:7b"},
@@ -67,7 +67,7 @@ if __name__ == '__main__':
         {"name": "Peter", "model": "ollama/phi3.5:3.8b"},
         {"name": "George", "model": "ollama/gemma3:4b"},
         {"name": "Enrique", "model": "ollama/gemma2:9b"},
-        {"name": "Maria", "model": "openai/gpt-4o-mini"},
+        {"name": "Maria", "model": "ollama/gpt-oss:20b"},
     ]
 
     # Create and run multiple games
