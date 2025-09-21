@@ -1,0 +1,85 @@
+{
+    "game_id": "20250920_073038",
+    "player_names": [
+        "Sarah",
+        "Derek",
+        "Emma",
+        "Talia",
+        "Anika",
+        "Nick",
+        "Philip",
+        "Peter",
+        "George",
+        "Enrique",
+        "Maria"
+    ],
+    "player_roles": {
+        "Sarah": "Townsperson",
+        "Derek": "Townsperson",
+        "Emma": "Doctor",
+        "Talia": "Townsperson",
+        "Anika": "Townsperson",
+        "Nick": "Mafia",
+        "Philip": "Townsperson",
+        "Peter": "Detective",
+        "George": "Townsperson",
+        "Enrique": "Townsperson",
+        "Maria": "Townsperson"
+    },
+    "night_phases": [
+        {
+            "night_number": 1,
+            "alive_players": [
+                "Sarah",
+                "Derek",
+                "Emma",
+                "Talia",
+                "Anika",
+                "Nick",
+                "Philip",
+                "Peter",
+                "George",
+                "Enrique",
+                "Maria"
+            ],
+            "night_actions": [
+                {
+                    "player_name": "Nick",
+                    "role": "Mafia",
+                    "action_type": "mafia_kill",
+                    "target_name": "Enrique",
+                    "action_result": null,
+                    "action_reasoning": null,
+                    "llm_prompt": null,
+                    "llm_response": null
+                },
+                {
+                    "player_name": "Emma",
+                    "role": "Doctor",
+                    "action_type": "doctor_save",
+                    "target_name": "Enrique",
+                    "action_result": null,
+                    "action_reasoning": null,
+                    "llm_prompt": null,
+                    "llm_response": null
+                },
+                {
+                    "player_name": "Peter",
+                    "role": "Detective",
+                    "action_type": "detective_investigate",
+                    "target_name": "Derek",
+                    "action_result": false,
+                    "action_reasoning": null,
+                    "llm_prompt": null,
+                    "llm_response": null
+                }
+            ],
+            "killed_player": null,
+            "investigation_results": {
+                "Derek": false
+            }
+        }
+    ],
+    "day_phases": [],
+    "winner": null
+}

@@ -27,7 +27,7 @@ class LLMClientOllama:
                 options={"temperature": 0.7}
             )
             
-            content = response.message.content
+            content = response.get("message", {}).get("content", "")
             # Ollama doesn't natively support reasoning_content, can be extended if needed
             reasoning_content = ""
             
