@@ -115,7 +115,7 @@ if __name__ == '__main__':
         {"name": "Peter", "model": "ollama/phi3.5:3.8b"},
         {"name": "George", "model": "ollama/gemma3:4b"},
         {"name": "Enrique", "model": "ollama/gemma2:9b"},
-        {"name": "Maria", "model": "openai/gpt-oss:20b"},
+        {"name": "Maria", "model": "ollama/gpt-oss:20b"},
       
     ]
 
