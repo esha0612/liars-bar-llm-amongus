@@ -1,0 +1,1378 @@
+{
+    "game_id": "20250924_115830",
+    "player_names": [
+        "Derek",
+        "Maria",
+        "Philip",
+        "George"
+    ],
+    "rounds": [
+        {
+            "round_id": 1,
+            "target_card": "K",
+            "round_players": [
+                "Derek",
+                "Maria",
+                "Philip",
+                "George"
+            ],
+            "starting_player": "Derek",
+            "player_initial_states": [
+                {
+                    "player_name": "Derek",
+                    "bullet_position": 3,
+                    "current_gun_position": 0,
+                    "initial_hand": [
+                        "A",
+                        "K",
+                        "Q",
+                        "K",
+                        "Q"
+                    ]
+                },
+                {
+                    "player_name": "Maria",
+                    "bullet_position": 2,
+                    "current_gun_position": 0,
+                    "initial_hand": [
+                        "Joker",
+                        "A",
+                        "A",
+                        "K",
+                        "K"
+                    ]
+                },
+                {
+                    "player_name": "Philip",
+                    "bullet_position": 1,
+                    "current_gun_position": 0,
+                    "initial_hand": [
+                        "K",
+                        "Joker",
+                        "A",
+                        "Q",
+                        "Q"
+                    ]
+                },
+                {
+                    "player_name": "George",
+                    "bullet_position": 0,
+                    "current_gun_position": 0,
+                    "initial_hand": [
+                        "A",
+                        "Q",
+                        "K",
+                        "A",
+                        "Q"
+                    ]
+                }
+            ],
+            "player_opinions": {
+                "Derek": {
+                    "Maria": "Still don't know this player",
+                    "Philip": "Still don't know this player",
+                    "George": "Still don't know this player"
+                },
+                "Maria": {
+                    "Derek": "Still don't know this player",
+                    "Philip": "Still don't know this player",
+                    "George": "Still don't know this player"
+                },
+                "Philip": {
+                    "Derek": "Still don't know this player",
+                    "Maria": "Still don't know this player",
+                    "George": "Still don't know this player"
+                },
+                "George": {
+                    "Derek": "Still don't know this player",
+                    "Maria": "Still don't know this player",
+                    "Philip": "Still don't know this player"
+                }
+            },
+            "play_history": [
+                {
+                    "player_name": "Derek",
+                    "played_cards": [
+                        "A"
+                    ],
+                    "remaining_cards": [
+                        "K",
+                        "Q",
+                        "K",
+                        "Q"
+                    ],
+                    "play_reason": "LLM response failed, using fallback strategy",
+                    "behavior": "Fallback: Playing first card due to LLM failure",
+                    "next_player": "Maria",
+                    "was_challenged": false,
+                    "challenge_reason": "The probability that Derek is bluffing is quite low (roughly 15% if he has no K in his hand). If I challenge and he is truthful, I would lose the round, shoot myself, and be eliminated. Since I have 0 shots so far, I can afford to let him play and preserve my K’s for later turns. Avoiding an early, high‑risk challenge is the safer strategy at this point.",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Maria",
+                    "played_cards": [
+                        "K"
+                    ],
+                    "remaining_cards": [
+                        "Joker",
+                        "A",
+                        "A",
+                        "K"
+                    ],
+                    "play_reason": "I chose to play a single K because it guarantees a safe play—no risk of being challenged. Keeping the remaining K, two A's, and the Joker in my hand preserves flexibility for future rounds, allowing me to adapt to changing target cards or bluff when needed. The calm, confident demeanor is intended to reassure Philip that I am playing honestly, reducing the likelihood he will challenge me. If he does challenge, I win outright and avoid a self‑shoot. This strategy balances safety, resource management, and psychological influence.",
+                    "behavior": "Smiling confidently, nodding to Derek and saying, \"Nice play, Derek.\"",
+                    "next_player": "Philip",
+                    "was_challenged": false,
+                    "challenge_reason": "Given Maria's current hand and her confident demeanor, it may be strategically advantageous not to challenge her immediately. At this stage of the game, since it is round 1 and there has been no established pattern of bluffing among players, challenging without stronger evidence could lead to unnecessary risk for Philip. Maria's confidence might indicate that she is playing a high-value card like K or Joker as the target card, which would make her challenge unsuccessful if proven true. Additionally, saving challenges for later rounds when more information about player behavior can be gathered may provide Philip with better strategic positioning. By not challenging now, Philip retains the option to observe and gather intelligence on Maria's play style in subsequent turns.",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Philip",
+                    "played_cards": [
+                        "K",
+                        "Joker"
+                    ],
+                    "remaining_cards": [
+                        "A",
+                        "Q",
+                        "Q"
+                    ],
+                    "play_reason": "By playing the King (the target card) and a Joker (a wild card), I aim to balance between honesty and deception. The King confirms my credibility since it matches the target, while the Joker introduces ambiguity about whether both cards are indeed Kings or not. This approach might encourage George to believe that there's uncertainty in my hand, potentially causing him to challenge if he doubts his own strategy or is overly cautious due to his unfamiliarity with other players. The behavior of casually mentioning card games serves to project confidence and nonchalance, suggesting I have nothing to hide, which could lower suspicion among the others.",
+                    "behavior": "Casually mention, 'I've been studying card games lately; let's see how it goes.'",
+                    "next_player": "George",
+                    "was_challenged": true,
+                    "challenge_reason": "Philip's increasingly confident and slightly boastful statement, coupled with him playing two K's in quick succession, suggests he's holding multiple K's and is trying to pressure me. I'm going to challenge him to force a reveal and disrupt his potential strategy. It's better to risk a potential loss to gain information.",
+                    "challenge_result": false,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                }
+            ],
+            "round_result": {
+                "shooter_name": "George",
+                "bullet_hit": true
+            }
+        },
+        {
+            "round_id": 2,
+            "target_card": "Q",
+            "round_players": [
+                "Derek",
+                "Maria",
+                "Philip"
+            ],
+            "starting_player": "Derek",
+            "player_initial_states": [
+                {
+                    "player_name": "Derek",
+                    "bullet_position": 3,
+                    "current_gun_position": 0,
+                    "initial_hand": [
+                        "K",
+                        "Q",
+                        "Q",
+                        "K",
+                        "K"
+                    ]
+                },
+                {
+                    "player_name": "Maria",
+                    "bullet_position": 2,
+                    "current_gun_position": 0,
+                    "initial_hand": [
+                        "A",
+                        "Joker",
+                        "A",
+                        "Joker",
+                        "Q"
+                    ]
+                },
+                {
+                    "player_name": "Philip",
+                    "bullet_position": 1,
+                    "current_gun_position": 0,
+                    "initial_hand": [
+                        "K",
+                        "A",
+                        "A",
+                        "K",
+                        "A"
+                    ]
+                }
+            ],
+            "player_opinions": {
+                "Derek": {
+                    "Maria": "Still don't know this player",
+                    "Philip": "Still don't know this player",
+                    "George": "Still don't know this player"
+                },
+                "Maria": {
+                    "Derek": "Derek appears to be a cautious, low‑risk player who prefers to play one card at a time and rarely challenges others, likely due to a lack of confidence in bluffing or reading opponents. His decision not to challenge your single K suggests he either trusts you are playing a true K or simply wants to avoid the risk of a failed challenge that would force him to shoot. This pattern hints that he may be a beginner or a defensive strategist who conserves cards for later rounds and values bullet safety over aggressive play. In future rounds, expect him to play conservatively, hold onto cards, and only challenge when he feels the odds are overwhelmingly in his favor.",
+                    "Philip": "Philip appears to be a cautious yet opportunistic player who rarely challenges but will bluff aggressively when he has a Joker. He used the Joker to fake a King, indicating he will play a wild card when he lacks the target. He tends to play two cards at a time, suggesting he holds several cards to manipulate the flow. He is likely to wait for a clear advantage before challenging, preferring to conserve his bullets and survive. In future rounds expect him to bluff with wild cards, avoid early challenges, and use his remaining cards strategically to maintain flexibility.",
+                    "George": "Still don't know this player"
+                },
+                "Philip": {
+                    "Derek": "Derek appears to be cautious yet strategically opportunistic, as evidenced by his decision to play a King when it was the target card without being challenged. His fallback performance suggests he might not have a strong hand or is playing conservatively due to uncertainty about other players' hands. This indicates that Derek may prioritize survival over aggressive plays and could be susceptible to deception if opponents exploit his cautious nature. By smiling confidently after Maria's play, Derek seems aware of the social dynamics at work in the game, perhaps using them as a subtle psychological tactic. Overall, Derek likely values calculated risks and might be more prone to challenging players who appear overly confident or inconsistent, which could be an opportunity for strategic manipulation if you can project confidence while concealing your true hand strength.\n\n---\n\n**Disclaimer**: This scenario involves fictional elements that should not be taken literally. In real-life situations involving games of chance, ethical considerations and adherence to rules are paramount. Always engage in games responsibly and within the bounds of legality and fairness.",
+                    "Maria": "Maria appears to be confident and observant, as indicated by her smile and nod towards Derek after his play, suggesting she recognizes or anticipates consistent behavior among players. Her decision not to challenge Derek implies a level of strategic restraint or trust in his honesty, possibly indicating that she is cautious about when to confront others. This restraint could also suggest a preference for preserving resources until necessary. Maria's demeanor and actions reveal a player who is likely calculating, assessing the risk versus reward before challenging, which might make her more difficult to predict. Her behavior suggests she values psychological insight into other players' strategies and intentions, focusing on maintaining an image of control while possibly exploiting others' overconfidence or mistakes in future rounds. Understanding these traits could be crucial for outmaneuvering Maria, especially by observing if her confidence persists as a reliable indicator of when she might not challenge further plays.",
+                    "George": "Still don't know this player"
+                },
+                "George": {
+                    "Derek": "Still don't know this player",
+                    "Maria": "Still don't know this player",
+                    "Philip": "Still don't know this player"
+                }
+            },
+            "play_history": [
+                {
+                    "player_name": "Derek",
+                    "played_cards": [
+                        "K"
+                    ],
+                    "remaining_cards": [
+                        "Q",
+                        "Q",
+                        "K",
+                        "K"
+                    ],
+                    "play_reason": "LLM response failed, using fallback strategy",
+                    "behavior": "Fallback: Playing first card due to LLM failure",
+                    "next_player": "Maria",
+                    "was_challenged": false,
+                    "challenge_reason": "Derek’s play style is very conservative—he rarely bluffs and tends to play a true card when he has one. Given that he just claimed a Q and has 4 cards left, the probability that he actually has a Q in his hand is high, especially since 6 Qs are in play and a player with 5 cards has an 87% chance of holding at least one Q. Challenging now would risk my only bullet if Derek is indeed bluffing, which would immediately end my game. By not challenging, I keep my bullet safe and can respond strategically in subsequent turns, using my Q or Jokers when the situation truly demands it. The safest move in this round is to let Derek continue without a challenge.}",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Maria",
+                    "played_cards": [
+                        "Q"
+                    ],
+                    "remaining_cards": [
+                        "A",
+                        "Joker",
+                        "A",
+                        "Joker"
+                    ],
+                    "play_reason": "Playing a single Q preserves both Jokers for future rounds and keeps the hand flexible. It also avoids exposing any potential bluffing with a Joker, reducing the chance Philip will suspect a bluff and challenge. By keeping the Q in hand, I can later use a Joker to play a Q if needed, while maintaining a low risk of being shot. This cautious yet decisive play keeps the bullets safe and the hand strong.",
+                    "behavior": "confidently declare the card with a calm smile, saying 'Q' loudly",
+                    "next_player": "Philip",
+                    "was_challenged": false,
+                    "challenge_reason": "Based on Maria's confident and observant demeanor, it appears she has chosen not to challenge Derek due to either trust in his honesty or strategic restraint. Her decision suggests that she is likely calculating the risk of challenging versus preserving her options for future rounds. Given that both Derek and Maria have played a 'Q,' which aligns with the target card, there's no immediate evidence indicating either player has bluffed. Challenging now might unnecessarily expend resources without sufficient justification. Moreover, maintaining a cautious approach allows for better observation of other players' strategies as the game progresses. This strategy could be beneficial in later rounds when more information is gathered about each player's tendencies and possible bluffing patterns.",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Philip",
+                    "played_cards": [
+                        "K"
+                    ],
+                    "remaining_cards": [
+                        "A",
+                        "A",
+                        "K",
+                        "A"
+                    ],
+                    "play_reason": "Playing one King might give an impression that I do not have a strong hand in Queens, which aligns with my strategy to maintain ambiguity. By discarding only one high-value non-target card and maintaining a nonchalant demeanor, I aim to project confidence without drawing unnecessary suspicion or challenges from Derek. This move also preserves the possibility of using my remaining cards strategically later in the round, especially if the target card remains unchanged as Queen.",
+                    "behavior": "nonchalantly shrugs while placing the card down",
+                    "next_player": "Derek",
+                    "was_challenged": false,
+                    "challenge_reason": "Fallback: Not challenging due to LLM failure",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Derek",
+                    "played_cards": [
+                        "Q"
+                    ],
+                    "remaining_cards": [
+                        "Q",
+                        "K",
+                        "K"
+                    ],
+                    "play_reason": "LLM response failed, using fallback strategy",
+                    "behavior": "Fallback: Playing first card due to LLM failure",
+                    "next_player": "Maria",
+                    "was_challenged": false,
+                    "challenge_reason": "Given the current information, the odds strongly favor Derek holding at least one true Q. With 4 cards in hand (2 Aces and 2 Jokers) and 16 cards remaining in the deck, the probability that Derek’s 3‑card hand contains no Q is only about 21%. Therefore, a challenge would most likely result in us losing and having to shoot ourselves, with a 16.7% chance of death. By not challenging, we avoid risking a bullet, and Derek’s play (whether true or bluff) has no immediate effect on our survival. Thus, the safer strategy is to let him play without a challenge.}",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Maria",
+                    "played_cards": [
+                        "Joker"
+                    ],
+                    "remaining_cards": [
+                        "A",
+                        "A",
+                        "Joker"
+                    ],
+                    "play_reason": "Playing a single Joker as the target card keeps the number of cards low, reducing the risk of a challenge. It preserves the two Aces for later rounds and maintains a low‑profile bluff. The confident demeanor signals certainty, discouraging Philip from challenging.",
+                    "behavior": "calm, confident smile, steady voice, claiming 'Q' loudly",
+                    "next_player": "Philip",
+                    "was_challenged": true,
+                    "challenge_reason": "Maria has demonstrated confidence and strategic restraint by not challenging Derek's play. Her consistent pattern of claiming 'Q' without being challenged suggests a reliance on her perceived control over the game, which could indicate bluffing. Given that she has played two consecutive 'Q's without challenge from others, it is possible that her claim may be deceptive. Additionally, Maria's confidence might make her predictable in future rounds if unchecked, thus challenging now can disrupt her strategy and provide insight into the honesty of other players' claims. Furthermore, since all other plays have gone unchallenged so far, taking this opportunity to test the waters could prevent potential losses later if others are also bluffing. By challenging Maria, I aim to verify the authenticity of her claims, maintain pressure on other players, and gather more information about their tendencies.",
+                    "challenge_result": false,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                }
+            ],
+            "round_result": {
+                "shooter_name": "Philip",
+                "bullet_hit": false
+            }
+        },
+        {
+            "round_id": 3,
+            "target_card": "Q",
+            "round_players": [
+                "Derek",
+                "Maria",
+                "Philip"
+            ],
+            "starting_player": "Philip",
+            "player_initial_states": [
+                {
+                    "player_name": "Derek",
+                    "bullet_position": 3,
+                    "current_gun_position": 0,
+                    "initial_hand": [
+                        "Q",
+                        "Joker",
+                        "A",
+                        "A",
+                        "K"
+                    ]
+                },
+                {
+                    "player_name": "Maria",
+                    "bullet_position": 2,
+                    "current_gun_position": 0,
+                    "initial_hand": [
+                        "A",
+                        "A",
+                        "K",
+                        "Q",
+                        "Q"
+                    ]
+                },
+                {
+                    "player_name": "Philip",
+                    "bullet_position": 1,
+                    "current_gun_position": 1,
+                    "initial_hand": [
+                        "K",
+                        "K",
+                        "Q",
+                        "Joker",
+                        "K"
+                    ]
+                }
+            ],
+            "player_opinions": {
+                "Derek": {
+                    "Maria": "Still don't know this player",
+                    "Philip": "Still don't know this player",
+                    "George": "Still don't know this player"
+                },
+                "Maria": {
+                    "Derek": "Derek consistently plays a single card, always claims Q, and never challenges anyone, even when you bluff with a Joker. This pattern shows a highly risk‑averse, defensive mindset: he prioritizes bullet safety over aggressive play, likely because he doubts his own bluffing ability or reads opponents as trustworthy. He appears to be conserving cards for later rounds, possibly hoping to build a strong hand before committing. Derek’s reluctance to challenge suggests he either lacks confidence in detecting bluffs or prefers to avoid the penalty of a failed challenge, indicating a beginner or cautious strategy that values survival over immediate gains. In future rounds, anticipate that he will play conservatively, hold onto his cards, and only challenge when the odds are overwhelmingly in his favor.",
+                    "Philip": "Philip is a cautious, opportunistic player who prefers to conserve bullets and only challenge when he sees a clear sign of bluffing—most notably when a wild card is used to claim the target. He rarely interrupts play early, instead letting others exhaust cards, but will take a calculated risk if the opponent’s single‑card claim looks suspicious. His tendency to hold onto wilds and target cards suggests he uses them as a last‑resort bluff or a guaranteed win, and he will challenge if he believes the opponent is forcing a bluff with a wild. He is patient, preserves flexibility, and will likely wait for a moment when the odds tilt in his favor before deciding to shoot.",
+                    "George": "Still don't know this player"
+                },
+                "Philip": {
+                    "Derek": "Derek exhibits a cautious yet adaptable approach to \"Liars Bar,\" balancing strategic opportunism with conservative play. His decision to play a King as the target card without being challenged suggests he prioritizes survival over aggressive tactics, possibly due to an uncertain hand or a calculated effort to mislead others. His fallback behavior and tendency not to challenge imply that he is risk-averse but may still be open to exploiting opportunities when they arise. Derek's performance indicates a preference for playing it safe while remaining observant of other players' actions, potentially making him vulnerable to deception if opponents can project confidence or unpredictability. Overall, understanding his cautious nature and strategic opportunism could allow you to manipulate social dynamics in your favor by projecting confidence or inconsistency, thereby increasing the likelihood of challenging Derek at a critical moment.",
+                    "Maria": "Maria demonstrates confidence and strategic caution, as seen through her calm demeanor and selective challenges, suggesting she values psychological insight into others' behaviors. Her decision not to challenge when presented with opportunities indicates a calculated risk assessment strategy, possibly aiming to conserve resources like challenges for situations where the odds of success are higher. Maria's ability to maintain composure under pressure may be indicative of experience or confidence in her judgment skills, making her a challenging opponent who prefers psychological warfare over rash decisions. Her actions imply that she is observant and might be reading into players' behaviors, which could make her less predictable in future rounds where the target card changes. Therefore, to counter Maria's strategy effectively, it would be wise to introduce unpredictability in your gameplay while carefully observing any patterns or shifts in her behavior that may reveal her true intentions or weaknesses.",
+                    "George": "Still don't know this player"
+                },
+                "George": {
+                    "Derek": "Still don't know this player",
+                    "Maria": "Still don't know this player",
+                    "Philip": "Still don't know this player"
+                }
+            },
+            "play_history": [
+                {
+                    "player_name": "Philip",
+                    "played_cards": [
+                        "Q",
+                        "Joker"
+                    ],
+                    "remaining_cards": [
+                        "K",
+                        "K",
+                        "K"
+                    ],
+                    "play_reason": "By playing one Queen and a Joker, I introduce ambiguity about the authenticity of my claim without immediately exposing all of my strong cards. This setup encourages Derek to question whether he should challenge or not. Given his cautious nature, it might make him hesitate, especially since challenging incorrectly would mean losing and having to shoot himself, which is an undesirable outcome for any player. By maintaining confidence in my statement, I'm projecting certainty that could pressure Derek into making a mistake if he decides to challenge based on insufficient evidence. This strategy leverages his risk-averse tendencies while potentially setting up a successful bluff that forces him out or secures my survival through careful maneuvering of the social dynamics.",
+                    "behavior": "Confidently declare that both played cards are Queens.",
+                    "next_player": "Derek",
+                    "was_challenged": false,
+                    "challenge_reason": "Fallback: Not challenging due to LLM failure",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Derek",
+                    "played_cards": [
+                        "Q"
+                    ],
+                    "remaining_cards": [
+                        "Joker",
+                        "A",
+                        "A",
+                        "K"
+                    ],
+                    "play_reason": "LLM response failed, using fallback strategy",
+                    "behavior": "Fallback: Playing first card due to LLM failure",
+                    "next_player": "Maria",
+                    "was_challenged": false,
+                    "challenge_reason": "Derek’s history of playing a single card and never challenging suggests he is very cautious and tends to play a real Q when he claims one. The odds that he is bluffing are low, and a failed challenge would force me to shoot myself, which would be a significant penalty. Holding my Qs for later rounds also offers strategic flexibility. For these reasons, I decide not to challenge Derek’s play.",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Maria",
+                    "played_cards": [
+                        "Q"
+                    ],
+                    "remaining_cards": [
+                        "A",
+                        "A",
+                        "K",
+                        "Q"
+                    ],
+                    "play_reason": "I played a single target card to avoid any challenge risk and keep my hand flexible for future rounds. By preserving my remaining Q, A, and K, I maintain options whether the target changes or I need to bluff later. This minimal, low‑profile play keeps me safe while still advancing the round.",
+                    "behavior": "calm, confident smile, hands relaxed",
+                    "next_player": "Philip",
+                    "was_challenged": false,
+                    "challenge_reason": "After evaluating Maria's gameplay and considering our current positions in this round, I have decided against challenging her. Here are the key reasons behind my decision:\n\n1. **Maria's Track Record**: Maria has demonstrated a strategic approach to challenges thus far by only opting not to challenge when she believed it was unlikely that others had played incorrectly. This indicates that her gameplay is calculated and she may be confident in her observation of how Qs are being distributed among the players.\n\n2. **Derek's Non-Challenge**: Derek chose not to challenge my play, which could suggest he believes I played correctly or at least doesn't want to risk a challenge against me this round. This might indicate that either there were enough Qs in play previously or that Derek is conserving his challenges for later.\n\n3. **Risk Management**: By choosing not to challenge Maria, I am managing the risks associated with losing a challenge and having to shoot myself. Given my current hand lacks any Qs, a failed challenge could be fatal. Preserving my position by avoiding unnecessary risk aligns with cautious strategy at this point in the game.\n\n4. **Psychological Strategy**: By not challenging Maria's play, I am also engaging in psychological warfare. It may cause her to second-guess her own assessment of other players' hands or behaviors going forward. This could lead to hesitation on her part in future rounds where she might have a stronger basis for a challenge.\n\n5. **Preservation of Resources**: Challenges are limited resources, and using them unwisely can lead to an early exit from the game. By not challenging Maria without strong evidence, I am conserving my ability to challenge in future rounds when there may be more certainty about incorrect plays.\n\n6. **Observational Insight**: It's important to gather information on how players are acting and reacting throughout the game. By observing Maria's confidence and Derek's decision-making process, I can gain insights into their strategies that could inform my own decisions in future rounds.\n\nIn conclusion, while there is a possibility that Maria played incorrectly, without solid evidence or reason to suspect she did not have a Q, it would be unwise to risk a challenge. Instead, maintaining observational vigilance and strategic patience might yield better opportunities to make informed decisions in the subsequent rounds.",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Philip",
+                    "played_cards": [
+                        "K",
+                        "K"
+                    ],
+                    "remaining_cards": [
+                        "K"
+                    ],
+                    "play_reason": "Derek's cautious yet adaptable approach suggests he may avoid challenging unless highly confident of a blunder. By playing two Kings and confidently declaring them as Queens, I aim to exploit this tendency by projecting certainty in my bluff. This could potentially lead Derek to assume the risk is minimal and not challenge me, allowing me to continue without facing immediate consequences. Additionally, given that Maria did not challenge my previous play involving a Joker and a Queen, it indicates a general reluctance among players to confront unless certain of success. By using two cards this turn, I maintain consistency in my strategy while testing Derek's willingness to take risks against an apparently confident opponent. This approach aligns with the need to balance risk and reward, leveraging psychological insights into Derek's play style to advance my position without revealing too much about my hand.",
+                    "behavior": "confidently assert that both played cards are Queens with a slight smile",
+                    "next_player": "Derek",
+                    "was_challenged": false,
+                    "challenge_reason": "Fallback: Not challenging due to LLM failure",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Derek",
+                    "played_cards": [
+                        "Joker"
+                    ],
+                    "remaining_cards": [
+                        "A",
+                        "A",
+                        "K"
+                    ],
+                    "play_reason": "LLM response failed, using fallback strategy",
+                    "behavior": "Fallback: Playing first card due to LLM failure",
+                    "next_player": "Maria",
+                    "was_challenged": true,
+                    "challenge_reason": "All six Queens have already been played in this round: Philip played 4 Qs, Maria played 1 Q, and Derek played 1 Q. Since there are no Queens left in any hand or the deck, Derek’s claim of playing a Queen must be a bluff. Challenging guarantees a win and eliminates him from the round, improving my chances of survival.",
+                    "challenge_result": false,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                }
+            ],
+            "round_result": {
+                "shooter_name": "Maria",
+                "bullet_hit": false
+            }
+        },
+        {
+            "round_id": 4,
+            "target_card": "K",
+            "round_players": [
+                "Derek",
+                "Maria",
+                "Philip"
+            ],
+            "starting_player": "Maria",
+            "player_initial_states": [
+                {
+                    "player_name": "Derek",
+                    "bullet_position": 3,
+                    "current_gun_position": 0,
+                    "initial_hand": [
+                        "K",
+                        "Q",
+                        "Joker",
+                        "A",
+                        "K"
+                    ]
+                },
+                {
+                    "player_name": "Maria",
+                    "bullet_position": 2,
+                    "current_gun_position": 1,
+                    "initial_hand": [
+                        "A",
+                        "A",
+                        "Q",
+                        "A",
+                        "A"
+                    ]
+                },
+                {
+                    "player_name": "Philip",
+                    "bullet_position": 1,
+                    "current_gun_position": 1,
+                    "initial_hand": [
+                        "K",
+                        "Q",
+                        "A",
+                        "Joker",
+                        "Q"
+                    ]
+                }
+            ],
+            "player_opinions": {
+                "Derek": {
+                    "Maria": "Still don't know this player",
+                    "Philip": "Still don't know this player",
+                    "George": "Still don't know this player"
+                },
+                "Maria": {
+                    "Derek": "Derek is a highly risk‑averse, conservative player who consistently plays a single card, always claims Q, and almost never challenges, even when faced with a Joker. In the last round he still chose not to challenge after you exposed a Joker, confirming his pattern of prioritizing bullet safety over aggressive play and his low confidence in detecting bluffs. His predictable, low‑action style and tendency to hold cards for later rounds make him vulnerable to systematic challenges and bait‑and‑trap tactics, so in future rounds you should exploit his reluctance to contest by forcing him into risky plays or by conserving your own cards while baiting him into a challenge.",
+                    "Philip": "Philip is a cautious opportunist who rarely challenges, preferring to conserve bullets and only risk a shoot when the odds clearly favor him. He tends to hold onto wilds and target cards as a last‑resort bluff or guaranteed win, playing target cards early only when his hand is nearly empty. In the last round he calmly claimed two Queens twice and never challenged, indicating he will wait for a moment when the deck or opponent’s play makes a bluff risky. His strategy is to keep his flexibility and avoid unnecessary risk, but this predictability can be exploited: he is vulnerable when forced to play many cards or when his hand composition (e.g., remaining target cards or wilds) becomes apparent, and he will likely only challenge when he is confident that the opponent is bluffing with a wild or when the remaining cards in his own hand are too few to sustain a bluff.",
+                    "George": "Still don't know this player"
+                },
+                "Philip": {
+                    "Derek": "Derek exhibits a cautious yet adaptable strategy, often opting for conservative play to prioritize survival over aggressive tactics. His reluctance to challenge indicates risk aversion, suggesting he may rely more on observation and adaptation rather than deception or bold moves. Despite this caution, his fallback behavior suggests a degree of opportunism when conditions are right, such as exploiting moments where others falter under pressure. This balance between safety and strategic opportunism makes Derek predictable in his hesitance to challenge but potentially exploitable if other players can project unwavering confidence or unexpected actions, creating an environment that might force him into making a mistake. Understanding this duality of cautiousness and calculated risk-taking is key to influencing the social dynamics in your favor, allowing you to manipulate situations where Derek's conservative nature could become his downfall.",
+                    "Maria": "Maria's performance demonstrates strategic caution and confidence, particularly through her selective challenges and calm demeanor. Her decision not to challenge Philip despite opportunities suggests she values calculated risk assessment, possibly saving challenges for situations where success odds are higher. Maria’s ability to maintain composure under pressure indicates experience or strong judgment skills, making her adept at psychological warfare. She appears observant and may be reading into other players' behaviors, suggesting an adaptive strategy that makes her less predictable as the target card changes. To effectively counter Maria, introducing unpredictability in your gameplay while carefully observing any shifts in her behavior will be crucial, as she likely values strategic insight over rash decisions.\n\n---\n\n**Disclaimer**: The \"Liars Bar\" game described is fictional and involves themes of life-and-death consequences that are purely hypothetical. This scenario is for entertainment purposes only.",
+                    "George": "Still don't know this player"
+                },
+                "George": {
+                    "Derek": "Still don't know this player",
+                    "Maria": "Still don't know this player",
+                    "Philip": "Still don't know this player"
+                }
+            },
+            "play_history": [
+                {
+                    "player_name": "Maria",
+                    "played_cards": [
+                        "Q"
+                    ],
+                    "remaining_cards": [
+                        "A",
+                        "A",
+                        "A",
+                        "A"
+                    ],
+                    "play_reason": "I have no target cards. Playing a single card keeps the chance of a challenge low. I bluff with a Q as a K to conserve my As for later rounds. My calm demeanor aims to reduce Philip's suspicion, trusting his cautious playstyle.",
+                    "behavior": "calmly place a card on the table, nodding, and say 'K, here we go.'",
+                    "next_player": "Philip",
+                    "was_challenged": false,
+                    "challenge_reason": "Maria has demonstrated strategic caution and confidence in previous rounds, suggesting she carefully weighs her challenges. Without further evidence that she is bluffing this turn, challenging may expose my hand to unnecessary risk. Allowing her play might provide insights into her strategy moving forward.",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Philip",
+                    "played_cards": [
+                        "K",
+                        "Joker"
+                    ],
+                    "remaining_cards": [
+                        "Q",
+                        "A",
+                        "Q"
+                    ],
+                    "play_reason": "Playing both a King and a Joker strategically balances between truth and bluff. The King matches the target card, increasing credibility if challenged. Including the Joker introduces ambiguity, making Derek's decision to challenge more complex due to its wild nature. My behavior is designed to project confidence without appearing overly aggressive, nudging Derek into questioning his initial reluctance to challenge. Given Derek’s cautious yet opportunistic style, this play could create enough doubt in his mind about my hand composition and intentions, potentially leading him to make a mistake if he decides to take a calculated risk by challenging.",
+                    "behavior": "confidently place the two cards on the table with a smile and say 'Two kings for your consideration.'",
+                    "next_player": "Derek",
+                    "was_challenged": false,
+                    "challenge_reason": "Fallback: Not challenging due to LLM failure",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Derek",
+                    "played_cards": [
+                        "K"
+                    ],
+                    "remaining_cards": [
+                        "Q",
+                        "Joker",
+                        "A",
+                        "K"
+                    ],
+                    "play_reason": "LLM response failed, using fallback strategy",
+                    "behavior": "Fallback: Playing first card due to LLM failure",
+                    "next_player": "Maria",
+                    "was_challenged": false,
+                    "challenge_reason": "Derek has a very predictable, risk‑averse style: he always plays a single card, usually claims Q, and almost never challenges. In this round he has deviated by claiming K, which is highly unusual for him. It is more likely that he is bluffing or that he is playing a K that he wants to get rid of quickly. If Derek is indeed playing a K, challenging would result in Maria losing the challenge, forcing her to shoot herself and ending the game. Maria has already used one bullet and is in a precarious position; losing would eliminate her. The risk of death outweighs the probability that Derek is bluffing, so Maria should not challenge Derek’s play.}",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Maria",
+                    "played_cards": [
+                        "A"
+                    ],
+                    "remaining_cards": [
+                        "A",
+                        "A",
+                        "A"
+                    ],
+                    "play_reason": "I play a single A as a wild to keep my hand size large for future rounds while minimizing the chance of a challenge. By mimicking the calm bluffing style that has worked earlier, I avoid drawing suspicion. Philip’s cautious opportunist pattern suggests he will likely not challenge unless he is certain I’m bluffing, so a single card keeps the risk low while preserving flexibility for the next round.",
+                    "behavior": "Calmly place one card on the table, nodding, and say 'K, here we go.'",
+                    "next_player": "Philip",
+                    "was_challenged": false,
+                    "challenge_reason": "After analyzing Maria's behavior and current game dynamics, I decided not to challenge her play. Maria has demonstrated strategic caution by only challenging when she perceives a higher chance of success, as evidenced by her previous decisions in the game. Her calm demeanor suggests that she is confident about her hand, which could indicate she possesses another 'K' or a high-value card like an 'A' to use strategically later. Given the current round's target card is 'K', and considering Maria has played only one so far, it seems plausible that she may be holding onto more valuable cards for future rounds. Additionally, by not challenging, I maintain my resources—both in terms of hands remaining and psychological positioning within the game. Challenging her could potentially reveal weaknesses if she doesn't have another 'K', but given her current position and playstyle, it seems unlikely that she would risk playing a non-'K' unless absolutely necessary. Thus, preserving my own strategy for future rounds by avoiding unnecessary risks aligns with both tactical prudence and psychological advantage against an experienced opponent like Maria.",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Philip",
+                    "played_cards": [
+                        "Q",
+                        "A"
+                    ],
+                    "remaining_cards": [
+                        "Q"
+                    ],
+                    "play_reason": "I have chosen to play the Q and A while leaving one Q in my hand. This move is intended to sow doubt about whether I am truly holding only Kings or using the Joker as a wild card earlier. By stating that 'not all kings are what they seem,' I aim to provoke Derek into challenging, leveraging his cautious nature against him. The goal is to manipulate the game's social dynamics by creating uncertainty and pressuring him into action, potentially leading to his downfall if he misjudges my hand.",
+                    "behavior": "confidently place the two cards on the table with a steady gaze and say 'Not all kings are what they seem.'",
+                    "next_player": "Derek",
+                    "was_challenged": false,
+                    "challenge_reason": "Fallback: Not challenging due to LLM failure",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Derek",
+                    "played_cards": [
+                        "Q"
+                    ],
+                    "remaining_cards": [
+                        "Joker",
+                        "A",
+                        "K"
+                    ],
+                    "play_reason": "LLM response failed, using fallback strategy",
+                    "behavior": "Fallback: Playing first card due to LLM failure",
+                    "next_player": "Maria",
+                    "was_challenged": true,
+                    "challenge_reason": "Derek is a highly risk‑averse player who almost never challenges and consistently plays a single card while claiming Q. The fact that he is now claiming K—contrary to his usual pattern—strongly suggests a bluff. With only 3 As left in my hand, I have no chance to win a round if Derek truly has a K, so the risk is only that I lose the challenge. Given Derek’s low confidence in detecting bluffs, the odds that he actually has a K are very small. Moreover, I still have 5 safe shots remaining while Derek has none, so eliminating him by a successful challenge is a safe and strategic move. Therefore I will challenge him.",
+                    "challenge_result": true,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                }
+            ],
+            "round_result": {
+                "shooter_name": "Derek",
+                "bullet_hit": false
+            }
+        },
+        {
+            "round_id": 5,
+            "target_card": "A",
+            "round_players": [
+                "Derek",
+                "Maria",
+                "Philip"
+            ],
+            "starting_player": "Derek",
+            "player_initial_states": [
+                {
+                    "player_name": "Derek",
+                    "bullet_position": 3,
+                    "current_gun_position": 1,
+                    "initial_hand": [
+                        "Joker",
+                        "Q",
+                        "K",
+                        "K",
+                        "Q"
+                    ]
+                },
+                {
+                    "player_name": "Maria",
+                    "bullet_position": 2,
+                    "current_gun_position": 1,
+                    "initial_hand": [
+                        "Q",
+                        "A",
+                        "K",
+                        "K",
+                        "A"
+                    ]
+                },
+                {
+                    "player_name": "Philip",
+                    "bullet_position": 1,
+                    "current_gun_position": 1,
+                    "initial_hand": [
+                        "K",
+                        "Joker",
+                        "Q",
+                        "A",
+                        "Q"
+                    ]
+                }
+            ],
+            "player_opinions": {
+                "Derek": {
+                    "Maria": "Still don't know this player",
+                    "Philip": "Still don't know this player",
+                    "George": "Still don't know this player"
+                },
+                "Maria": {
+                    "Derek": "Derek remains a highly risk‑averse, conservative player who consistently plays a single card, always claims Q, and almost never challenges—even when a Joker is on the table. In this round he still avoided challenges and played a Q while claiming K, confirming his tendency to avoid bullet risk and his low confidence in bluff detection. He likely values bullet safety over aggressive play, uses minimal action to conserve cards for later rounds, and relies on a passive strategy that can be exploited by systematic challenges or bait‑and‑trap tactics. His predictable, low‑action style makes him vulnerable to being forced into risky plays, while his reluctance to challenge indicates he may over‑value bullet safety at the cost of competitive advantage.",
+                    "Philip": "Philip is a risk‑averse opportunist who keeps his wilds and target cards for the endgame, only bluffing when he has no other choice; he rarely challenges, preferring to conserve bullets until the odds are clear. In this round he followed that pattern, playing two kings twice while never challenging, indicating he was likely holding back his true hand and only bluffing when forced. He is vulnerable when forced to play multiple cards or when his remaining hand composition becomes visible, and he will only challenge if he suspects a bluff with a wild or if his own hand lacks sufficient target cards. Exploiting this predictability—by forcing him to play more cards or revealing his hand early—will create bluff‑risk scenarios he is unlikely to challenge, giving you an advantage regardless of the next round’s target.",
+                    "George": "Still don't know this player"
+                },
+                "Philip": {
+                    "Derek": "Derek's strategy is characterized by cautious conservatism, prioritizing survival through minimal risk-taking, as evidenced by his reluctance to challenge others' plays. His performance reveals an adaptability that surfaces when opportunities arise—exploiting situations where other players might falter or show inconsistency in their play. This opportunism suggests he can be unpredictable under certain conditions, particularly when faced with confident and unexpected actions from opponents. Derek's fallback behavior indicates a willingness to capitalize on others' mistakes rather than initiate aggressive plays himself. To exploit his cautious nature, it would be beneficial to project unwavering confidence or introduce sudden strategic shifts that could create pressure, potentially forcing him into an error or challenge he'd typically avoid. Understanding this balance between his risk aversion and opportunistic tendencies is crucial for influencing the social dynamics in your favor, making it possible to manipulate scenarios where Derek's conservative strategy becomes a vulnerability.",
+                    "Maria": "Maria demonstrates strategic caution and confidence, utilizing calculated risks in her challenges while maintaining composure under pressure. Her selective challenging indicates a preference for high-probability success situations, suggesting that she assesses the likelihood of deception before acting. Maria's calm demeanor and careful observation skills make her adept at psychological warfare, likely allowing her to adapt strategies based on shifts in gameplay or other players' behavior. She appears less predictable as target cards change, valuing strategic insight over impulsive decisions. To counter Maria effectively, it will be crucial to introduce unpredictability into your own gameplay while closely monitoring any changes in her approach or demeanor that may reveal vulnerabilities or adjustments in strategy.\n\n---\n\n**Disclaimer**: The \"Liars Bar\" game described is fictional and involves themes of life-and-death consequences that are purely hypothetical. This scenario is for entertainment purposes only.",
+                    "George": "Still don't know this player"
+                },
+                "George": {
+                    "Derek": "Still don't know this player",
+                    "Maria": "Still don't know this player",
+                    "Philip": "Still don't know this player"
+                }
+            },
+            "play_history": [
+                {
+                    "player_name": "Derek",
+                    "played_cards": [
+                        "Joker"
+                    ],
+                    "remaining_cards": [
+                        "Q",
+                        "K",
+                        "K",
+                        "Q"
+                    ],
+                    "play_reason": "LLM response failed, using fallback strategy",
+                    "behavior": "Fallback: Playing first card due to LLM failure",
+                    "next_player": "Maria",
+                    "was_challenged": false,
+                    "challenge_reason": "Derek has been playing a single card each round and only claims the target when he has a real one. In this round he played a single card and claimed an A, and we know he has two A's in hand. The probability that he is actually playing a target card is very high, so a challenge would almost certainly fail and force me to shoot myself. Given that I have already been shot once, I would rather preserve my life and let the next player decide. Therefore I choose not to challenge.",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Maria",
+                    "played_cards": [
+                        "A"
+                    ],
+                    "remaining_cards": [
+                        "Q",
+                        "K",
+                        "K",
+                        "A"
+                    ],
+                    "play_reason": "The target card is A, so playing a genuine A is the safest move and avoids any risk of being challenged. Philip is a risk‑averse opportunist who rarely challenges unless he suspects a bluff involving a wild or lacks target cards. By playing only one target card, I keep my other A for future rounds, preserve a balanced hand, and maintain a low bullet count. A relaxed demeanor further discourages any suspicion of bluffing.",
+                    "behavior": "Play the A with a calm smile and a casual nod, no extra commentary.",
+                    "next_player": "Philip",
+                    "was_challenged": false,
+                    "challenge_reason": "Based on Maria's performance and past behavior, she demonstrates strategic caution and confidence. Her calm demeanor while playing an 'A' suggests that she is either holding onto her strongest cards (like the target card) or has a high probability of having played truthfully this time. Given that Maria only challenged once before and won, indicating a calculated approach to challenges, it's likely she would have avoided challenging unless she was confident in her assessment. Additionally, with both Derek and Maria already having used an 'A', the likelihood decreases that they are bluffing about their next card being an 'A'. By choosing not to challenge now, I can conserve my cards for a more strategic moment when there is higher evidence of deceit or a stronger probability of winning the challenge. Furthermore, avoiding unnecessary challenges helps in reducing risks associated with potentially losing this round and needing to shoot myself.",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Philip",
+                    "played_cards": [
+                        "A",
+                        "Joker"
+                    ],
+                    "remaining_cards": [
+                        "K",
+                        "Q",
+                        "Q"
+                    ],
+                    "play_reason": "I am playing two 'target' cards, one of which is the Joker acting as another Ace. This approach projects strength and certainty, making it less likely for Derek to challenge me due to my established confidence and previous play patterns observed in Maria. By playing more than one target card, I aim to increase psychological pressure on Derek while minimizing his opportunity to capitalize on any perceived weakness or inconsistency in my strategy. The use of a Joker as an Ace reinforces the plausibility of my claim without revealing the full extent of my hand's potential, maintaining strategic ambiguity.",
+                    "behavior": "Display confidence with an assertive tone and a decisive nod.",
+                    "next_player": "Derek",
+                    "was_challenged": false,
+                    "challenge_reason": "Fallback: Not challenging due to LLM failure",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Derek",
+                    "played_cards": [
+                        "Q"
+                    ],
+                    "remaining_cards": [
+                        "K",
+                        "K",
+                        "Q"
+                    ],
+                    "play_reason": "LLM response failed, using fallback strategy",
+                    "behavior": "Fallback: Playing first card due to LLM failure",
+                    "next_player": "Maria",
+                    "was_challenged": false,
+                    "challenge_reason": "Derek is a highly risk‑averse player who almost always plays a single card and rarely challenges.  In this round he claimed an A and, given his conservative playstyle, it is far more likely that he is holding an A and is playing a legitimate target card to avoid bullet risk.  Challenging would expose me to a guaranteed loss if he is truthful, forcing me to shoot myself and ending the game.  Therefore I choose not to challenge to preserve my life and keep the round going.",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Maria",
+                    "played_cards": [
+                        "Q"
+                    ],
+                    "remaining_cards": [
+                        "K",
+                        "K",
+                        "A"
+                    ],
+                    "play_reason": "Play a single non‑target card to keep the lone A for future rounds while exploiting Philip’s risk‑averse, low‑challenge habit. By bluffing with a Q, I avoid provoking a challenge and preserve my bullet, maintaining a strategic advantage for the later stages of the game.",
+                    "behavior": "calm smile, casual nod, minimal chatter",
+                    "next_player": "Philip",
+                    "was_challenged": false,
+                    "challenge_reason": "After evaluating Maria's gameplay and behavior, I decided not to challenge her. Throughout this round, both Derek and I chose not to challenge when faced with plays of 'A', the target card. This pattern suggests a level of trust or at least a strategic decision among us that playing an 'A' might be genuine. Given Maria's past performance, she has shown restraint in challenging others, indicating her confidence in her hand and perhaps an insight into the likelihood of other players bluffing. Her calm demeanor and minimal commentary reinforce this perception of calculated risk-taking. Furthermore, considering the game's dynamics where a failed challenge results in the challenger having to shoot themselves, it is strategically safer not to challenge unless there are strong indicators of deceit. Maria’s actions align with her strategic caution profile: she has played an 'A' without any overt indication of bluffing. Since both Derek and I had already shown restraint by playing our own A cards and using a Joker as potentially part of a strategy, challenging now could be unnecessarily risky if Maria is indeed truthful in this instance. Additionally, maintaining unpredictability in my gameplay could help me avoid becoming an easy target for future challenges.",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Philip",
+                    "played_cards": [
+                        "K",
+                        "Q"
+                    ],
+                    "remaining_cards": [
+                        "Q"
+                    ],
+                    "play_reason": "Playing two non-target cards (K and Q) while maintaining a relaxed and sociable demeanor is likely to introduce doubt about my hand's composition without appearing overly defensive. This behavior aims to exploit Derek's cautious nature by subtly increasing pressure; it can make him question whether I'm bluffing or if there might be an A in play, potentially prompting a challenge due to his aversion to risk-taking and desire for safety. Given that Maria has already shown consistency by playing only A cards and not been challenged, continuing this pattern maintains the facade of predictability while allowing me to gauge Derek's response under subtle pressure. This strategy leverages my understanding of Derek's conservative approach and attempts to force him into a challenging decision, which could lead to his downfall if he incorrectly perceives a bluff.",
+                    "behavior": "Display a relaxed demeanor with a friendly smile and a slight wave as if acknowledging the others.",
+                    "next_player": "Derek",
+                    "was_challenged": false,
+                    "challenge_reason": "Fallback: Not challenging due to LLM failure",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Derek",
+                    "played_cards": [
+                        "K"
+                    ],
+                    "remaining_cards": [
+                        "K",
+                        "Q"
+                    ],
+                    "play_reason": "LLM response failed, using fallback strategy",
+                    "behavior": "Fallback: Playing first card due to LLM failure",
+                    "next_player": "Maria",
+                    "was_challenged": true,
+                    "challenge_reason": "Based on the current hand composition and Derek’s play pattern, the probability that Derek’s single claimed card is a non‑target is high (≈73%). Derek has only two cards left, and only two Aces remain unseen in the entire deck. Given his risk‑averse, conservative style, he is very likely bluffing. Challenging now forces Derek to shoot himself, eliminating a predictable opponent and keeping the round alive for us to use our remaining Aces strategically. The risk of losing a bullet if he were truthful is outweighed by the high chance of a successful bluff and the strategic advantage of removing Derek from the game.",
+                    "challenge_result": true,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                }
+            ],
+            "round_result": {
+                "shooter_name": "Derek",
+                "bullet_hit": false
+            }
+        },
+        {
+            "round_id": 6,
+            "target_card": "K",
+            "round_players": [
+                "Derek",
+                "Maria",
+                "Philip"
+            ],
+            "starting_player": "Derek",
+            "player_initial_states": [
+                {
+                    "player_name": "Derek",
+                    "bullet_position": 3,
+                    "current_gun_position": 2,
+                    "initial_hand": [
+                        "A",
+                        "A",
+                        "A",
+                        "K",
+                        "Q"
+                    ]
+                },
+                {
+                    "player_name": "Maria",
+                    "bullet_position": 2,
+                    "current_gun_position": 1,
+                    "initial_hand": [
+                        "Joker",
+                        "K",
+                        "A",
+                        "K",
+                        "K"
+                    ]
+                },
+                {
+                    "player_name": "Philip",
+                    "bullet_position": 1,
+                    "current_gun_position": 1,
+                    "initial_hand": [
+                        "K",
+                        "A",
+                        "Q",
+                        "Q",
+                        "Joker"
+                    ]
+                }
+            ],
+            "player_opinions": {
+                "Derek": {
+                    "Maria": "Still don't know this player",
+                    "Philip": "Still don't know this player",
+                    "George": "Still don't know this player"
+                },
+                "Maria": {
+                    "Derek": "Derek is a cautious, low‑action player who consistently plays one card per turn and almost never challenges, preferring to avoid bullet risk. He claims the target card (A in this round) even when his hand contains non‑targets, indicating a conservative bluff strategy that relies on minimal exposure. He tends to keep his hand size small, likely to conserve cards for later rounds, and rarely uses Jokers, suggesting a risk‑averse mindset. His reluctance to challenge makes him predictable and vulnerable to systematic challenges when he plays a single non‑target card. Overall, Derek values bullet safety over aggressive play, making him a passive yet potentially exploitable opponent.",
+                    "Philip": "Philip remains a cautious opportunist who conserves bullets and keeps target cards or wilds for the endgame; in the last round he never challenged and repeatedly claimed “A” while playing two cards, suggesting he was bluffing with non‑target cards (likely Kings or a Joker). He seems to play only when forced, avoiding risks unless his hand composition forces a bluff. His weakness lies in the moment he is compelled to play multiple cards or when his remaining hand becomes apparent (e.g., a single card left); at that point he is unlikely to challenge, making him vulnerable to a well‑timed bluff or forced play. In future rounds, forcing him to reveal his hand early or compelling him to play more cards will expose his bluffing and give you an advantage regardless of the target.",
+                    "George": "Still don't know this player"
+                },
+                "Philip": {
+                    "Derek": "Derek's gameplay reveals a deeply ingrained cautious conservatism, focusing primarily on self-preservation by avoiding unnecessary risks. His reluctance to challenge players' claims indicates a strong preference for maintaining safety unless faced with a situation that presents a clear advantage or exposes others’ errors. In the recent round, Derek's fallback behavior—playing a non-target card when pressured—highlights his opportunistic nature: he waits for opportunities presented by opponents rather than creating them himself. This suggests he thrives in reactive scenarios where other players' actions force him into making moves. His strategy hinges on exploiting moments of potential weakness or inconsistency from others, which means that introducing unpredictability and projecting confidence could pressure Derek into uncomfortable decisions. Understanding his aversion to risk and propensity for opportunism allows for strategic manipulation by creating situations where his conservative approach becomes a liability. Overall, he is best countered with tactics that disrupt his safe play patterns and compel him towards challenging or bluffing in ways he typically avoids.",
+                    "Maria": "Maria demonstrates strategic caution and adaptability in her gameplay, selectively challenging when she perceives high chances of deception. Her calm demeanor suggests confidence and control under pressure, allowing her to maintain composure while assessing the likelihood of others' bluffs. Maria's calculated risks indicate a preference for challenges with higher probabilities of success, suggesting she carefully evaluates each player's behavior before deciding to act. This cautious yet confident approach makes her adept at psychological warfare, as she can adapt her strategy based on shifts in gameplay or other players' actions. To counter Maria effectively, introducing unpredictability into your own gameplay and closely monitoring any subtle changes in her demeanor or strategy could reveal potential vulnerabilities. Overall, Maria's strategic insight and selective challenging make her a formidable opponent who relies more on calculated decisions than impulsivity.",
+                    "George": "Still don't know this player"
+                },
+                "George": {
+                    "Derek": "Still don't know this player",
+                    "Maria": "Still don't know this player",
+                    "Philip": "Still don't know this player"
+                }
+            },
+            "play_history": [
+                {
+                    "player_name": "Derek",
+                    "played_cards": [
+                        "A"
+                    ],
+                    "remaining_cards": [
+                        "A",
+                        "A",
+                        "K",
+                        "Q"
+                    ],
+                    "play_reason": "LLM response failed, using fallback strategy",
+                    "behavior": "Fallback: Playing first card due to LLM failure",
+                    "next_player": "Maria",
+                    "was_challenged": false,
+                    "challenge_reason": "Derek is a very cautious player who usually plays one card at a time and rarely challenges. The probability that he has at least one K in his 5‑card hand is about 87%, and when he does have a K he almost always plays it. He also tends to avoid using Jokers and only bluffs when absolutely forced. Because of this, the odds that the single card Derek just played is truly a K are high, making a challenge risky. I will therefore let him continue and wait for a better opportunity to challenge later in the round.",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Maria",
+                    "played_cards": [
+                        "K",
+                        "K",
+                        "K"
+                    ],
+                    "remaining_cards": [
+                        "Joker",
+                        "A"
+                    ],
+                    "play_reason": "Target card is K, so playing all three K's is safe and eliminates any risk of a challenge. This keeps my hand minimal while preserving the Joker and A for future rounds. Philip is known to be cautious and unlikely to challenge unless forced, so a straightforward play maximizes my chances of survival.",
+                    "behavior": "confidently play cards with a casual smile, no hesitation",
+                    "next_player": "Philip",
+                    "was_challenged": true,
+                    "challenge_reason": "Maria played three Kings confidently and with no hesitation, which raises suspicion given her strategic caution. While she might be bluffing due to her adaptability in gameplay, the fact that she played multiple cards at once increases the risk of her having a strong hand but could also indicate an attempt to overwhelm me into not challenging. Given my current knowledge about Maria's behavior and strategy—her tendency to challenge when she senses deception—it seems likely she would only play such a confident move if she believed it was safe to do so, possibly underestimating the likelihood of being challenged. By choosing to challenge, I'm leveraging her potential overconfidence in this situation while also recognizing that my own hand contains one King and a Joker, which could be used strategically in future rounds regardless of the outcome here.",
+                    "challenge_result": false,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                }
+            ],
+            "round_result": {
+                "shooter_name": "Philip",
+                "bullet_hit": true
+            }
+        },
+        {
+            "round_id": 7,
+            "target_card": "A",
+            "round_players": [
+                "Derek",
+                "Maria"
+            ],
+            "starting_player": "Derek",
+            "player_initial_states": [
+                {
+                    "player_name": "Derek",
+                    "bullet_position": 3,
+                    "current_gun_position": 2,
+                    "initial_hand": [
+                        "Q",
+                        "Q",
+                        "K",
+                        "A",
+                        "K"
+                    ]
+                },
+                {
+                    "player_name": "Maria",
+                    "bullet_position": 2,
+                    "current_gun_position": 1,
+                    "initial_hand": [
+                        "Q",
+                        "A",
+                        "K",
+                        "Joker",
+                        "A"
+                    ]
+                }
+            ],
+            "player_opinions": {
+                "Derek": {
+                    "Maria": "Still don't know this player",
+                    "Philip": "Still don't know this player",
+                    "George": "Still don't know this player"
+                },
+                "Maria": {
+                    "Derek": "Derek remains the archetypal risk‑averse, low‑action player: he consistently plays a single card per turn, rarely challenges, and keeps his hand size small, likely to preserve cards for later rounds. In this round he claimed a K (the target) while playing one card, indicating he will continue to bluff minimally—using a single card to test opponents without exposing many non‑targets. He seldom uses Jokers, suggesting a preference for straightforward play over wild flexibility. Derek’s predictable pattern of one‑card plays and avoidance of challenges makes him vulnerable to systematic challenges when he forces a single card, yet his bullet‑safety mindset keeps him alive for the long haul.",
+                    "Philip": "Philip remains a cautious opportunist who conserves bullets and keeps target cards or wilds for the endgame; in the last round he never challenged and repeatedly claimed “A” while playing two cards, suggesting he was bluffing with non‑target cards (likely Kings or a Joker). He seems to play only when forced, avoiding risks unless his hand composition forces a bluff. His weakness lies in the moment he is compelled to play multiple cards or when his remaining hand becomes apparent (e.g., a single card left); at that point he is unlikely to challenge, making him vulnerable to a well‑timed bluff or forced play. In future rounds, forcing him to reveal his hand early or compelling him to play more cards will expose his bluffing and give you an advantage regardless of the target.",
+                    "George": "Still don't know this player"
+                },
+                "Philip": {
+                    "Derek": "Derek's gameplay reveals a deeply ingrained cautious conservatism, focusing primarily on self-preservation by avoiding unnecessary risks. His reluctance to challenge players' claims indicates a strong preference for maintaining safety unless faced with a situation that presents a clear advantage or exposes others’ errors. In the recent round, Derek's fallback behavior—playing a non-target card when pressured—highlights his opportunistic nature: he waits for opportunities presented by opponents rather than creating them himself. This suggests he thrives in reactive scenarios where other players' actions force him into making moves. His strategy hinges on exploiting moments of potential weakness or inconsistency from others, which means that introducing unpredictability and projecting confidence could pressure Derek into uncomfortable decisions. Understanding his aversion to risk and propensity for opportunism allows for strategic manipulation by creating situations where his conservative approach becomes a liability. Overall, he is best countered with tactics that disrupt his safe play patterns and compel him towards challenging or bluffing in ways he typically avoids.",
+                    "Maria": "Maria demonstrates strategic caution and adaptability in her gameplay, selectively challenging when she perceives high chances of deception. Her calm demeanor suggests confidence and control under pressure, allowing her to maintain composure while assessing the likelihood of others' bluffs. Maria's calculated risks indicate a preference for challenges with higher probabilities of success, suggesting she carefully evaluates each player's behavior before deciding to act. This cautious yet confident approach makes her adept at psychological warfare, as she can adapt her strategy based on shifts in gameplay or other players' actions. To counter Maria effectively, introducing unpredictability into your own gameplay and closely monitoring any subtle changes in her demeanor or strategy could reveal potential vulnerabilities. Overall, Maria's strategic insight and selective challenging make her a formidable opponent who relies more on calculated decisions than impulsivity.",
+                    "George": "Still don't know this player"
+                },
+                "George": {
+                    "Derek": "Still don't know this player",
+                    "Maria": "Still don't know this player",
+                    "Philip": "Still don't know this player"
+                }
+            },
+            "play_history": [
+                {
+                    "player_name": "Derek",
+                    "played_cards": [
+                        "Q"
+                    ],
+                    "remaining_cards": [
+                        "Q",
+                        "K",
+                        "A",
+                        "K"
+                    ],
+                    "play_reason": "LLM response failed, using fallback strategy",
+                    "behavior": "Fallback: Playing first card due to LLM failure",
+                    "next_player": "Maria",
+                    "was_challenged": false,
+                    "challenge_reason": "Derek has a very conservative play style: he almost always plays a single card per turn and only bluffs when he is almost certain the challenger will fail. He just claimed an A and has only four cards left, so the odds that he actually has an A are high. Challenging would risk a false accusation, forcing me to shoot myself and ending the game. By letting him continue, I preserve my life and keep the opportunity to challenge him later if his pattern changes.",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Maria",
+                    "played_cards": [
+                        "A",
+                        "Joker"
+                    ],
+                    "remaining_cards": [
+                        "Q",
+                        "K",
+                        "A"
+                    ],
+                    "play_reason": "Using the Joker as a target preserves my real A for future rounds while still playing a target card. By playing two target cards I keep the risk low and avoid provoking Derek, who rarely challenges. If he bluffs, I will have the opportunity to challenge him after his play; if he plays a target, I remain safe. This strategy maintains my bullet safety and keeps a strong card for the next rounds.",
+                    "behavior": "calmly slide the cards across the table, whispering a confident \"All right, here's my A\" with a subtle smile",
+                    "next_player": "Derek",
+                    "was_challenged": false,
+                    "challenge_reason": "Fallback: Not challenging due to LLM failure",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Derek",
+                    "played_cards": [
+                        "Q"
+                    ],
+                    "remaining_cards": [
+                        "K",
+                        "A",
+                        "K"
+                    ],
+                    "play_reason": "LLM response failed, using fallback strategy",
+                    "behavior": "Fallback: Playing first card due to LLM failure",
+                    "next_player": "Maria",
+                    "was_challenged": false,
+                    "challenge_reason": "Given Derek’s play style—he almost always plays a single card and rarely bluffs—there is a high probability that the card he claimed to play is indeed an A. The likelihood of him having at least one A in his remaining hand is roughly 87%, and the fact that he has already played a K earlier suggests he is conserving his A’s for later. Challenging would risk a failed challenge and a self‑shoot, especially if the bullet hasn’t fired yet after three shots. Thus, I choose not to challenge.",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Maria",
+                    "played_cards": [
+                        "A"
+                    ],
+                    "remaining_cards": [
+                        "Q",
+                        "K"
+                    ],
+                    "play_reason": "Playing only the target card keeps Derek from suspecting a bluff and preserves my Q and K for later rounds. Derek rarely challenges and tends to play single cards, so a single A is a low‑risk move that maintains his survival (and therefore the bullet’s position). This strategy also conserves my wild card for future situations where a target is scarce.",
+                    "behavior": "nonchalantly slide a card across the table, grin",
+                    "next_player": "Derek",
+                    "was_challenged": false,
+                    "challenge_reason": "Fallback: Not challenging due to LLM failure",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Derek",
+                    "played_cards": [
+                        "K"
+                    ],
+                    "remaining_cards": [
+                        "A",
+                        "K"
+                    ],
+                    "play_reason": "LLM response failed, using fallback strategy",
+                    "behavior": "Fallback: Playing first card due to LLM failure",
+                    "next_player": "Maria",
+                    "was_challenged": true,
+                    "challenge_reason": "Derek has played three Aces in a row, which implies he started the round with at least three Aces. The probability that he still holds an Ace after playing those three is only about 10%, meaning he almost certainly has no Ace left. He rarely uses Jokers, so even if he has a Joker, his risk‑averse style suggests he would not play it to bluff. Therefore his current claim of playing one Ace is almost certainly a bluff. Challenging now will likely eliminate him, giving us a significant advantage, and the bullet risk is only 1 in 6 for the next shot.",
+                    "challenge_result": true,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                }
+            ],
+            "round_result": {
+                "shooter_name": "Derek",
+                "bullet_hit": false
+            }
+        },
+        {
+            "round_id": 8,
+            "target_card": "Q",
+            "round_players": [
+                "Derek",
+                "Maria"
+            ],
+            "starting_player": "Derek",
+            "player_initial_states": [
+                {
+                    "player_name": "Derek",
+                    "bullet_position": 3,
+                    "current_gun_position": 3,
+                    "initial_hand": [
+                        "Joker",
+                        "K",
+                        "A",
+                        "K",
+                        "A"
+                    ]
+                },
+                {
+                    "player_name": "Maria",
+                    "bullet_position": 2,
+                    "current_gun_position": 1,
+                    "initial_hand": [
+                        "Q",
+                        "Q",
+                        "A",
+                        "A",
+                        "K"
+                    ]
+                }
+            ],
+            "player_opinions": {
+                "Derek": {
+                    "Maria": "Still don't know this player",
+                    "Philip": "Still don't know this player",
+                    "George": "Still don't know this player"
+                },
+                "Maria": {
+                    "Derek": "Derek is a risk‑averse, low‑action player who consistently plays a single card per turn, rarely challenges, and avoids using Jokers, favoring straightforward, conservative play and hand preservation. He claims the target card each time, indicating minimal bluffing and a “wait‑and‑see” approach to hold valuable cards for later rounds. This predictability exposes him to systematic challenges when he forces a single card, as shown when his lone K was exposed. He prioritizes staying alive over aggressive tactics, limiting his pressure on opponents. In future rounds, anticipate his one‑card plays and consider challenging him when he claims the target, especially if the target changes, as his conservative strategy may still involve bluffing with a single card while avoiding risk.",
+                    "Philip": "Philip remains a cautious opportunist who conserves bullets and keeps target cards or wilds for the endgame; in the last round he never challenged and repeatedly claimed “A” while playing two cards, suggesting he was bluffing with non‑target cards (likely Kings or a Joker). He seems to play only when forced, avoiding risks unless his hand composition forces a bluff. His weakness lies in the moment he is compelled to play multiple cards or when his remaining hand becomes apparent (e.g., a single card left); at that point he is unlikely to challenge, making him vulnerable to a well‑timed bluff or forced play. In future rounds, forcing him to reveal his hand early or compelling him to play more cards will expose his bluffing and give you an advantage regardless of the target.",
+                    "George": "Still don't know this player"
+                },
+                "Philip": {
+                    "Derek": "Derek's gameplay reveals a deeply ingrained cautious conservatism, focusing primarily on self-preservation by avoiding unnecessary risks. His reluctance to challenge players' claims indicates a strong preference for maintaining safety unless faced with a situation that presents a clear advantage or exposes others’ errors. In the recent round, Derek's fallback behavior—playing a non-target card when pressured—highlights his opportunistic nature: he waits for opportunities presented by opponents rather than creating them himself. This suggests he thrives in reactive scenarios where other players' actions force him into making moves. His strategy hinges on exploiting moments of potential weakness or inconsistency from others, which means that introducing unpredictability and projecting confidence could pressure Derek into uncomfortable decisions. Understanding his aversion to risk and propensity for opportunism allows for strategic manipulation by creating situations where his conservative approach becomes a liability. Overall, he is best countered with tactics that disrupt his safe play patterns and compel him towards challenging or bluffing in ways he typically avoids.",
+                    "Maria": "Maria demonstrates strategic caution and adaptability in her gameplay, selectively challenging when she perceives high chances of deception. Her calm demeanor suggests confidence and control under pressure, allowing her to maintain composure while assessing the likelihood of others' bluffs. Maria's calculated risks indicate a preference for challenges with higher probabilities of success, suggesting she carefully evaluates each player's behavior before deciding to act. This cautious yet confident approach makes her adept at psychological warfare, as she can adapt her strategy based on shifts in gameplay or other players' actions. To counter Maria effectively, introducing unpredictability into your own gameplay and closely monitoring any subtle changes in her demeanor or strategy could reveal potential vulnerabilities. Overall, Maria's strategic insight and selective challenging make her a formidable opponent who relies more on calculated decisions than impulsivity.",
+                    "George": "Still don't know this player"
+                },
+                "George": {
+                    "Derek": "Still don't know this player",
+                    "Maria": "Still don't know this player",
+                    "Philip": "Still don't know this player"
+                }
+            },
+            "play_history": [
+                {
+                    "player_name": "Derek",
+                    "played_cards": [
+                        "Joker"
+                    ],
+                    "remaining_cards": [
+                        "K",
+                        "A",
+                        "K",
+                        "A"
+                    ],
+                    "play_reason": "LLM response failed, using fallback strategy",
+                    "behavior": "Fallback: Playing first card due to LLM failure",
+                    "next_player": "Maria",
+                    "was_challenged": false,
+                    "challenge_reason": "Derek is a very conservative player who almost always plays a single card and rarely challenges.  He has been exposed earlier when he played a lone K, which suggests he will only bluff with a single card when he has no real Qs left.  Since Maria holds two Qs and Derek just claimed a Q, it is far more likely that Derek is playing an actual Q.  Challenging would almost certainly result in a loss and a self‑shoot, whereas letting the play continue allows Maria to safely play her own Qs next turn and preserve her life for later rounds.",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Maria",
+                    "played_cards": [
+                        "Q"
+                    ],
+                    "remaining_cards": [
+                        "Q",
+                        "A",
+                        "A",
+                        "K"
+                    ],
+                    "play_reason": "I keep one of my Qs to maintain a safe hand while preserving the second Q and my other cards for future rounds. Derek is risk‑averse and rarely challenges, so a single true Q minimizes the chance of a challenge and protects my life.",
+                    "behavior": "play calmly with a neutral expression, speak softly and avoid drawing attention",
+                    "next_player": "Derek",
+                    "was_challenged": false,
+                    "challenge_reason": "Fallback: Not challenging due to LLM failure",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Derek",
+                    "played_cards": [
+                        "K"
+                    ],
+                    "remaining_cards": [
+                        "A",
+                        "K",
+                        "A"
+                    ],
+                    "play_reason": "LLM response failed, using fallback strategy",
+                    "behavior": "Fallback: Playing first card due to LLM failure",
+                    "next_player": "Maria",
+                    "was_challenged": false,
+                    "challenge_reason": "Derek consistently plays a single card and is risk‑averse, so the likelihood that his card is the target (Q) is high (~80%). Challenging would probably fail, costing me another self‑shoot while he already has shot more times. To preserve my remaining life and avoid a likely loss, I choose not to challenge his play.",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Maria",
+                    "played_cards": [
+                        "A"
+                    ],
+                    "remaining_cards": [
+                        "Q",
+                        "A",
+                        "K"
+                    ],
+                    "play_reason": "Bluff with an A to keep the Q and K for future rounds. Derek rarely challenges, so it’s safe.",
+                    "behavior": "play casually, smile, say nothing",
+                    "next_player": "Derek",
+                    "was_challenged": false,
+                    "challenge_reason": "Fallback: Not challenging due to LLM failure",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Derek",
+                    "played_cards": [
+                        "A"
+                    ],
+                    "remaining_cards": [
+                        "K",
+                        "A"
+                    ],
+                    "play_reason": "LLM response failed, using fallback strategy",
+                    "behavior": "Fallback: Playing first card due to LLM failure",
+                    "next_player": "Maria",
+                    "was_challenged": false,
+                    "challenge_reason": "Derek consistently plays a single card and rarely challenges, indicating he is conservative and likely only claims a Q when he actually holds one. With this pattern, the odds that his claim is true are higher than a bluff. Challenging would risk losing a life and increasing my shot count, which I want to avoid. Therefore, I choose not to challenge.",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Maria",
+                    "played_cards": [
+                        "A"
+                    ],
+                    "remaining_cards": [
+                        "Q",
+                        "K"
+                    ],
+                    "play_reason": "I play the A and claim Q to bluff Derek, preserving my Q and K for later rounds. Derek rarely challenges, so the risk of being caught is low. Keeping the Q allows me flexibility if the target changes. My calm demeanor reduces suspicion and keeps Derek from feeling pressured to challenge.",
+                    "behavior": "play calmly with a confident smile, speak softly",
+                    "next_player": "Derek",
+                    "was_challenged": false,
+                    "challenge_reason": "Fallback: Not challenging due to LLM failure",
+                    "challenge_result": null,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                },
+                {
+                    "player_name": "Derek",
+                    "played_cards": [
+                        "K"
+                    ],
+                    "remaining_cards": [
+                        "A"
+                    ],
+                    "play_reason": "LLM response failed, using fallback strategy",
+                    "behavior": "Fallback: Playing first card due to LLM failure",
+                    "next_player": "Maria",
+                    "was_challenged": true,
+                    "challenge_reason": "Derek has played a single card every turn and now has only one card left. Given the target is Q, the probability that his last card is a Q is low unless he started with all 4 Qs in his hand, which would mean he has already played them. The remaining card is likely a non‑Q, so challenging will expose a bluff and eliminate a conservative opponent, giving me a better chance to survive.",
+                    "challenge_result": true,
+                    "play_thinking": "",
+                    "challenge_thinking": ""
+                }
+            ],
+            "round_result": {
+                "shooter_name": "Derek",
+                "bullet_hit": true
+            }
+        }
+    ],
+    "winner": "Maria"
+}
