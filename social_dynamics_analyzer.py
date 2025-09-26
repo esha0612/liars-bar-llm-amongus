@@ -331,26 +331,25 @@ class SocialDynamicsAnalyzer:
             )
     
     def generate_csv(self, output_file: str = "social_dynamics_analysis.csv"):
-        """Generate CSV file with the analysis results"""
+        """Generate CSV file with the analysis results matching the spreadsheet format"""
         output_path = Path(output_file)
         
         # Get all unique models
         all_models = sorted(self.all_models)
         
-        # Create CSV headers
+        # Create CSV headers matching the spreadsheet format
         headers = [
             "Main Category",
             "Sub-Category", 
-            "Definition",
-            "Example Quote",
-            "Example Source",
-            "Total Occurrences",
-            "Games Where Occurred"
+            "Description/Definition",
+            "Example"
         ]
         
-        # Add model count columns
+        # Add model count columns with "Count" prefix
         for model in all_models:
-            headers.append(f"Count {model}")
+            # Clean up model names for column headers
+            clean_model_name = model.replace(":", "").replace("-", "").replace(".", "")
+            headers.append(f"Count {clean_model_name}")
         
         with open(output_path, 'w', newline='', encoding='utf-8') as csvfile:
             writer = csv.writer(csvfile)
@@ -367,10 +366,7 @@ class SocialDynamicsAnalyzer:
                     behavior.main_category,
                     behavior.sub_category,
                     behavior.definition,
-                    behavior.example_quote,
-                    behavior.example_source,
-                    behavior.total_occurrences,
-                    behavior.games_where_occurred
+                    behavior.example_quote
                 ]
                 
                 # Add model counts

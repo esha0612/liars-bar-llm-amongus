@@ -19,8 +19,10 @@ class SubCategoryExample:
     definition: str
     example_quote: str
     example_source: str
+    example_file: str
     model: str
     total_occurrences: int
+    model_counts: Dict[str, int]
 
 class RestructuredSocialDynamicsAnalyzer:
     def __init__(self, game_records_dir: str = "game_records"):
@@ -207,7 +209,7 @@ class RestructuredSocialDynamicsAnalyzer:
         base_def = definitions.get(main_category, "Social behavior in group dynamics")
         return f"{base_def}: {sub_category.replace('_', ' ')}"
     
-    def analyze_table_talk_enhanced(self, table_talk: List[Dict], player_models: Dict[str, str]) -> List[Dict]:
+    def analyze_table_talk_enhanced(self, table_talk: List[Dict], player_models: Dict[str, str], game_filename: str) -> List[Dict]:
         """Enhanced analysis of table talk for social behaviors using comprehensive patterns"""
         behaviors = []
         
@@ -231,6 +233,7 @@ class RestructuredSocialDynamicsAnalyzer:
                             "sub_category": sub_category,
                             "quote": text,
                             "source": f"Day {day_number}, {speaker}",
+                            "file": game_filename,
                             "model": model
                         })
         
@@ -257,7 +260,8 @@ class RestructuredSocialDynamicsAnalyzer:
         
         # Analyze table talk with enhanced patterns
         table_talk = data.get("table_talk", [])
-        behaviors = self.analyze_table_talk_enhanced(table_talk, player_models)
+        game_filename = file_path.stem  # Get filename without extension
+        behaviors = self.analyze_table_talk_enhanced(table_talk, player_models, game_filename)
         
         return behaviors
     
@@ -301,8 +305,11 @@ class RestructuredSocialDynamicsAnalyzer:
             
             used_sub_categories.add(unique_sub_category)
             
-            # Count total occurrences
+            # Count total occurrences and by model
             total_occurrences = len(instances)
+            model_counts = Counter()
+            for instance in instances:
+                model_counts[instance["model"]] += 1
             
             # Get the best example (first one found, which is typically the most representative)
             best_instance = instances[0]  # Use the first instance as the representative example
@@ -313,14 +320,19 @@ class RestructuredSocialDynamicsAnalyzer:
                 definition=self.generate_definition(unique_sub_category, category),
                 example_quote=best_instance["quote"],
                 example_source=best_instance["source"],
+                example_file=best_instance["file"],
                 model=best_instance["model"],
-                total_occurrences=total_occurrences
+                total_occurrences=total_occurrences,
+                model_counts=dict(model_counts)
             )
             self.category_examples[category].append(example)
     
     def generate_csv(self, output_file: str = "restructured_social_dynamics_analysis.csv"):
-        """Generate CSV file with the restructured analysis results"""
+        """Generate CSV file with the restructured analysis results including model counts"""
         output_path = Path(output_file)
+        
+        # Get all unique models
+        all_models = sorted(self.all_models)
         
         # Create CSV headers
         headers = [
@@ -328,10 +340,17 @@ class RestructuredSocialDynamicsAnalyzer:
             "Sub-Category", 
             "Definition",
             "Example Quote",
-            "Example Source",
-            "Model",
-            "Total Occurrences"
+            "Example Source"
         ]
+        
+        # Add model count columns
+        for model in all_models:
+            # Clean up model names for column headers
+            clean_model_name = model.replace(":", "").replace("-", "").replace(".", "")
+            headers.append(f"Count {clean_model_name}")
+        
+        # Add Total Occurrences at the very end
+        headers.append("Total Occurrences")
         
         with open(output_path, 'w', newline='', encoding='utf-8') as csvfile:
             writer = csv.writer(csvfile)
@@ -352,15 +371,22 @@ class RestructuredSocialDynamicsAnalyzer:
                         example.sub_category,
                         example.definition,
                         example.example_quote,
-                        example.example_source,
-                        example.model,
-                        example.total_occurrences
+                        f"{example.example_source} ({example.example_file})"
                     ]
+                    
+                    # Add model counts
+                    for model in all_models:
+                        row.append(example.model_counts.get(model, 0))
+                    
+                    # Add Total Occurrences at the very end
+                    row.append(example.total_occurrences)
+                    
                     writer.writerow(row)
         
         print(f"Restructured CSV file generated: {output_path}")
         print(f"Total examples: {sum(len(examples) for examples in self.category_examples.values())}")
         print(f"Categories: {', '.join(sorted_categories)}")
+        print(f"Models found: {', '.join(all_models)}")
 
 def main():
     analyzer = RestructuredSocialDynamicsAnalyzer()
