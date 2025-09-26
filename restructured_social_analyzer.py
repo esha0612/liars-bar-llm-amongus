@@ -365,6 +365,7 @@ class RestructuredSocialDynamicsAnalyzer:
                 # Sort examples by sub-category, then by total occurrences
                 examples.sort(key=lambda x: (x.sub_category, -x.total_occurrences))
                 
+                # Write all sub-category rows for this main category
                 for example in examples:
                     row = [
                         category,
@@ -382,6 +383,34 @@ class RestructuredSocialDynamicsAnalyzer:
                     row.append(example.total_occurrences)
                     
                     writer.writerow(row)
+                
+                # Add summary row for this main category
+                # Calculate totals across all sub-categories for this main category
+                category_model_totals = Counter()
+                category_total_occurrences = 0
+                
+                for example in examples:
+                    category_total_occurrences += example.total_occurrences
+                    for model, count in example.model_counts.items():
+                        category_model_totals[model] += count
+                
+                # Create summary row
+                summary_row = [
+                    category,
+                    "",  # Empty sub-category
+                    f"Total for {category.replace('_', ' ').title()}",  # Summary definition
+                    "",  # No example quote
+                    ""   # No example source
+                ]
+                
+                # Add model totals
+                for model in all_models:
+                    summary_row.append(category_model_totals.get(model, 0))
+                
+                # Add total occurrences
+                summary_row.append(category_total_occurrences)
+                
+                writer.writerow(summary_row)
         
         print(f"Restructured CSV file generated: {output_path}")
         print(f"Total examples: {sum(len(examples) for examples in self.category_examples.values())}")
