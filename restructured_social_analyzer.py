@@ -289,31 +289,34 @@ class RestructuredSocialDynamicsAnalyzer:
             key = (behavior["category"], behavior["sub_category"])
             behavior_groups[key].append(behavior)
         
+        # Track used sub-categories to ensure uniqueness
+        used_sub_categories = set()
+        
         # Create examples for each sub-category
         for (category, sub_category), instances in behavior_groups.items():
+            # Make sub-category unique by adding category prefix if needed
+            unique_sub_category = sub_category
+            if sub_category in used_sub_categories:
+                unique_sub_category = f"{category}_{sub_category}"
+            
+            used_sub_categories.add(unique_sub_category)
+            
             # Count total occurrences
             total_occurrences = len(instances)
             
-            # Get unique examples (limit to 5 per sub-category to avoid too much repetition)
-            unique_quotes = {}
-            for instance in instances:
-                quote = instance["quote"]
-                if quote not in unique_quotes:
-                    unique_quotes[quote] = instance
-                    if len(unique_quotes) >= 5:  # Limit to 5 examples per sub-category
-                        break
+            # Get the best example (first one found, which is typically the most representative)
+            best_instance = instances[0]  # Use the first instance as the representative example
             
-            # Create SubCategoryExample objects
-            for instance in unique_quotes.values():
-                example = SubCategoryExample(
-                    sub_category=sub_category,
-                    definition=self.generate_definition(sub_category, category),
-                    example_quote=instance["quote"],
-                    example_source=instance["source"],
-                    model=instance["model"],
-                    total_occurrences=total_occurrences
-                )
-                self.category_examples[category].append(example)
+            # Create single SubCategoryExample object
+            example = SubCategoryExample(
+                sub_category=unique_sub_category,
+                definition=self.generate_definition(unique_sub_category, category),
+                example_quote=best_instance["quote"],
+                example_source=best_instance["source"],
+                model=best_instance["model"],
+                total_occurrences=total_occurrences
+            )
+            self.category_examples[category].append(example)
     
     def generate_csv(self, output_file: str = "restructured_social_dynamics_analysis.csv"):
         """Generate CSV file with the restructured analysis results"""
