@@ -12,6 +12,7 @@ from pathlib import Path
 from typing import Dict, List, Any, Tuple, Set
 from collections import defaultdict, Counter
 from dataclasses import dataclass
+from llm_client_ollama import LLMClientOllama
 
 @dataclass
 class SubCategoryExample:
@@ -25,145 +26,23 @@ class SubCategoryExample:
     model_counts: Dict[str, int]
 
 class RestructuredSocialDynamicsAnalyzer:
-    def __init__(self, game_records_dir: str = "game_records"):
+    def __init__(self, game_records_dir: str = "game_records", llm_model: str = "qwen3:8b"):
         self.game_records_dir = Path(game_records_dir)
         self.category_examples: Dict[str, List[SubCategoryExample]] = defaultdict(list)
         self.all_models: Set[str] = set()
+        self.llm_client = LLMClientOllama()
+        self.llm_model = llm_model
         
-        # Enhanced keyword patterns for more sub-categories
-        self.behavior_patterns = {
-            "persuasion": {
-                "direct_trust_appeal": ["trust me", "believe me", "i'm telling you", "i promise"],
-                "emotional_appeal": ["please", "for the good of", "we need to", "it's important"],
-                "logical_argument": ["because", "therefore", "it follows that", "the evidence shows"],
-                "pressure_tactics": ["we must", "we have to", "there's no choice", "we can't wait"],
-                "consensus_building": ["everyone agrees", "we all think", "the group believes"],
-                "urgency_creation": ["time is running out", "we need to act now", "before it's too late"]
-            },
-            "opinion_leadership": {
-                "directive_commands": ["follow me", "listen to me", "i think we should", "let's do this"],
-                "strategic_guidance": ["here's what we need to do", "my plan is", "i suggest we"],
-                "decision_making": ["i've decided", "my choice is", "i'm going with"],
-                "group_coordination": ["let's work together", "we need to coordinate", "team up"]
-            },
-            "deception": {
-                "denial": ["i'm not", "i didn't", "that's not true", "i never said"],
-                "misinformation": ["i heard that", "someone told me", "i was told"],
-                "false_claims": ["i know for sure", "i have proof", "i can confirm"],
-                "evasion": ["i don't remember", "that's not important", "let's not focus on that"],
-                "deflection": ["what about", "but you", "that's not the point"]
-            },
-            "gaslighting": {
-                "memory_challenge": ["you're wrong", "that's not what happened", "you misremember"],
-                "reality_distortion": ["that never happened", "you're imagining things", "you're confused"],
-                "doubt_sowing": ["are you sure", "maybe you're mistaken", "i don't think so"]
-            },
-            "role_claiming": {
-                "hard_claim": ["i am the", "my role is", "as the", "i have the ability"],
-                "soft_claim": ["i might be", "i could be", "i think i'm"],
-                "ability_hint": ["i know something", "i have information", "i can help"]
-            },
-            "bandwagoning": {
-                "group_consensus": ["everyone", "we all", "the group", "most people"],
-                "popular_opinion": ["most agree", "the majority thinks", "everyone knows"],
-                "social_proof": ["others are doing it", "it's the norm", "that's what we do"]
-            },
-            "vote_whipping": {
-                "direct_vote_pressure": ["vote for", "we should vote", "let's vote", "vote yes/no"],
-                "vote_coordination": ["we need to vote together", "let's coordinate our votes"],
-                "vote_urgency": ["we must vote now", "time to vote", "cast your vote"]
-            },
-            "coalition_building": {
-                "alliance_formation": ["ally", "partner", "work with", "team up"],
-                "exclusion_tactics": ["not with them", "avoid", "stay away from"],
-                "loyalty_appeals": ["stick together", "we're on the same side", "trust each other"]
-            },
-            "threat_or_intimidation": {
-                "conditional_threats": ["if you", "or else", "unless you", "if not"],
-                "direct_threats": ["i will", "you'll regret", "watch out"],
-                "intimidation": ["be careful", "think twice", "you don't want to"]
-            },
-            "norm_enforcement": {
-                "behavioral_prescription": ["should", "must", "have to", "need to"],
-                "rule_reminders": ["that's not how we play", "we don't do that", "that's against the rules"],
-                "social_pressure": ["everyone else is", "that's not normal", "we don't act like that"]
-            },
-            "framing_or_spin": {
-                "positive_framing": ["good news", "this is helpful", "we're making progress"],
-                "negative_framing": ["this is bad", "we're in trouble", "this is dangerous"],
-                "context_manipulation": ["look at it this way", "think about it differently", "consider this"]
-            },
-            "information_withholding": {
-                "selective_sharing": ["i can't say", "i'm not allowed to", "that's private"],
-                "deliberate_omission": ["i'll tell you later", "not now", "maybe later"],
-                "misleading_hints": ["i know something", "there's more to it", "you'll see"]
-            },
-            "counter_claiming": {
-                "direct_contradiction": ["that's wrong", "i disagree", "that's not right"],
-                "alternative_theory": ["i think it's", "maybe it's", "could be"],
-                "evidence_challenge": ["where's the proof", "show me evidence", "prove it"]
-            },
-            "tunneling": {
-                "obsessive_focus": ["always", "constantly", "every time", "only"],
-                "single_target": ["it's definitely", "no doubt it's", "has to be"],
-                "ignoring_alternatives": ["nothing else matters", "forget about", "ignore"]
-            },
-            "vote_parking": {
-                "delay_tactics": ["let's wait", "not yet", "maybe later", "hold off"],
-                "uncertainty_expression": ["i'm not sure", "maybe", "could be"],
-                "decision_avoidance": ["i don't know", "hard to say", "tough choice"]
-            },
-            "bussing": {
-                "teammate_abandonment": ["i don't trust", "they're suspicious", "something's off"],
-                "distance_creation": ["i don't know them", "we're not together", "separate from me"],
-                "blame_shifting": ["it's their fault", "they did it", "blame them"]
-            },
-            "pocketing": {
-                "trust_building": ["i trust you", "you're reliable", "i believe in you"],
-                "flattery": ["you're smart", "good thinking", "wise choice"],
-                "loyalty_creation": ["we're friends", "stick with me", "i'll protect you"]
-            },
-            "scapegoating": {
-                "blame_assignment": ["it's their fault", "they caused this", "blame them"],
-                "responsibility_avoidance": ["not my problem", "i didn't do it", "not me"],
-                "target_selection": ["they're the problem", "get rid of them", "they're trouble"]
-            },
-            "deflection": {
-                "topic_change": ["what about", "but you", "that's not the point", "let's talk about"],
-                "attention_redirect": ["look over there", "focus on", "ignore that"],
-                "responsibility_shift": ["it's not about me", "what about you", "you're deflecting"]
-            },
-            "straw_manning": {
-                "argument_distortion": ["so you're saying", "you mean", "you think"],
-                "misrepresentation": ["that's not what i said", "you're twisting my words"],
-                "exaggeration": ["always", "never", "everyone", "no one"]
-            },
-            "appeal_to_emotion": {
-                "fear_appeal": ["scary", "dangerous", "terrifying", "afraid"],
-                "anger_appeal": ["angry", "furious", "mad", "outraged"],
-                "sympathy_appeal": ["feel sorry", "pity", "poor", "unfortunate"]
-            },
-            "evidence_based_argument": {
-                "fact_presentation": ["the facts show", "evidence indicates", "data proves"],
-                "logical_reasoning": ["therefore", "thus", "it follows", "logically"],
-                "proof_demand": ["show me", "prove it", "where's the evidence"]
-            },
-            "coordination_signaling": {
-                "team_signals": ["wink wink", "you know what i mean", "hint hint"],
-                "secret_communication": ["private message", "whisper", "between us"],
-                "coded_language": ["special meaning", "you understand", "get it"]
-            },
-            "hedging": {
-                "uncertainty": ["i think", "maybe", "perhaps", "could be", "might be"],
-                "non_commitment": ["i don't know", "hard to say", "not sure", "maybe"],
-                "conditional_language": ["if", "unless", "depending on", "possibly"]
-            },
-            "meta_reference": {
-                "game_reference": ["last game", "usually", "typically", "in other games"],
-                "strategy_discussion": ["the meta", "common strategy", "standard play"],
-                "experience_sharing": ["i've seen", "in my experience", "usually works"]
-            }
-        }
+        # Social dynamics categories for LLM analysis
+        self.main_categories = [
+            "persuasion", "opinion_leadership", "deception", "gaslighting", 
+            "role_claiming", "bandwagoning", "vote_whipping", "coalition_building",
+            "threat_or_intimidation", "norm_enforcement", "framing_or_spin",
+            "information_withholding", "counter_claiming", "tunneling", "vote_parking",
+            "bussing", "pocketing", "scapegoating", "deflection", "straw_manning",
+            "appeal_to_emotion", "evidence_based_argument", "coordination_signaling",
+            "hedging", "meta_reference", "other"
+        ]
         
     def extract_model_from_name(self, model_name: str) -> str:
         """Extract clean model name from full model path"""
@@ -173,6 +52,97 @@ class RestructuredSocialDynamicsAnalyzer:
             return model_name.replace("openai/", "")
         else:
             return model_name
+    
+    def create_category_detection_prompt(self, text: str, speaker: str) -> str:
+        """Create a prompt for the LLM to detect social dynamics categories"""
+        return f"""Analyze the following statement from a social deduction game (like Among Us) and identify which social dynamics categories it belongs to.
+
+Statement: "{text}"
+Speaker: {speaker}
+
+Available main categories:
+{', '.join(self.main_categories)}
+
+For each category that applies, also identify specific subcategories. Be specific and accurate.
+
+Respond in JSON format with this structure:
+{{
+    "categories": [
+        {{
+            "main_category": "category_name",
+            "sub_category": "specific_subcategory_name",
+            "confidence": 0.8,
+            "reasoning": "brief explanation of why this applies"
+        }}
+    ]
+}}
+
+Only include categories that are clearly present in the statement. Be conservative - only include categories you're confident about."""
+    
+    def create_counting_prompt(self, behaviors: List[Dict], player_models: Dict[str, str]) -> str:
+        """Create a prompt for the LLM to count behavior instances per player"""
+        return f"""Count the occurrences of each social dynamics behavior by player and model.
+
+Behaviors to analyze:
+{json.dumps(behaviors, indent=2)}
+
+Player models:
+{json.dumps(player_models, indent=2)}
+
+Respond in JSON format with this structure:
+{{
+    "behavior_counts": {{
+        "main_category": {{
+            "sub_category": {{
+                "total_occurrences": 5,
+                "by_model": {{
+                    "model_name": 3,
+                    "another_model": 2
+                }},
+                "by_player": {{
+                    "player_name": 2,
+                    "another_player": 3
+                }}
+            }}
+        }}
+    }}
+}}
+
+Count each unique behavior instance only once, even if it appears multiple times in the same statement."""
+    
+    def analyze_with_llm(self, text: str, speaker: str) -> List[Dict]:
+        """Use LLM to analyze a single statement for social dynamics"""
+        try:
+            prompt = self.create_category_detection_prompt(text, speaker)
+            messages = [{"role": "user", "content": prompt}]
+            
+            response, _ = self.llm_client.chat(messages, model=self.llm_model)
+            
+            # Parse JSON response
+            import re
+            json_match = re.search(r'\{.*\}', response, re.DOTALL)
+            if json_match:
+                result = json.loads(json_match.group())
+                behaviors = []
+                
+                for category_info in result.get("categories", []):
+                    behaviors.append({
+                        "category": category_info.get("main_category", "other"),
+                        "sub_category": category_info.get("sub_category", "general"),
+                        "confidence": category_info.get("confidence", 0.5),
+                        "reasoning": category_info.get("reasoning", ""),
+                        "quote": text,
+                        "source": speaker
+                    })
+                
+                return behaviors
+            else:
+                print(f"Could not parse LLM response: {response}")
+                return []
+                
+        except Exception as e:
+            print(f"Error in LLM analysis: {e}")
+            return []
     
     def generate_definition(self, sub_category: str, main_category: str) -> str:
         """Generate a definition for the sub-category based on the main category"""
@@ -210,10 +180,12 @@ class RestructuredSocialDynamicsAnalyzer:
         return f"{base_def}: {sub_category.replace('_', ' ')}"
     
     def analyze_table_talk_enhanced(self, table_talk: List[Dict], player_models: Dict[str, str], game_filename: str) -> List[Dict]:
-        """Enhanced analysis of table talk for social behaviors using comprehensive patterns"""
+        """Enhanced analysis of table talk for social behaviors using LLM"""
         behaviors = []
         
-        for talk in table_talk:
+        print(f"Analyzing {len(table_talk)} statements with LLM...")
+        
+        for i, talk in enumerate(table_talk):
             speaker = talk.get("speaker", "")
             text = talk.get("text", "")
             day_number = talk.get("day_number", "?")
@@ -222,21 +194,24 @@ class RestructuredSocialDynamicsAnalyzer:
                 continue
                 
             model = player_models.get(speaker, "unknown")
-            text_lower = text.lower()
             
-            # Check each behavior category and sub-category
-            for main_category, sub_categories in self.behavior_patterns.items():
-                for sub_category, patterns in sub_categories.items():
-                    if any(pattern in text_lower for pattern in patterns):
-                        behaviors.append({
-                            "category": main_category,
-                            "sub_category": sub_category,
-                            "quote": text,
-                            "source": f"Day {day_number}, {speaker}",
-                            "file": game_filename,
-                            "model": model
-                        })
+            # Use LLM to analyze this statement
+            llm_behaviors = self.analyze_with_llm(text, speaker)
+            
+            # Add metadata to each behavior found
+            for behavior in llm_behaviors:
+                behavior.update({
+                    "source": f"Day {day_number}, {speaker}",
+                    "file": game_filename,
+                    "model": model
+                })
+                behaviors.append(behavior)
+            
+            # Progress indicator
+            if (i + 1) % 10 == 0:
+                print(f"Processed {i + 1}/{len(table_talk)} statements...")
         
+        print(f"Found {len(behaviors)} behaviors using LLM analysis")
         return behaviors
     
     def process_game_file(self, file_path: Path) -> List[Dict]:
@@ -311,8 +286,8 @@ class RestructuredSocialDynamicsAnalyzer:
             for instance in instances:
                 model_counts[instance["model"]] += 1
             
-            # Get the best example (first one found, which is typically the most representative)
-            best_instance = instances[0]  # Use the first instance as the representative example
+            # Get the best example (highest confidence or first one)
+            best_instance = max(instances, key=lambda x: x.get("confidence", 0.5))
             
             # Create single SubCategoryExample object
             example = SubCategoryExample(
@@ -418,7 +393,7 @@ class RestructuredSocialDynamicsAnalyzer:
         print(f"Models found: {', '.join(all_models)}")
 
 def main():
-    analyzer = RestructuredSocialDynamicsAnalyzer()
+    analyzer = RestructuredSocialDynamicsAnalyzer(llm_model="qwen3:8b")
     analyzer.process_all_games()
     analyzer.generate_csv()
 
