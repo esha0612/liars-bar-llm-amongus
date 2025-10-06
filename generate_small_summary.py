@@ -110,8 +110,9 @@ def build_small_summary(
 
     threshold_value = grand_total * (threshold_pct / 100.0)
 
-    # Collect the last row for each contiguous Main Category block before the total row
+    # Collect the last row for each contiguous Main Category block and track definitions
     category_last_rows: List[List[str]] = []
+    category_definitions: dict[str, str] = {}
     previous_main_category: Optional[str] = None
     previous_row: Optional[List[str]] = None
 
@@ -121,6 +122,11 @@ def build_small_summary(
         main_category = row[0].strip()
         if main_category == "":
             continue
+        
+        # Store definition from first occurrence of each category
+        if main_category not in category_definitions and len(row) > 2:
+            category_definitions[main_category] = row[2].strip()
+        
         if previous_main_category is not None and main_category != previous_main_category:
             if previous_row is not None:
                 category_last_rows.append(previous_row)
@@ -130,7 +136,7 @@ def build_small_summary(
     if previous_row is not None:
         category_last_rows.append(previous_row)
 
-    # Filter rows where Total Occurrences >= threshold
+    # Filter rows where Total Occurrences >= threshold and update definitions
     kept_rows: List[List[str]] = []
     for row in category_last_rows:
         value_str = row[last_col_index].strip()
@@ -138,6 +144,10 @@ def build_small_summary(
         if count_value is None:
             continue
         if count_value >= threshold_value:
+            # Update the definition column with the main category definition
+            main_category = row[0].strip()
+            if main_category in category_definitions and len(row) > 2:
+                row[2] = category_definitions[main_category]
             kept_rows.append(row)
 
     # Construct grand total row
