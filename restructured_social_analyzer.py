@@ -326,7 +326,9 @@ Count each unique behavior instance only once, even if it appears multiple times
             total_occurrences = len(instances)
             model_counts = Counter()
             for instance in instances:
-                model_counts[instance["model"]] += 1
+                # Extract model name to match the CSV headers
+                extracted_model = self.extract_model_from_name(instance["model"])
+                model_counts[extracted_model] += 1
             
             # Get the best example (highest confidence or first one)
             best_instance = max(instances, key=lambda x: x.get("confidence", 0.5))
