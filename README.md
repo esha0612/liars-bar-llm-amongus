@@ -81,21 +81,13 @@ Game records are saved as JSON in the `game_records/` folder.
 
 Scripts to generate aggregate outputs:
 
-- `restructured_social_dynamics_analysis.csv` (script): produces a long CSV table with main and sub-categories for all annotated statements. Run the corresponding generator script `generate_full_table.py` (if present) or see `restructured_social_dynamics_analysis.csv` for expected output format.
+- `restructured_social_dynamics_analysis.csv` (script): produces a long CSV table with main and sub-categories for all annotated statements. See `restructured_social_dynamics_analysis.csv` for expected output format.
 - `generate_small_summary.py`: produces a shorter summary CSV applying confidence / frequency thresholds (the shorter summary used in analysis).
 
-Examples (if scripts exist):
+Examples:
 ```bash
-python3 generate_full_table.py   # produce long CSV with main & sub categories
 python3 generate_small_summary.py  # produce condensed summary CSV with thresholds
 ```
-
-If those filenames differ in your tree, run the scripts in the repo root or check the `scripts/` folder for the exact names.
-
-## Demo
-
-The repository includes example game records in `game_records/` demonstrating runs across multiple models and games.
-
 ## Known Issues
 
 The output of local LLMs can be unstable during structured phases. When model output does not follow the expected format, the runner will retry. If runs fail repeatedly due to generation issues:
