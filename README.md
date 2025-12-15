@@ -67,7 +67,9 @@ ollama pull gemma2:9b
 ### Model Configuration
 The project uses `multi_llm_client.py` to automatically route requests to the appropriate service:
 - Models like `llama3`, `mistral:7b` → Ollama (local)
-  
+
+## Usage 
+
 ### Run Single Game
 ```bash
 python3 game.py
