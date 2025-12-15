@@ -1,6 +1,6 @@
-# Liars Bar LLM
+# Social Simulative Games
 
-An AI version of the Liars Bar battle framework driven by a large language model
+A collection of social-simulation / social-deduction game runners that use local LLMs (via Ollama) to simulate autonomous agents.
 
 ## File structure
 
@@ -28,92 +28,80 @@ The program is mainly divided into two parts, the game body and the analysis too
 
 ## Configuration
 
-Use the conda environment to configure the corresponding dependency packages:
+Ensure you have `python3` installed on your system. The runner scripts expect `python3` on your PATH.
 
-```bash
-pip install openai
+Dependencies
+```
 pip install ollama
 ```
 
-Also to run model using Ollama, you need to first:
-
-```bash
+Ollama setup
+```
 curl -fsSL https://ollama.com/install.sh | sh
 ollama serve
 ```
-to first initialize the ollama package on your server environment.
 
-Then you need to download the model you need to run locally using ollama, you can find useful models in https://ollama.com/search. Also when you are trying to download model, like:
-```bash
+Download the models you want to run with Ollama, for example:
+```
 ollama pull qwen3:8b
 ```
-to download the Qwen3 model with 8B's weights. Other models with other weights can do the same.
 
-The API configuration of this project is in `llm_client.py`.
-
-### OpenAI Setup
-For OpenAI models, set your API key in a `.env` file:
-```
-OPENAI_API_KEY=your_api_key_here
-```
-
-Alternatively, you can set the environment variable directly:
-```bash
-export OPENAI_API_KEY=your_api_key_here
-```
-
-### Model Configuration
-The project uses `multi_llm_client.py` to automatically route requests to the appropriate service:
-- Models like `llama3`, `mistral:7b` → Ollama (local)
-- Models like `gpt-4o-mini` → OpenAI API
-
-This project uses New API https://github.com/Calcium-Ion/new-api?tab=readme-ov-file to configure a unified interface call format. When using it, you need to configure the API interface of the corresponding model yourself.
-
-You can also use a similar API management project One API https://github.com/songquanpeng/one-api to achieve unified interface calls.
+The API configuration of this project is in `multi_llm_client.py` / `llm_client_ollama.py` and we currently support local Ollama models only (OpenAI is not supported in this repository).
 
 ## Usage
 
 ### Run
 
-After completing the project configuration, set the correct model name in the `player_configs` of the main program entry of `game.py` and `multi_game_runner.py`
+After completing the project configuration, set the correct model name in the `player_configs` of `game.py` and `multi_game_runner.py` (or the runner you plan to use).
 
-Run a single game:
-```
-python game.py
+Run a single game (default for a configured game):
+```bash
+python3 game.py
 ```
 
-Run multiple games:
+Run multiple games (batched runner). Example for Mafia / Liars Bar / Paranoia:
+```bash
+python3 multi_game_runner.py -n 40
 ```
-python multi_game_runner.py -n 10
+
+- The `-n <number>` flag specifies the minimum number of appearances each model must have (independent of rounds). The runner will continue executing games until every model has participated in at least `n` games.
+- The example above (`-n 40`) is intended for bulk runs of Mafia, Liars Bar, and Paranoia game configurations. For other games (e.g., Secret Hitler), you can specify any number after `-n` to control the minimum per-model appearances.
+
+Branch / Game selection
+- Use `git checkout <branch-name>` to switch to the branch for the game you want to run. Example:
+```bash
+git checkout mafiaV1   # play Mafia
+git checkout paranoiaRPG  # play Paranoia / Liars Bar variants
 ```
-Use `-n` to specify the number of games to run. Each model will continue playing until it has participated in the specified number of rounds.
+Each branch contains the appropriate game rules and player configurations.
 
 ### Analysis
 
-The game records will be saved in the `game_records` folder in the directory in json format
+Game records are saved as JSON in the `game_records/` folder.
 
-Convert the json file to a more readable text format, and the converted file will be saved in the `converted_game_records` folder in the directory
+Scripts to generate aggregate outputs:
 
-```
-python json_convert.py
+- `restructured_social_dynamics_analysis.csv` (script): produces a long CSV table with main and sub-categories for all annotated statements. Run the corresponding generator script `generate_full_table.py` (if present) or see `restructured_social_dynamics_analysis.csv` for expected output format.
+- `generate_small_summary.py`: produces a shorter summary CSV applying confidence / frequency thresholds (the shorter summary used in analysis).
+
+Examples (if scripts exist):
+```bash
+python3 generate_full_table.py   # produce long CSV with main & sub categories
+python3 generate_small_summary.py  # produce condensed summary CSV with thresholds
 ```
 
-Extract all the games between AIs in the game, and the converted files will be saved in the `matchup_records` folder in the directory
-
-```
-python player_matchup_analyze.py
-```
-
-Count and print all game data
-
-```
-python game_analyze.py
-```
+If those filenames differ in your tree, run the scripts in the repo root or check the `scripts/` folder for the exact names.
 
 ## Demo
 
-The project has run 50 games with four models, DeepSeek-R1, o3-mini, Gemini-2-flash-thinking, and Claude-3.7-Sonnet, as players, and the records are stored in the `demo_records` folder.
+The repository includes example game records in `game_records/` demonstrating runs across multiple models and games.
 
 ## Known Issues
 
-The output of the model may be unstable during the card-playing and questioning stages. When the output cannot meet the game requirements, it will automatically retry. If the run is interrupted multiple times due to output problems, you can increase the number of retries for calling large models in `choose_cards_to_play` and `decide_challenge` of `player.py`, or modify the prompts in `play_card_prompt_template.txt` and `challenge_prompt_template.txt` in the `prompt` folder to strengthen the restrictions on the output format (which may have a certain impact on the model's reasoning ability).
+The output of local LLMs can be unstable during structured phases. When model output does not follow the expected format, the runner will retry. If runs fail repeatedly due to generation issues:
+
+- Increase retry counts in the player code (e.g., `player.py`).
+- Harden prompt templates in the `prompts/` folder to enforce structured JSON outputs.
+- Use a larger local model for higher-quality structured outputs or adjust temperature toward 0.
+
+If you need help wiring a specific model or debugging generation failures, I can add utilities to validate and sanitize model responses before they are recorded.
