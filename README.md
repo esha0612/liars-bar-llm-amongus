@@ -41,7 +41,6 @@ Players are Troubleshooters - citizens of Alpha Complex who serve The Computer. 
 
 ### Dependencies
 ```bash
-pip install openai
 pip install ollama
 pip install python-dotenv  # Optional, for .env file support
 ```
@@ -65,19 +64,10 @@ ollama pull gemma2:9b
 # Add more models as needed
 ```
 
-### OpenAI Setup
-For OpenAI models, set your API key in a `.env` file:
-```
-OPENAI_API_KEY=your_api_key_here
-```
-
 ### Model Configuration
 The project uses `multi_llm_client.py` to automatically route requests to the appropriate service:
 - Models like `llama3`, `mistral:7b` → Ollama (local)
-- Models like `gpt-4o-mini` → OpenAI API
-
-## Usage
-
+  
 ### Run Single Game
 ```bash
 python3 game.py
@@ -123,11 +113,6 @@ This implementation supports both local and cloud-based models:
 **Local Models (via Ollama):**
 - llama3.1:8b, mistral:7b, qwen2.5:7b, deepseek-r1:8b
 - phi4:14b, gemma2:9b, gemma3:4b, and many others
-
-**Cloud Models (via OpenAI API):**
-- gpt-4o-mini, gpt-4o, gpt-4-turbo
-
-The system automatically detects which service to use based on the model name and routes requests accordingly.
 
 ## Game Features
 
